@@ -90,7 +90,7 @@ export default function handler(req, res) {
   }
 
   const slug = req.query.slug || [];
-  const id = slug[0] || null;
+  const id = slug.length > 1 ? slug[1] : null;
 
   if (!id) {
     if (req.method === 'GET') return json(res, 200, jobs);
