@@ -14,12 +14,15 @@ const AuthContext = createContext<AuthCtx | null>(null);
 
 function mapUser(user: import('@supabase/supabase-js').User): UserInfo {
   const meta = user.user_metadata || {};
+  const appMeta = user.app_metadata || {};
   return {
     id: user.id,
     email: user.email || '',
     name: meta.name || meta.full_name || user.email?.split('@')[0] || 'User',
-    role: user.app_metadata?.role || 'user',
+    username: (meta.username as string) || (appMeta.username as string) || '',
+    role: appMeta.role || 'user',
     avatarUrl: meta.avatar_url || '',
+    avatarColor: (meta.avatar_color as string) || '#58a6ff',
   };
 }
 

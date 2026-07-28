@@ -29,10 +29,15 @@ export interface ForumTopic {
   tags: string[]
   created_at: string
   updated_at: string
-  user?: {
-    name: string
-    avatar_url: string
-  }
+  user?: ForumUser
+}
+
+export interface ForumUser {
+  name: string
+  username: string | null
+  avatar_url: string | null
+  avatar_color: string | null
+  role: string | null
 }
 
 export interface ForumPost {
@@ -41,12 +46,19 @@ export interface ForumPost {
   author_id: string
   content: string
   parent_id: string | null
+  sticker_url: string | null
+  is_emoji_only: boolean
   created_at: string
   updated_at: string
-  user?: {
-    name: string
-    avatar_url: string
-  }
+  user?: ForumUser
+}
+
+export interface ForumReaction {
+  id: string
+  post_id: string
+  user_id: string
+  emoji: string
+  created_at: string
 }
 
 export interface AuthState {
@@ -60,6 +72,8 @@ export interface UserInfo {
   id: string
   email: string
   name: string
+  username: string
   role: string
   avatarUrl: string
+  avatarColor: string
 }
