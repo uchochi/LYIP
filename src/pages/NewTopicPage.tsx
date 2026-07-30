@@ -38,10 +38,8 @@ export default function NewTopicPage() {
         <button onClick={() => navigate('/forum')} className="back-link" style={{ background: 'none', border: 'none', fontFamily: 'inherit' }} type="button">
           <ArrowLeft size={14} /> Back to Forum
         </button>
-        <div className="stats-header">
-          <div className="topic-info">
-            <h2>✍️ Start a Discussion</h2>
-          </div>
+        <div className="topic-header" style={{ padding: '16px 20px' }}>
+          <h2>✍️ Start a Discussion</h2>
         </div>
         <form onSubmit={handleSubmit} className="comment-card" style={{ padding: '16px' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '12px' }}>
@@ -49,7 +47,7 @@ export default function NewTopicPage() {
             <input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              style={{ width: '100%', background: '#0d1117', border: '1px solid var(--border)', borderRadius: '6px', color: 'white', padding: '8px', boxSizing: 'border-box', fontFamily: 'inherit', fontSize: '14px', outline: 'none' }}
+              style={{ width: '100%', background: 'var(--surface-lighter)', border: '1px solid var(--border)', borderRadius: '6px', color: 'white', padding: '8px', boxSizing: 'border-box', fontFamily: 'inherit', fontSize: '14px', outline: 'none' }}
               placeholder="e.g. How to structure audio transcription datasets"
             />
           </div>
@@ -59,7 +57,7 @@ export default function NewTopicPage() {
               value={content}
               onChange={(e) => setContent(e.target.value)}
               rows={8}
-              style={{ width: '100%', background: '#0d1117', border: '1px solid var(--border)', borderRadius: '6px', color: 'white', padding: '8px', boxSizing: 'border-box', fontFamily: 'inherit', fontSize: '14px', outline: 'none', resize: 'vertical' }}
+              style={{ width: '100%', background: 'var(--surface-lighter)', border: '1px solid var(--border)', borderRadius: '6px', color: 'white', padding: '8px', boxSizing: 'border-box', fontFamily: 'inherit', fontSize: '14px', outline: 'none', resize: 'vertical' }}
               placeholder="Write your message..."
             />
           </div>
@@ -68,7 +66,7 @@ export default function NewTopicPage() {
             <input
               value={tags}
               onChange={(e) => setTags(e.target.value)}
-              style={{ width: '100%', background: '#0d1117', border: '1px solid var(--border)', borderRadius: '6px', color: 'white', padding: '8px', boxSizing: 'border-box', fontFamily: 'inherit', fontSize: '14px', outline: 'none' }}
+              style={{ width: '100%', background: 'var(--surface-lighter)', border: '1px solid var(--border)', borderRadius: '6px', color: 'white', padding: '8px', boxSizing: 'border-box', fontFamily: 'inherit', fontSize: '14px', outline: 'none' }}
               placeholder="e.g. transcription, formatting, audio"
             />
           </div>

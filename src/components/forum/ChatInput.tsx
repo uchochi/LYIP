@@ -78,72 +78,72 @@ export default function ChatInput({
   };
 
   return (
-    <div className="input-box" ref={boxRef}>
-      <TypingIndicator users={typingUsers} />
-      {replyingTo && (
-        <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginBottom: '6px' }}>
-          Replying to a post{' '}
-          {onCancelReply && (
-            <button type="button" onClick={onCancelReply} style={{ color: 'var(--accent-blue)', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', fontFamily: 'inherit', fontSize: '11px' }}>
-              Cancel
+    <div className="input-container">
+      <div className="input-box" ref={boxRef}>
+        <span className="typing-indicator">⚡ <TypingIndicator users={typingUsers} /></span>
+        {replyingTo && (
+          <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginBottom: '6px' }}>
+            Replying to a post{' '}
+            {onCancelReply && (
+              <button type="button" onClick={onCancelReply} style={{ color: 'var(--accent-primary)', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', fontFamily: 'inherit', fontSize: '11px' }}>
+                Cancel
+              </button>
+            )}
+          </div>
+        )}
+        {pendingSticker && (
+          <div style={{ marginBottom: '8px', position: 'relative' }}>
+            <img src={pendingSticker} className="sticker-img" alt="Sticker preview" style={{ height: '48px', margin: 0 }} />
+            <button
+              type="button"
+              onClick={() => setPendingSticker(null)}
+              style={{ position: 'absolute', top: '-6px', left: '42px', background: 'var(--surface-lighter)', border: '1px solid var(--border)', borderRadius: '50%', width: '18px', height: '18px', color: 'white', cursor: 'pointer', fontSize: '11px', lineHeight: 1 }}
+              title="Remove sticker"
+            >
+              ×
             </button>
-          )}
-        </div>
-      )}
-      {pendingSticker && (
-        <div style={{ marginBottom: '8px', position: 'relative' }}>
-          <img src={pendingSticker} className="sticker-img" alt="Sticker preview" style={{ height: '48px', margin: 0 }} />
-          <button
-            type="button"
-            onClick={() => setPendingSticker(null)}
-            style={{ position: 'absolute', top: '-6px', left: '42px', background: 'var(--border)', border: 'none', borderRadius: '50%', width: '18px', height: '18px', color: 'white', cursor: 'pointer', fontSize: '11px', lineHeight: 1 }}
-            title="Remove sticker"
-          >
-            ×
+          </div>
+        )}
+        <textarea
+          ref={textareaRef}
+          rows={1}
+          placeholder={placeholder}
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault();
+              handleSubmit(e);
+            }
+          }}
+        />
+        <div className="input-actions">
+          <div className="tools">
+            <span onClick={() => setShowEmoji(!showEmoji)} title="Add emoji">😊</span>
+            <span onClick={() => setShowSticker(!showSticker)} title="Add sticker">📎</span>
+            <span title="Coming soon">📊</span>
+            <span title="Coming soon">✨</span>
+          </div>
+          <button type="submit" className="btn-send" disabled={disabled || (!content.trim() && !pendingSticker)} onClick={handleSubmit}>
+            {buttonText}
           </button>
         </div>
-      )}
-      <textarea
-        ref={textareaRef}
-        rows={1}
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        placeholder={placeholder}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            handleSubmit(e);
-          }
-        }}
-      />
-      <div className="input-actions">
-        <div className="tools" style={{ position: 'relative' }}>
-          <button className="tool-btn" type="button" onClick={() => { setShowEmoji((s) => !s); setShowSticker(false); }} title="Emoji">
-            😊
-          </button>
-          <button className="tool-btn" type="button" onClick={() => { setShowSticker((s) => !s); setShowEmoji(false); }} title="Sticker">
-            📎
-          </button>
-          <span style={{ fontSize: '18px', opacity: 0.5 }}>📊</span>
-          <span style={{ fontSize: '18px', opacity: 0.5 }}>✨</span>
-          {showEmoji && (
-            <div className="emoji-picker">
-              {EMOJIS.map((em) => (
-                <button key={em} type="button" onClick={() => addEmoji(em)}>{em}</button>
-              ))}
-            </div>
-          )}
-          {showSticker && (
-            <div className="sticker-picker">
-              {STICKERS.map((url) => (
-                <img key={url} src={url} alt="sticker" onClick={() => addSticker(url)} loading="lazy" />
-              ))}
-            </div>
-          )}
-        </div>
-        <button className="btn-send" type="submit" onClick={handleSubmit} disabled={disabled || (!content.trim() && !pendingSticker)}>
-          {buttonText}
-        </button>
+        {showEmoji && (
+          <div className="emoji-picker">
+            {EMOJIS.map((e) => (
+              <button key={e} type="button" onClick={() => addEmoji(e)}>
+                {e}
+              </button>
+            ))}
+          </div>
+        )}
+        {showSticker && (
+          <div className="sticker-picker">
+            {STICKERS.map((s) => (
+              <img key={s} src={s} alt="Sticker" onClick={() => addSticker(s)} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

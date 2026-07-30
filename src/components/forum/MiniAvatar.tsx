@@ -5,9 +5,9 @@ interface MiniAvatarProps {
   color?: string | null;
 }
 
-export default function MiniAvatar({ name, color = '#58a6ff' }: MiniAvatarProps) {
+export default function MiniAvatar({ name, color = '#3b82f6' }: MiniAvatarProps) {
   return (
-    <div className="mini-avatar" style={{ background: color || '#58a6ff' }}>
+    <div className="avatar" style={{ background: color || '#3b82f6' }}>
       {initials(name)}
     </div>
   );

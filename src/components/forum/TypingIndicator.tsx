@@ -4,15 +4,13 @@ interface TypingIndicatorProps {
 
 export default function TypingIndicator({ users }: TypingIndicatorProps) {
   if (users.length === 0) return null;
-  let text: React.ReactNode;
+  let text: string;
   if (users.length === 1) {
-    text = (<><b>{users[0]}</b> is typing...</>);
+    text = `${users[0]} is typing...`;
   } else if (users.length === 2) {
-    text = (<><b>{users[0]}</b> and <b>{users[1]}</b> are typing...</>);
+    text = `${users[0]} and ${users[1]} are typing...`;
   } else {
-    text = (<><b>{users[0]}</b> and <b>{users.length - 1} others</b> are typing...</>);
+    text = `${users[0]} and ${users.length - 1} others are typing...`;
   }
-  return (
-    <span className="typing">⚡ {text}</span>
-  );
+  return text;
 }

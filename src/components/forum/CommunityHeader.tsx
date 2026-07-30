@@ -8,21 +8,22 @@ interface CommunityHeaderProps {
 
 export default function CommunityHeader({ title, memberCount, onlineCount }: CommunityHeaderProps) {
   return (
-    <div className="stats-header">
-      <div className="topic-info">
+    <>
+      {/* TIER 1: GLOBAL UTILITY (Floating Pill) */}
+      <div className="global-stats-bar">
+        <div className="stats-pill">
+          <div className="stat-item">👥 {formatNumber(memberCount)} MEMBERS</div>
+          <div className="stat-item online-indicator">
+            <div className="online-dot"></div>
+            <span>{formatNumber(onlineCount)} ONLINE</span>
+          </div>
+        </div>
+      </div>
+
+      {/* TIER 2: TOPIC HEADER (Sticky) */}
+      <header className="topic-header">
         <h2>{title}</h2>
-      </div>
-      <div className="community-stats">
-        <div className="stat-item" style={{ color: 'var(--text-muted)' }}>
-          <span>👥</span>
-          <b>{formatNumber(memberCount)}</b>
-          <span>MEMBERS</span>
-        </div>
-        <div className="stat-item">
-          <div className="online-dot"></div>
-          <span style={{ color: 'var(--live-red)' }}>{formatNumber(onlineCount)} ONLINE</span>
-        </div>
-      </div>
-    </div>
+      </header>
+    </>
   );
 }

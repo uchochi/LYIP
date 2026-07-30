@@ -107,21 +107,18 @@ export default function ForumPage() {
           </div>
         )}
 
-        <div className="stats-header">
-          <div className="topic-info">
-            <h2>📦 Dataset Training Community</h2>
-          </div>
-          <div className="community-stats">
-            <div className="stat-item" style={{ color: 'var(--text-muted)' }}>
-              <span>👥</span>
-              <b>{formatNumber(memberCount)}</b>
-              <span>MEMBERS</span>
-            </div>
-            <div className="stat-item">
+        <div className="global-stats-bar">
+          <div className="stats-pill">
+            <div className="stat-item">👥 {formatNumber(memberCount)} MEMBERS</div>
+            <div className="stat-item online-indicator">
               <div className="online-dot"></div>
-              <span style={{ color: 'var(--live-red)' }}>{formatNumber(onlineCount)} ONLINE</span>
+              <span>{formatNumber(onlineCount)} ONLINE</span>
             </div>
           </div>
+        </div>
+
+        <div className="topic-header" style={{ padding: '16px 20px' }}>
+          <h2>📦 Dataset Training Community</h2>
         </div>
 
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '4px 2px' }}>
@@ -144,49 +141,51 @@ export default function ForumPage() {
             </p>
           </div>
         ) : (
-          visibleTopics.map((topic) => {
-            const u = topic.user;
-            const displayName = u?.username || u?.name || 'Unknown';
-            return (
-              <Link key={topic.id} to={`/forum/${topic.id}`} style={{ textDecoration: 'none' }}>
-                <div className={`comment-card ${topic.is_pinned ? 'op' : ''}`} style={{ cursor: 'pointer' }}>
-                  <div className="user-row">
-                    <MiniAvatar name={u?.name || displayName} color={u?.avatar_color} />
-                    <span className="username">{displayName}</span>
-                    {topic.is_pinned && <span className="badge admin"><Pin size={10} /> PINNED</span>}
-                    {topic.is_locked && <span className="badge mod"><Lock size={10} /> LOCKED</span>}
-                    <span className="timestamp">{formatRelative(topic.created_at)}</span>
-                  </div>
-                  <div style={{ fontWeight: 600, fontSize: '0.95rem', color: 'var(--accent-blue)', marginBottom: '4px' }}>
-                    {topic.title}
-                  </div>
-                  <div className="comment-body" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                    {topic.content}
-                  </div>
-                  {topic.tags.length > 0 && (
-                    <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', marginTop: '6px' }}>
-                      {topic.tags.map((tag) => (
-                        <span key={tag} className="data-tag">#{tag}</span>
-                      ))}
+          <div className="comment-container">
+            {visibleTopics.map((topic) => {
+              const u = topic.user;
+              const displayName = u?.username || u?.name || 'Unknown';
+              return (
+                <Link key={topic.id} to={`/forum/${topic.id}`} style={{ textDecoration: 'none' }}>
+                  <div className={`comment-card ${topic.is_pinned ? 'op' : ''}`} style={{ cursor: 'pointer' }}>
+                    <div className="user-row">
+                      <MiniAvatar name={u?.name || displayName} color={u?.avatar_color} />
+                      <span className="username">{displayName}</span>
+                      {topic.is_pinned && <span className="badge badge-admin"><Pin size={10} /> PINNED</span>}
+                      {topic.is_locked && <span className="badge badge-mod"><Lock size={10} /> LOCKED</span>}
+                      <span className="timestamp">{formatRelative(topic.created_at)}</span>
                     </div>
-                  )}
-                  {isAdmin && (
-                    <div className="card-actions" style={{ opacity: 1 }}>
-                      <button className="card-action-btn" onClick={(e) => { e.preventDefault(); handlePin(topic); }} title={topic.is_pinned ? 'Unpin' : 'Pin'} type="button">
-                        <Pin size={13} />
-                      </button>
-                      <button className="card-action-btn" onClick={(e) => { e.preventDefault(); handleArchive(topic); }} title={topic.is_archived ? 'Unarchive' : 'Archive'} type="button">
-                        <Archive size={13} />
-                      </button>
-                      <button className="card-action-btn" onClick={(e) => { e.preventDefault(); handleDelete(topic.id); }} title="Delete" type="button">
-                        <Trash2 size={13} />
-                      </button>
+                    <div style={{ fontWeight: 600, fontSize: '0.95rem', color: 'var(--accent-primary)', marginBottom: '4px' }}>
+                      {topic.title}
                     </div>
-                  )}
-                </div>
-              </Link>
-            );
-          })
+                    <div className="comment-body" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                      {topic.content}
+                    </div>
+                    {topic.tags.length > 0 && (
+                      <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', marginTop: '6px' }}>
+                        {topic.tags.map((tag) => (
+                          <span key={tag} className="data-tag">#{tag}</span>
+                        ))}
+                      </div>
+                    )}
+                    {isAdmin && (
+                      <div className="card-actions" style={{ opacity: 1 }}>
+                        <button className="card-action-btn" onClick={(e) => { e.preventDefault(); handlePin(topic); }} title={topic.is_pinned ? 'Unpin' : 'Pin'} type="button">
+                          <Pin size={13} />
+                        </button>
+                        <button className="card-action-btn" onClick={(e) => { e.preventDefault(); handleArchive(topic); }} title={topic.is_archived ? 'Unarchive' : 'Archive'} type="button">
+                          <Archive size={13} />
+                        </button>
+                        <button className="card-action-btn" onClick={(e) => { e.preventDefault(); handleDelete(topic.id); }} title="Delete" type="button">
+                          <Trash2 size={13} />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
         )}
       </div>
     </div>

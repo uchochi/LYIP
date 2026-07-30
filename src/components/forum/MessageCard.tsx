@@ -19,8 +19,8 @@ interface MessageCardProps {
 }
 
 function badgeFor(role: string | null | undefined): { label: string; cls: string } | null {
-  if (role === 'admin') return { label: 'ADMIN', cls: 'admin' };
-  if (role === 'senior_instructor' || role === 'instructor') return { label: 'MOD', cls: 'mod' };
+  if (role === 'admin') return { label: 'ADMIN', cls: 'badge-admin' };
+  if (role === 'senior_instructor' || role === 'instructor') return { label: 'MOD', cls: 'badge-mod' };
   return null;
 }
 
@@ -47,7 +47,7 @@ export default function MessageCard({
         <MiniAvatar name={user?.name || displayName} color={user?.avatar_color} />
         <span className="username">{displayName}</span>
         {badge && <span className={`badge ${badge.cls}`}>{badge.label}</span>}
-        {isOP && <span className="badge admin">OP</span>}
+        {isOP && <span className="badge badge-admin">OP</span>}
         <span className="timestamp">{formatRelative(post.created_at)}</span>
       </div>
       <div className="comment-body">

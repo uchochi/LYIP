@@ -156,8 +156,8 @@ export default function ForumTopicPage() {
 
   const tagChips = (
     <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '8px' }}>
-      {topic.is_pinned && <span className="badge admin"><Pin size={10} /> PINNED</span>}
-      {topic.is_locked && <span className="badge mod"><Lock size={10} /> LOCKED</span>}
+      {topic.is_pinned && <span className="badge badge-admin"><Pin size={10} /> PINNED</span>}
+      {topic.is_locked && <span className="badge badge-mod"><Lock size={10} /> LOCKED</span>}
       {topic.tags.map((tag) => (
         <span key={tag} className="data-tag">#{tag}</span>
       ))}
