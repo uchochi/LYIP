@@ -24,6 +24,9 @@ import UserDashboardPage from './pages/UserDashboardPage';
 import ProtectedAdminRoute from './components/admin/ProtectedAdminRoute';
 import ProtectedUserRoute from './components/ProtectedUserRoute';
 import ScrollToTop from './components/ScrollToTop';
+import FloatingSidebarDemo from './pages/forum-menu-samples/FloatingSidebarDemo';
+import FloatingTopBarDemo from './pages/forum-menu-samples/FloatingTopBarDemo';
+import SlideOutPanelDemo from './pages/forum-menu-samples/SlideOutPanelDemo';
 
 export default function App() {
   return (
@@ -38,6 +41,9 @@ export default function App() {
             <Route path="/forum" element={<ForumPage />} />
             <Route path="/forum/:topicId" element={<ForumTopicPage />} />
             <Route path="/forum/new" element={<NewTopicPage />} />
+            <Route path="/forum-menu/floating-sidebar" element={<FloatingSidebarDemo />} />
+            <Route path="/forum-menu/floating-topbar" element={<FloatingTopBarDemo />} />
+            <Route path="/forum-menu/slide-out-panel" element={<SlideOutPanelDemo />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/platform" element={<PlatformPage />} />
             <Route path="/research" element={<ResearchPage />} />
