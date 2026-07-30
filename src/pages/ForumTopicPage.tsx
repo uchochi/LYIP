@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Pin, Lock, AlertTriangle, X } from 'lucide-react';
-import { getTopic, getPosts, createPost, deletePost, getReactions, toggleReaction, getMemberCount } from '../services/forumService';
+import { getTopic, getPosts, createPost, deletePost, getReactions, toggleReaction } from '../services/forumService';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import Spinner from '../components/ui/Spinner';
@@ -10,14 +10,6 @@ import MessageCard from '../components/forum/MessageCard';
 import ChatInput from '../components/forum/ChatInput';
 import '../forum.css';
 import type { ForumTopic, ForumPost, ForumReaction } from '../types';
-
-const ONLINE_BASE = 1850;
-const ONLINE_JITTER_MAX = 320;
-
-function pseudoOnlineCount(): number {
-  const seed = Math.floor(Date.now() / 60000);
-  return ONLINE_BASE + (seed % ONLINE_JITTER_MAX);
-}
 
 export default function ForumTopicPage() {
   const { topicId } = useParams<{ topicId: string }>();
@@ -28,8 +20,6 @@ export default function ForumTopicPage() {
   const [loading, setLoading] = useState(true);
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
-  const [memberCount, setMemberCount] = useState(142804);
-  const [onlineCount, setOnlineCount] = useState(pseudoOnlineCount());
   const [showVerifyBanner, setShowVerifyBanner] = useState(false);
   const [typingUsers, setTypingUsers] = useState<string[]>([]);
 
@@ -52,15 +42,6 @@ export default function ForumTopicPage() {
   useEffect(() => {
     load();
   }, [load]);
-
-  useEffect(() => {
-    getMemberCount().then((c) => setMemberCount(c + ONLINE_BASE));
-  }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => setOnlineCount(pseudoOnlineCount()), 30000);
-    return () => clearInterval(interval);
-  }, []);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -169,7 +150,15 @@ export default function ForumTopicPage() {
       <div className="forum-wrapper">
         <Link to="/forum" className="back-link"><ArrowLeft size={14} /> Back to Forum</Link>
 
-        <CommunityHeader title={topic.title} memberCount={memberCount} onlineCount={onlineCount} />
+        <CommunityHeader
+          title={topic.title}
+          showCommunityStats={false}
+          topicStats={{
+            views: Math.floor(posts.length * 100 + Math.random() * 5000),
+            reactions: Object.values(reactions).flat().length,
+            replies: posts.length - 1
+          }}
+        />
 
         {showVerifyBanner && (
           <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start', background: 'rgba(180,120,20,0.1)', border: '1px solid rgba(180,120,20,0.3)', borderRadius: '8px', padding: '8px 12px' }}>

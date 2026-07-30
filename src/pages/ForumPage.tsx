@@ -5,7 +5,8 @@ import { getTopics, deleteTopic, updateTopic, getMemberCount } from '../services
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
 import MiniAvatar from '../components/forum/MiniAvatar';
-import { formatRelative, formatNumber } from '../lib/relativeTime';
+import CommunityHeader from '../components/forum/CommunityHeader';
+import { formatRelative } from '../lib/relativeTime';
 import '../forum.css';
 import type { ForumTopic } from '../types';
 
@@ -107,19 +108,12 @@ export default function ForumPage() {
           </div>
         )}
 
-        <div className="global-stats-bar">
-          <div className="stats-pill">
-            <div className="stat-item">👥 {formatNumber(memberCount)} MEMBERS</div>
-            <div className="stat-item online-indicator">
-              <div className="online-dot"></div>
-              <span>{formatNumber(onlineCount)} ONLINE</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="topic-header" style={{ padding: '16px 20px' }}>
-          <h2>📦 Dataset Training Community</h2>
-        </div>
+        <CommunityHeader
+          title="📦 Dataset Training Community"
+          memberCount={memberCount}
+          onlineCount={onlineCount}
+          showCommunityStats={true}
+        />
 
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '4px 2px' }}>
           <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-muted)' }}>
