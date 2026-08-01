@@ -114,10 +114,7 @@ export default function ForumPage() {
           showCommunityStats={true}
         />
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '4px 2px' }}>
-          <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-            Learn how to format datasets for AI. Ask questions, share tips, get help.
-          </p>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', padding: '4px 2px' }}>
           {user && (
             <Link to="/forum/new" style={{ textDecoration: 'none' }}>
               <button className="btn-send" type="button" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
