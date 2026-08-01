@@ -14,20 +14,20 @@ const sections = [
 export default function TermsPage() {
   return (
     <div className="mx-auto max-w-3xl px-6 py-20">
-      <h1 className="text-4xl font-extrabold tracking-tight text-slate-900">Terms of Service</h1>
-      <p className="mt-2 text-sm text-slate-400">Last updated: July 1, 2026</p>
-      <p className="mt-6 text-slate-500 leading-relaxed">
+      <h1 className="text-4xl font-extrabold tracking-tight text-text-main">Terms of Service</h1>
+      <p className="mt-2 text-sm text-text-muted">Last updated: July 1, 2026</p>
+      <p className="mt-6 text-text-muted leading-relaxed">
         These Terms of Service govern your use of the Loseyourip platform and services. Please read them carefully before using our platform.
       </p>
       <div className="mt-10 space-y-8">
         {sections.map((s) => (
           <section key={s.title}>
-            <h2 className="text-lg font-semibold text-slate-900">{s.title}</h2>
-            <p className="mt-2 text-sm text-slate-500 leading-relaxed">{s.content}</p>
+            <h2 className="text-lg font-semibold text-text-main">{s.title}</h2>
+            <p className="mt-2 text-sm text-text-muted leading-relaxed">{s.content}</p>
           </section>
         ))}
       </div>
-      <p className="mt-10 border-t border-slate-200 pt-6 text-sm text-slate-500">
+      <p className="mt-10 border-t border-border pt-6 text-sm text-text-muted">
         Questions about these terms? Contact us at <span className="text-primary">legal@loseyourip.com</span>
       </p>
     </div>

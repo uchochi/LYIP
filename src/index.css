@@ -1,15 +1,31 @@
 @import "tailwindcss";
 
+/*
+ * Unified dark design system (PLAN_DARK_RESTRUCTURE.md §3).
+ * One palette shared by marketing + forum + admin zones.
+ * Values mirror the existing forum.css tokens so the whole product speaks one language.
+ */
 @theme {
-  --color-primary: #2563EB;
-  --color-primary-dark: #1D4ED8;
-  --color-accent: #7C3AED;
-  --color-accent-dark: #6D28D9;
+  --color-bg: #09090b;            /* page background (forum --bg) */
+  --color-surface: #18181b;       /* cards, navbar, footer (forum --surface) */
+  --color-surface-lighter: #27272a; /* hover / inputs (forum --surface-lighter) */
+  --color-border: rgba(255, 255, 255, 0.08);        /* hairlines (forum --border) */
+  --color-border-strong: rgba(255, 255, 255, 0.15); /* emphasis borders */
+  --color-primary: #3b82f6;       /* links, active (unified to forum blue) */
+  --color-primary-dark: #2563eb;
+  --color-accent: #a855f7;        /* accents (forum --accent-purple) */
+  --color-accent-dark: #9333ea;
+  --color-text-main: #fafafa;     /* primary text (forum --text-main) */
+  --color-text-muted: #a1a1aa;    /* secondary text (forum --text-muted) */
+  --color-live-red: #ef4444;      /* online dot (forum --live-red) */
   --font-sans: 'Inter', system-ui, sans-serif;
 }
 
+/* Global dark surface — prevents any flash of light during navigation. */
 body {
   margin: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text-main);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

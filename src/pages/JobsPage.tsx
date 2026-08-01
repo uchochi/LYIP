@@ -28,8 +28,8 @@ export default function JobsPage() {
   return (
     <div className="mx-auto max-w-6xl px-6 py-12">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-slate-900">Open Positions</h1>
-        <p className="mt-2 text-slate-500">Find your next opportunity at Loseyourip</p>
+        <h1 className="text-3xl font-bold text-text-main">Open Positions</h1>
+        <p className="mt-2 text-text-muted">Find your next opportunity at Loseyourip</p>
       </div>
       {loading ? <Spinner /> : (
         <>

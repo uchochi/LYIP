@@ -52,8 +52,8 @@ export default function SignupPage() {
 
   return (
     <div className="mx-auto max-w-sm px-6 py-20">
-      <h1 className="text-2xl font-bold text-slate-900 text-center">Create Account</h1>
-      <p className="mt-2 text-sm text-slate-500 text-center">Sign up to participate in the forum</p>
+      <h1 className="text-2xl font-bold text-text-main text-center">Create Account</h1>
+      <p className="mt-2 text-sm text-text-muted text-center">Sign up to participate in the forum</p>
       <form onSubmit={handleSubmit} className="mt-8 space-y-4">
         <Input label="Name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" />
         <Input label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" />
@@ -61,7 +61,7 @@ export default function SignupPage() {
         {error && <p className="text-sm text-red-500 text-center">{error}</p>}
         <Button type="submit" className="w-full">Create Account</Button>
       </form>
-      <p className="mt-6 text-center text-sm text-slate-500">
+      <p className="mt-6 text-center text-sm text-text-muted">
         Already have an account?{' '}
         <Link to="/admin/login" className="text-primary font-medium">Sign in</Link>
       </p>

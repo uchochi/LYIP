@@ -35,13 +35,13 @@ export default function JobFilter({
   return (
     <div className="space-y-4">
       <div className="relative">
-        <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+        <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted" />
         <input
           type="text"
           placeholder="Search positions..."
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
-          className="w-full rounded-xl border border-slate-200 bg-white py-3 pl-11 pr-4 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
+          className="w-full rounded-xl border border-border bg-surface py-3 pl-11 pr-4 text-sm text-text-main placeholder:text-text-muted outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
         />
       </div>
 
@@ -52,11 +52,11 @@ export default function JobFilter({
       </div>
 
       <div className="flex items-center justify-between">
-        <p className="text-sm text-slate-500">
-          <span className="font-medium text-slate-700">{resultCount}</span> position{resultCount !== 1 ? 's' : ''}
+        <p className="text-sm text-text-muted">
+          <span className="font-medium text-text-main">{resultCount}</span> position{resultCount !== 1 ? 's' : ''}
         </p>
         {hasFilters && (
-          <button onClick={clearFilters} className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-red-600 transition-colors cursor-pointer">
+          <button onClick={clearFilters} className="flex items-center gap-1.5 text-sm text-text-muted hover:text-red-400 transition-colors cursor-pointer">
             <X size={14} />
             Clear filters
           </button>
@@ -72,8 +72,8 @@ function SelectFilter({ label, value, onChange, options }: { label: string; valu
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="appearance-none rounded-lg border border-slate-200 bg-white px-3 py-2 pr-8 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 cursor-pointer"
-        style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpath d='M2 4l4 4 4-4'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 10px center' }}
+        className="appearance-none rounded-lg border border-border bg-surface px-3 py-2 pr-8 text-sm text-text-main outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 cursor-pointer"
+        style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23a1a1aa' stroke-width='2'%3E%3Cpath d='M2 4l4 4 4-4'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 10px center' }}
       >
         {options.map((o) => (
           <option key={o} value={o}>{o === 'All' ? `All ${label}s` : o}</option>

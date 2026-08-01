@@ -21,13 +21,13 @@ export default class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.error) {
       return (
-        <div className="min-h-screen flex items-center justify-center bg-white px-6">
+        <div className="min-h-screen flex items-center justify-center bg-bg px-6">
           <div className="max-w-md text-center">
-            <h1 className="text-xl font-bold text-slate-900">Something went wrong</h1>
-            <p className="mt-2 text-sm text-slate-500">
+            <h1 className="text-xl font-bold text-text-main">Something went wrong</h1>
+            <p className="mt-2 text-sm text-text-muted">
               The app failed to load. Please refresh the page.
             </p>
-            <pre className="mt-4 overflow-auto rounded-lg bg-slate-100 p-3 text-left text-xs text-red-600">
+            <pre className="mt-4 overflow-auto rounded-lg bg-surface p-3 text-left text-xs text-red-400">
               {this.state.error.message}
             </pre>
             <button

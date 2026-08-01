@@ -20,10 +20,10 @@ const models = [
 export default function PlatformPage() {
   return (
     <div>
-      <section className="border-b border-slate-100 bg-slate-50/50">
+      <section className="border-b border-border bg-surface/40">
         <div className="mx-auto max-w-5xl px-6 py-20 text-center">
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">Platform</h1>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-500 leading-relaxed">
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-text-main">Platform</h1>
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-text-muted leading-relaxed">
             A complete AI platform built for developers who need powerful, safe, and reliable infrastructure. From prototype to production in minutes.
           </p>
         </div>
@@ -32,25 +32,25 @@ export default function PlatformPage() {
       <section className="mx-auto max-w-6xl px-6 py-20">
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((f) => (
-            <div key={f.title} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div key={f.title} className="rounded-2xl border border-border bg-surface p-6 shadow-sm">
               <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10">
                 <f.icon size={20} className="text-primary" />
               </div>
-              <h3 className="text-lg font-semibold text-slate-900">{f.title}</h3>
-              <p className="mt-2 text-sm text-slate-500 leading-relaxed">{f.desc}</p>
+              <h3 className="text-lg font-semibold text-text-main">{f.title}</h3>
+              <p className="mt-2 text-sm text-text-muted leading-relaxed">{f.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
-      <section className="border-y border-slate-100 bg-slate-50/50">
+      <section className="border-y border-border bg-surface/40">
         <div className="mx-auto max-w-6xl px-6 py-20">
-          <h2 className="text-2xl font-bold text-slate-900 mb-8">Models</h2>
+          <h2 className="text-2xl font-bold text-text-main mb-8">Models</h2>
           <div className="grid gap-5 sm:grid-cols-3">
             {models.map((m) => (
-              <div key={m.name} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+              <div key={m.name} className="rounded-2xl border border-border bg-surface p-6 shadow-sm">
                 <h3 className="text-lg font-semibold text-primary">{m.name}</h3>
-                <p className="mt-2 text-sm text-slate-500">{m.desc}</p>
+                <p className="mt-2 text-sm text-text-muted">{m.desc}</p>
               </div>
             ))}
           </div>
@@ -58,9 +58,9 @@ export default function PlatformPage() {
       </section>
 
       <section className="mx-auto max-w-6xl px-6 py-20">
-        <div className="rounded-3xl border border-slate-200 bg-white p-10 text-center shadow-sm">
-          <h2 className="text-2xl font-bold text-slate-900">Ready to get started?</h2>
-          <p className="mx-auto mt-3 max-w-md text-slate-500">Explore the forum and connect with the community building on Loseyourip.</p>
+        <div className="rounded-3xl border border-border bg-surface p-10 text-center shadow-sm">
+          <h2 className="text-2xl font-bold text-text-main">Ready to get started?</h2>
+          <p className="mx-auto mt-3 max-w-md text-text-muted">Explore the forum and connect with the community building on Loseyourip.</p>
           <Link to="/forum" className="no-underline">
             <Button size="lg" className="mt-6">
               Join the Forum <ArrowRight size={18} />

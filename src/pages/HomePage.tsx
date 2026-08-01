@@ -64,11 +64,11 @@ export default function HomePage() {
             <Sparkles size={14} />
             We're hiring
           </div>
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 leading-tight">
+          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-text-main leading-tight">
             Build the future of
             <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"> Artificial Intelligence</span>
           </h1>
-          <p className="mx-auto mt-6 max-w-xl text-lg text-slate-500 leading-relaxed">
+          <p className="mx-auto mt-6 max-w-xl text-lg text-text-muted leading-relaxed">
             Join Loseyourip and work with world-class researchers and engineers to push the boundaries of what AI can do — building AI that is safe, powerful, and aligned with human values.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
@@ -86,7 +86,7 @@ export default function HomePage() {
       </section>
 
       {/* Stats — DO NOT CHANGE */}
-      <section className="border-y border-slate-100 bg-slate-50/50">
+      <section className="border-border bg-surface/40">
         <div className="mx-auto max-w-6xl px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-8">
           {[
             { icon: Users, value: '50+', label: 'Team Members' },
@@ -96,8 +96,8 @@ export default function HomePage() {
           ].map((s) => (
             <div key={s.label} className="flex flex-col items-center text-center gap-2">
               <s.icon size={20} className="text-primary" />
-              <p className="text-2xl font-bold text-slate-900">{s.value}</p>
-              <p className="text-sm text-slate-500">{s.label}</p>
+              <p className="text-2xl font-bold text-text-main">{s.value}</p>
+              <p className="text-sm text-text-muted">{s.label}</p>
             </div>
           ))}
         </div>
@@ -106,42 +106,42 @@ export default function HomePage() {
       {/* Mission / Values */}
       <section className="mx-auto max-w-6xl px-6 py-20">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-slate-900">What we believe</h2>
-          <p className="mx-auto mt-3 max-w-2xl text-slate-500">
+          <h2 className="text-3xl font-bold text-text-main">What we believe</h2>
+          <p className="mx-auto mt-3 max-w-2xl text-text-muted">
             We build AI systems that are genuinely helpful, transparent, and aligned with human interests — trustworthy AI as the standard, not the exception.
           </p>
         </div>
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {values.map((v) => (
-            <div key={v.title} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div key={v.title} className="rounded-2xl border border-border bg-surface p-6 shadow-sm">
               <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10">
                 <v.icon size={20} className="text-primary" />
               </div>
-              <h3 className="text-lg font-semibold text-slate-900">{v.title}</h3>
-              <p className="mt-2 text-sm text-slate-500 leading-relaxed">{v.desc}</p>
+              <h3 className="text-lg font-semibold text-text-main">{v.title}</h3>
+              <p className="mt-2 text-sm text-text-muted leading-relaxed">{v.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* Perks */}
-      <section className="border-y border-slate-100 bg-slate-50/50">
+      <section className="border-border bg-surface/40">
         <div className="mx-auto max-w-6xl px-6 py-20">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-slate-900">Why join us</h2>
-            <p className="mx-auto mt-3 max-w-2xl text-slate-500">
+            <h2 className="text-3xl font-bold text-text-main">Why join us</h2>
+            <p className="mx-auto mt-3 max-w-2xl text-text-muted">
               Thoughtful benefits designed for people who want to do the best work of their careers.
             </p>
           </div>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {perks.map((p) => (
-              <div key={p.title} className="flex gap-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+              <div key={p.title} className="flex gap-4 rounded-2xl border border-border bg-surface p-6 shadow-sm">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent/10">
                   <p.icon size={18} className="text-accent" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold text-slate-900">{p.title}</h3>
-                  <p className="mt-1 text-sm text-slate-500">{p.desc}</p>
+                  <h3 className="text-sm font-semibold text-text-main">{p.title}</h3>
+                  <p className="mt-1 text-sm text-text-muted">{p.desc}</p>
                 </div>
               </div>
             ))}
@@ -153,8 +153,8 @@ export default function HomePage() {
       <section className="mx-auto max-w-6xl px-6 py-20">
         <div className="flex flex-wrap items-end justify-between gap-4 mb-10">
           <div>
-            <h2 className="text-3xl font-bold text-slate-900">The Loseyourip Platform</h2>
-            <p className="mt-3 max-w-xl text-slate-500">
+            <h2 className="text-3xl font-bold text-text-main">The Loseyourip Platform</h2>
+            <p className="mt-3 max-w-xl text-text-muted">
               A complete AI platform for developers who need powerful, safe, and reliable infrastructure. From prototype to production in minutes.
             </p>
           </div>
@@ -164,24 +164,24 @@ export default function HomePage() {
         </div>
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {platformFeatures.map((f) => (
-            <div key={f.title} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div key={f.title} className="rounded-2xl border border-border bg-surface p-6 shadow-sm">
               <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10">
                 <f.icon size={20} className="text-primary" />
               </div>
-              <h3 className="text-lg font-semibold text-slate-900">{f.title}</h3>
-              <p className="mt-2 text-sm text-slate-500 leading-relaxed">{f.desc}</p>
+              <h3 className="text-lg font-semibold text-text-main">{f.title}</h3>
+              <p className="mt-2 text-sm text-text-muted leading-relaxed">{f.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* Research teaser */}
-      <section className="border-y border-slate-100 bg-slate-50/50">
+      <section className="border-border bg-surface/40">
         <div className="mx-auto max-w-6xl px-6 py-20">
           <div className="flex flex-wrap items-end justify-between gap-4 mb-10">
             <div>
-              <h2 className="text-3xl font-bold text-slate-900">Research</h2>
-              <p className="mt-3 max-w-xl text-slate-500">
+              <h2 className="text-3xl font-bold text-text-main">Research</h2>
+              <p className="mt-3 max-w-xl text-text-muted">
                 Published and presented work in AI alignment, safety, and capabilities.
               </p>
             </div>
@@ -191,13 +191,13 @@ export default function HomePage() {
           </div>
           <div className="space-y-4">
             {researchPapers.map((p) => (
-              <div key={p.title} className="flex items-start gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+              <div key={p.title} className="flex items-start gap-4 rounded-2xl border border-border bg-surface p-5 shadow-sm">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent/10">
                   <FileText size={18} className="text-accent" />
                 </div>
                 <div>
                   <span className="text-xs font-medium text-primary">{p.venue}</span>
-                  <h3 className="text-base font-semibold text-slate-900">{p.title}</h3>
+                  <h3 className="text-base font-semibold text-text-main">{p.title}</h3>
                 </div>
               </div>
             ))}
@@ -209,8 +209,8 @@ export default function HomePage() {
       <section className="mx-auto max-w-6xl px-6 py-20">
         <div className="flex items-end justify-between mb-8">
           <div>
-            <h2 className="text-2xl font-bold text-slate-900">Open Positions</h2>
-            <p className="mt-1 text-sm text-slate-500">Find your next role at Loseyourip</p>
+            <h2 className="text-2xl font-bold text-text-main">Open Positions</h2>
+            <p className="mt-1 text-sm text-text-muted">Find your next role at Loseyourip</p>
           </div>
           <Link to="/jobs" className="text-sm font-medium text-primary hover:text-primary-dark no-underline hidden sm:block">
             View all &rarr;
@@ -236,12 +236,12 @@ export default function HomePage() {
 
       {/* Community CTA */}
       <section className="mx-auto max-w-6xl px-6 pb-20">
-        <div className="rounded-3xl border border-slate-200 bg-white p-10 text-center shadow-sm">
+        <div className="rounded-3xl border border-border bg-surface p-10 text-center shadow-sm">
           <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10">
             <MessageCircle size={22} className="text-primary" />
           </div>
-          <h2 className="text-2xl font-bold text-slate-900">Join the community</h2>
-          <p className="mx-auto mt-3 max-w-md text-slate-500">
+          <h2 className="text-2xl font-bold text-text-main">Join the community</h2>
+          <p className="mx-auto mt-3 max-w-md text-text-muted">
             Connect with 12,000+ developers, researchers, and AI enthusiasts building with Loseyourip.
           </p>
           <Link to="/community" className="no-underline">

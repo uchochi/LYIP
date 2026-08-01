@@ -19,14 +19,14 @@ export default function JobCard({ job }: Props) {
   return (
     <Link
       to={`/jobs/${job.id}`}
-      className="group block rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:shadow-md hover:border-primary/30 no-underline"
+      className="group block rounded-2xl border border-border bg-surface p-6 shadow-sm transition-all hover:border-primary/30 no-underline"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex flex-col gap-2">
-          <h3 className="text-lg font-semibold text-slate-900 group-hover:text-primary transition-colors">
+          <h3 className="text-lg font-semibold text-text-main group-hover:text-primary transition-colors">
             {job.title}
           </h3>
-          <div className="flex flex-wrap items-center gap-3 text-sm text-slate-500">
+          <div className="flex flex-wrap items-center gap-3 text-sm text-text-muted">
             <span className="inline-flex items-center gap-1 whitespace-nowrap">
               <Briefcase size={14} />
               {job.department}
@@ -45,7 +45,7 @@ export default function JobCard({ job }: Props) {
           {job.type.replace('-', ' ')}
         </Badge>
       </div>
-      <p className="mt-3 line-clamp-2 text-sm text-slate-600 leading-relaxed">{job.description}</p>
+      <p className="mt-3 line-clamp-2 text-sm text-text-muted leading-relaxed">{job.description}</p>
       {job.salaryRange && (
         <p className="mt-3 text-sm font-medium text-primary">{job.salaryRange}</p>
       )}

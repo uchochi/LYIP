@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
-import Layout from './pages/Layout';
+import MarketingLayout from './layouts/MarketingLayout';
+import ForumLayout from './layouts/ForumLayout';
+import BareLayout from './layouts/BareLayout';
 import HomePage from './pages/HomePage';
 import JobsPage from './pages/JobsPage';
 import JobDetailPage from './pages/JobDetailPage';
@@ -30,14 +32,12 @@ export default function App() {
     <BrowserRouter>
       <AuthProvider>
         <ScrollToTop />
-        <Layout>
-          <Routes>
+        <Routes>
+          {/* Marketing zone — dark marketing navbar + footer */}
+          <Route element={<MarketingLayout />}>
             <Route path="/" element={<HomePage />} />
             <Route path="/jobs" element={<JobsPage />} />
             <Route path="/jobs/:id" element={<JobDetailPage />} />
-            <Route path="/forum" element={<ForumPage />} />
-            <Route path="/forum/:topicId" element={<ForumTopicPage />} />
-            <Route path="/forum/new" element={<NewTopicPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/platform" element={<PlatformPage />} />
             <Route path="/research" element={<ResearchPage />} />
@@ -45,12 +45,24 @@ export default function App() {
             <Route path="/terms" element={<TermsPage />} />
             <Route path="/privacy" element={<PrivacyPage />} />
             <Route path="/cookies" element={<CookiesPage />} />
-            <Route path="/admin/login" element={<LoginPage />} />
-            <Route path="/admin/signup" element={<SignupPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Route>
+
+          {/* Forum zone — dark community navbar + footer (own chrome) */}
+          <Route element={<ForumLayout />}>
+            <Route path="/forum" element={<ForumPage />} />
+            <Route path="/forum/new" element={<NewTopicPage />} />
+            <Route path="/forum/:topicId" element={<ForumTopicPage />} />
             <Route
               path="/dashboard"
               element={<ProtectedUserRoute><UserDashboardPage /></ProtectedUserRoute>}
             />
+          </Route>
+
+          {/* Admin & auth zone — bare dark chrome, no marketing footer */}
+          <Route element={<BareLayout />}>
+            <Route path="/admin/login" element={<LoginPage />} />
+            <Route path="/admin/signup" element={<SignupPage />} />
             <Route
               path="/admin"
               element={<ProtectedAdminRoute><DashboardPage /></ProtectedAdminRoute>}
@@ -63,9 +75,8 @@ export default function App() {
               path="/admin/jobs/:id/edit"
               element={<ProtectedAdminRoute><EditJobPage /></ProtectedAdminRoute>}
             />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </Layout>
+          </Route>
+        </Routes>
       </AuthProvider>
     </BrowserRouter>
   );

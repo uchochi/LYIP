@@ -28,15 +28,15 @@ const teams = [
 export default function AboutPage() {
   return (
     <div>
-      <section className="border-b border-slate-100 bg-slate-50/50">
+      <section className="border-b border-border bg-surface/40">
         <div className="mx-auto max-w-6xl px-6 py-20 text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/5 px-4 py-1.5 text-sm font-medium text-accent mb-6">
             Our Story
           </div>
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-text-main">
             Building AI you can <span className="bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">trust</span>
           </h1>
-          <p className="mx-auto mt-5 max-w-2xl text-lg text-slate-500 leading-relaxed">
+          <p className="mx-auto mt-5 max-w-2xl text-lg text-text-muted leading-relaxed">
             We believe AI should be powerful, safe, and aligned with human values. Our team is dedicated to creating artificial intelligence that earns trust through transparency, reliability, and alignment.
           </p>
         </div>
@@ -45,30 +45,30 @@ export default function AboutPage() {
       <section className="mx-auto max-w-6xl px-6 py-20">
         <div className="grid gap-5 md:grid-cols-3">
           {pillars.map((p) => (
-            <div key={p.title} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div key={p.title} className="rounded-2xl border border-border bg-surface p-6 shadow-sm">
               <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
                 <p.icon size={22} className="text-primary" />
               </div>
-              <h3 className="text-lg font-semibold text-slate-900">{p.title}</h3>
-              <p className="mt-2 text-sm text-slate-500 leading-relaxed">{p.desc}</p>
+              <h3 className="text-lg font-semibold text-text-main">{p.title}</h3>
+              <p className="mt-2 text-sm text-text-muted leading-relaxed">{p.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
-      <section className="border-y border-slate-100 bg-slate-50/50">
+      <section className="border-y border-border bg-surface/40">
         <div className="mx-auto max-w-4xl px-6 py-20">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-slate-900">Our Journey</h2>
-            <p className="mt-2 text-slate-500">Key milestones in our story so far.</p>
+            <h2 className="text-3xl font-bold text-text-main">Our Journey</h2>
+            <p className="mt-2 text-text-muted">Key milestones in our story so far.</p>
           </div>
           <div className="space-y-6">
             {timeline.map((t) => (
-              <div key={t.year} className="flex gap-5 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+              <div key={t.year} className="flex gap-5 rounded-2xl border border-border bg-surface p-5 shadow-sm">
                 <span className="text-lg font-bold text-primary w-16 shrink-0">{t.year}</span>
                 <div>
-                  <h3 className="font-semibold text-slate-900">{t.title}</h3>
-                  <p className="mt-1 text-sm text-slate-500">{t.desc}</p>
+                  <h3 className="font-semibold text-text-main">{t.title}</h3>
+                  <p className="mt-1 text-sm text-text-muted">{t.desc}</p>
                 </div>
               </div>
             ))}
@@ -78,17 +78,17 @@ export default function AboutPage() {
 
       <section className="mx-auto max-w-6xl px-6 py-20">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-slate-900">Our Teams</h2>
-          <p className="mx-auto mt-2 max-w-xl text-slate-500">Over 150 talented individuals working together across 6 key teams.</p>
+          <h2 className="text-3xl font-bold text-text-main">Our Teams</h2>
+          <p className="mx-auto mt-2 max-w-xl text-text-muted">Over 150 talented individuals working together across 6 key teams.</p>
         </div>
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {teams.map((t) => (
-            <div key={t.name} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div key={t.name} className="rounded-2xl border border-border bg-surface p-6 shadow-sm">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-slate-900">{t.name}</h3>
+                <h3 className="text-lg font-semibold text-text-main">{t.name}</h3>
                 <span className="text-2xl font-bold text-primary">{t.count}</span>
               </div>
-              <p className="mt-2 text-sm text-slate-500">{t.desc}</p>
+              <p className="mt-2 text-sm text-text-muted">{t.desc}</p>
             </div>
           ))}
         </div>
