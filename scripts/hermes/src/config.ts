@@ -3,6 +3,10 @@ export const config = {
 
   headless: process.env.HERMES_HEADLESS !== 'false',
 
+  // AI content generation (OpenRouter). Set OPENROUTER_API_KEY to enable;
+  // falls back to the device's ~/.hermes/.env key if present.
+  aiModel: process.env.OPENROUTER_MODEL || 'inclusionai/ling-3.0-flash:free',
+
   minDelayMinutes: parseInt(process.env.HERMES_MIN_DELAY || '3'),
   maxDelayMinutes: parseInt(process.env.HERMES_MAX_DELAY || '12'),
 
