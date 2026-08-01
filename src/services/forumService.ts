@@ -113,25 +113,31 @@ export async function getReactions(postIds: string[]): Promise<Record<string, Fo
 }
 
 export async function toggleReaction(postId: string, emoji: string): Promise<void> {
-  const { data: userData } = await supabase.auth.getUser();
-  if (!userData.user) throw new Error('Not authenticated');
+  const { data: userData, error: authError } = await supabase.auth.getUser();
+  if (authError || !userData.user) throw new Error('Not authenticated');
 
-  const existing = await supabase
+  const uid = userData.user.id;
+
+  const { data: existing, error: selError } = await supabase
     .from('forum_post_reactions')
     .select('id')
     .eq('post_id', postId)
-    .eq('user_id', userData.user.id)
+    .eq('user_id', uid)
     .eq('emoji', emoji)
     .maybeSingle();
+  if (selError) throw selError;
 
-  if (existing.data) {
-    await supabase.from('forum_post_reactions').delete().eq('id', existing.data.id);
+  if (existing) {
+    const { error } = await supabase.from('forum_post_reactions').delete().eq('id', existing.id);
+    if (error) throw error;
   } else {
-    await supabase.from('forum_post_reactions').insert({
+    // The UNIQUE(post_id,user_id,emoji) constraint protects against races.
+    const { error } = await supabase.from('forum_post_reactions').insert({
       post_id: postId,
-      user_id: userData.user.id,
+      user_id: uid,
       emoji,
     });
+    if (error) throw error;
   }
 }
 

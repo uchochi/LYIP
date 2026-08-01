@@ -35,13 +35,15 @@ export default function SignupPage() {
     }
 
     if (data.user) {
-      // Auto-create public.users entry (forum profile)
-      const { error: insertError } = await supabase.from('users').insert({
+      // The on_auth_user_created trigger normally creates the public.users row.
+      // Upsert with ignoreDuplicates as a fallback so it never conflicts with the trigger
+      // and never overwrites the handle/avatar_color the trigger generated.
+      const { error: insertError } = await supabase.from('users').upsert({
         id: data.user.id,
         email: data.user.email,
         name: name,
         role: 'apprentice',
-      });
+      }, { onConflict: 'id', ignoreDuplicates: true });
       if (insertError) console.error('Failed to create user profile:', insertError);
     }
 

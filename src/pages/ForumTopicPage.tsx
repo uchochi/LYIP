@@ -22,6 +22,7 @@ export default function ForumTopicPage() {
   const [sending, setSending] = useState(false);
   const [showVerifyBanner, setShowVerifyBanner] = useState(false);
   const [typingUsers, setTypingUsers] = useState<string[]>([]);
+  const [error, setError] = useState('');
 
   const isAdmin = user?.role === 'admin';
   const currentUserId = user?.id;
@@ -106,10 +107,13 @@ export default function ForumTopicPage() {
   const handleSend = async (content: string, stickerUrl?: string | null) => {
     if (!topicId || (!content.trim() && !stickerUrl)) return;
     setSending(true);
+    setError('');
     try {
       await createPost({ topic_id: topicId, content, parent_id: replyingTo, sticker_url: stickerUrl });
       setReplyingTo(null);
       await load();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Failed to post. Please try again.');
     } finally {
       setSending(false);
     }
@@ -117,18 +121,36 @@ export default function ForumTopicPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this message?')) return;
-    await deletePost(id);
-    await load();
+    setError('');
+    try {
+      await deletePost(id);
+      await load();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Failed to delete message.');
+    }
   };
 
   const handleToggleReaction = async (postId: string, emoji: string) => {
     if (!user) return;
+    setError('');
+    const uid = user.id;
+    // Optimistic local update for instant feedback.
+    setReactions((prev) => {
+      const cur = prev[postId] || [];
+      const exists = cur.find((r) => r.user_id === uid && r.emoji === emoji);
+      const next = exists
+        ? cur.filter((r) => !(r.user_id === uid && r.emoji === emoji))
+        : [...cur, { id: `opt-${postId}-${uid}-${emoji}`, post_id: postId, user_id: uid, emoji, created_at: new Date().toISOString() }];
+      return { ...prev, [postId]: next };
+    });
     try {
       await toggleReaction(postId, emoji);
       const r = await getReactions([postId]);
       setReactions((prev) => ({ ...prev, ...r }));
-    } catch (err) {
-      console.error('Reaction failed:', err);
+    } catch (e) {
+      setError('Could not update reaction. Please reload the page.');
+      const r = await getReactions([postId]); // revert to server truth
+      setReactions((prev) => ({ ...prev, ...r }));
     }
   };
 
@@ -149,6 +171,16 @@ export default function ForumTopicPage() {
     <div className="forum-dark">
       <div className="forum-wrapper">
         <Link to="/forum" className="back-link"><ArrowLeft size={14} /> Back to Forum</Link>
+
+        {error && (
+          <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start', background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: '8px', padding: '8px 12px' }}>
+            <AlertTriangle size={16} style={{ color: '#ef4444', flexShrink: 0, marginTop: '2px' }} />
+            <div style={{ fontSize: '12px', color: '#ef4444', flex: 1 }}>{error}</div>
+            <button onClick={() => setError('')} style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', padding: 0 }} title="Dismiss">
+              <X size={14} />
+            </button>
+          </div>
+        )}
 
         <CommunityHeader
           title={topic.title}
