@@ -66,16 +66,22 @@ export async function login(page: Page, email: string, password: string): Promis
 
     await page.click('button[type="submit"]')
 
-    await page.waitForTimeout(3000)
-
-    const currentUrl = page.url()
-    if (currentUrl.includes('/login')) {
-      const errorText = await page.locator('.text-red-500').first().textContent().catch(() => null)
-      console.log(`  Login failed: ${errorText || 'unknown error (invalid credentials or already logged in)'}`)
-      return false
+    // Poll until we leave /login (success) or see an error — the slow CDN
+    // link can push the post-login redirect past a fixed sleep.
+    const deadline = Date.now() + 20000
+    while (Date.now() < deadline) {
+      await page.waitForTimeout(1000)
+      const url = page.url()
+      if (!url.includes('/login')) return true
+      const errText = await page.locator('.text-red-500').first().textContent().catch(() => null)
+      if (errText) {
+        console.log(`  Login failed: ${errText}`)
+        return false
+      }
     }
 
-    return true
+    console.log('  Login failed: timed out waiting for redirect after submit')
+    return false
   } catch (err) {
     console.error(`  Login error for ${email}:`, err instanceof Error ? err.message : err)
     return false
