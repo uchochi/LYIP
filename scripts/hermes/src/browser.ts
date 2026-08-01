@@ -41,7 +41,7 @@ export async function closeAll(browser: Browser): Promise<void> {
 export async function login(page: Page, email: string, password: string): Promise<boolean> {
   try {
     await page.goto(`${config.baseUrl}/login`, {
-      waitUntil: 'networkidle',
+      waitUntil: 'domcontentloaded',
       timeout: 30000,
     })
     await page.waitForTimeout(1500)
@@ -72,7 +72,7 @@ export async function login(page: Page, email: string, password: string): Promis
 
 export async function goToForum(page: Page): Promise<void> {
   await page.goto(`${config.baseUrl}/forum`, {
-    waitUntil: 'networkidle',
+    waitUntil: 'domcontentloaded',
     timeout: 30000,
   })
   await page.waitForTimeout(1500)

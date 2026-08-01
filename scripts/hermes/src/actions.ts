@@ -63,7 +63,7 @@ export async function doModeratorAction(page: Page, account: Account): Promise<b
     const topic = randomModeratorTopic()
 
     await page.goto(`${config.baseUrl}/forum/new`, {
-      waitUntil: 'networkidle',
+      waitUntil: 'domcontentloaded',
       timeout: 30000,
     })
     await page.waitForTimeout(1500)
@@ -105,7 +105,7 @@ export async function doAssistantAction(page: Page, account: Account): Promise<b
 
     const topicId = ids[Math.floor(Math.random() * Math.min(ids.length, 3))]
     await page.goto(`${config.baseUrl}/forum/${topicId}`, {
-      waitUntil: 'networkidle',
+      waitUntil: 'domcontentloaded',
       timeout: 30000,
     })
     await page.waitForTimeout(1500)
@@ -147,7 +147,7 @@ export async function doCommentatorAction(page: Page, account: Account): Promise
 
     const topicId = ids[Math.floor(Math.random() * ids.length)]
     await page.goto(`${config.baseUrl}/forum/${topicId}`, {
-      waitUntil: 'networkidle',
+      waitUntil: 'domcontentloaded',
       timeout: 30000,
     })
     await page.waitForTimeout(1500)
@@ -189,7 +189,7 @@ export async function doVisitorAction(page: Page, account: Account): Promise<boo
 
     const topicId = ids[Math.floor(Math.random() * ids.length)]
     await page.goto(`${config.baseUrl}/forum/${topicId}`, {
-      waitUntil: 'networkidle',
+      waitUntil: 'domcontentloaded',
       timeout: 30000,
     })
     await page.waitForTimeout(1500)
@@ -226,7 +226,7 @@ export async function doNewMemberAction(page: Page, account: Account): Promise<b
     const topic = randomNewMemberTopic(account.name)
 
     await page.goto(`${config.baseUrl}/forum/new`, {
-      waitUntil: 'networkidle',
+      waitUntil: 'domcontentloaded',
       timeout: 30000,
     })
     await page.waitForTimeout(1500)
