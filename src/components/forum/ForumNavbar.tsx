@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ArrowLeft, Plus, LogOut, Sparkles } from 'lucide-react';
+import { Menu, X, ArrowLeft, Plus, LogOut } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { supabase } from '../../lib/supabase';
 import MiniAvatar from './MiniAvatar';
@@ -55,12 +55,9 @@ export default function ForumNavbar() {
             <ArrowLeft size={13} /> Back to site
           </Link>
           <Link to="/forum" className="flex items-center gap-2 no-underline">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-accent text-sm">
-              <Sparkles size={16} className="text-white" />
-            </span>
-            <span className="flex flex-col leading-none">
-              <span className="text-sm font-semibold text-text-main">Dataset Training</span>
-              <span className="text-[10px] uppercase tracking-wider text-text-muted">Community</span>
+            <img src="/Loseyourip-logo.png" alt="Loseyourip" className="h-8 w-auto" />
+            <span className="rounded bg-surface-lighter px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-text-muted">
+              Community
             </span>
           </Link>
         </div>

@@ -109,7 +109,6 @@ export default function ForumPage() {
         )}
 
         <CommunityHeader
-          title="📦 Dataset Training Community"
           memberCount={memberCount}
           onlineCount={onlineCount}
           showCommunityStats={true}

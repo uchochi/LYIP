@@ -7,7 +7,7 @@ interface CommunityStats {
 }
 
 interface CommunityHeaderProps {
-  title: string;
+  title?: string;
   memberCount?: number;
   onlineCount?: number;
   topicStats?: CommunityStats;
@@ -65,10 +65,12 @@ export default function CommunityHeader({
         </div>
       )}
 
-      {/* TIER 2: TOPIC HEADER (Sticky) */}
-      <header className="topic-header">
-        <h2>{title}</h2>
-      </header>
+      {/* TIER 2: TOPIC HEADER (Sticky) — only when a title is provided */}
+      {title && (
+        <header className="topic-header">
+          <h2>{title}</h2>
+        </header>
+      )}
     </>
   );
 }
