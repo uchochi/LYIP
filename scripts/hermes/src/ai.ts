@@ -120,27 +120,29 @@ async function chat(
 }
 
 /** Strip surrounding quotes / labels a model sometimes adds. */
-function cleanReply(content: string): string {
+function cleanReply(content: string, accountName: string): string {
   let out = content.trim()
   // Remove common wrapping: `Here's something like: "..."` → take the quoted part
   const quoteMatch = out.match(/"[^"]{20,}"/)
   if (quoteMatch && quoteMatch[0].length > out.length / 2) out = quoteMatch[0]
-  // Strip leading labels like "Comment:" / "Reply:" / "Title:"
+  // Strip leading labels like "Comment:" / "Reply:" / "Content:" / "Title:"
   out = out.replace(/^(comment|reply|response|content|title|topic)\s*[:.-]\s*/i, '').trim()
   // Remove any surrounding quotes
   if (out.startsWith('"') && out.endsWith('"')) out = out.slice(1, -1)
+  // Models sometimes emit placeholder tokens like [PERSON_NAME] — swap in the account name
+  out = out.replace(/\[(?:PERSON_NAME|NAME|USER|USERNAME|AUTHOR)\]/gi, accountName)
   return out.trim()
 }
 
-function parseTopicJson(raw: string): GeneratedTopic | null {
+function parseTopicJson(raw: string, accountName: string): GeneratedTopic | null {
   try {
     const cleaned = raw.replace(/```json|```/g, '').trim()
     const start = cleaned.indexOf('{')
     const end = cleaned.lastIndexOf('}')
     if (start === -1 || end === -1) return null
     const obj = JSON.parse(cleaned.slice(start, end + 1)) as Record<string, unknown>
-    const title = String(obj.title ?? '').trim()
-    const content = String(obj.content ?? '').trim()
+    const title = String(obj.title ?? '').trim().replace(/\[(?:PERSON_NAME|NAME|USER|USERNAME|AUTHOR)\]/gi, accountName)
+    const content = String(obj.content ?? '').trim().replace(/\[(?:PERSON_NAME|NAME|USER|USERNAME|AUTHOR)\]/gi, accountName)
     const tags = Array.isArray(obj.tags) ? obj.tags.map((t) => String(t).trim()).filter(Boolean) : []
     if (!title || !content) return null
     return { title, content, tags: tags.slice(0, 4) }
@@ -160,6 +162,7 @@ const SYSTEM_CASUAL =
   'You write the way real people actually write on forums: casual, informal, with natural ' +
   'slang and abbreviations from your region, occasional lowercase, short sentences. ' +
   'Your English is NOT perfectly correct — you type naturally, like a normal person, not an AI. ' +
+  'Never use placeholder tokens like [PERSON_NAME]. ' +
   'Your reply must be ONLY the output text — no quotes, no labels, no explanation.'
 
 const TOPIC_SYSTEM_CASUAL =
@@ -199,7 +202,7 @@ export async function generateReply(persona: 'moderator' | 'assistant' | 'commen
     300
   )
   if (!res.ok) return null
-  const cleaned = cleanReply(res.content!)
+  const cleaned = cleanReply(res.content!, account.name)
   return cleaned.length >= 20 ? cleaned : null
 }
 
@@ -225,5 +228,5 @@ export async function generateTopic(persona: 'moderator' | 'newMember', account:
     450
   )
   if (!res.ok) return null
-  return parseTopicJson(res.content!)
+  return parseTopicJson(res.content!, account.name)
 }
