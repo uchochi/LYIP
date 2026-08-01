@@ -65,7 +65,7 @@ export default function SignupPage() {
       </form>
       <p className="mt-6 text-center text-sm text-text-muted">
         Already have an account?{' '}
-        <Link to="/admin/login" className="text-primary font-medium">Sign in</Link>
+        <Link to="/login" className="text-primary font-medium">Sign in</Link>
       </p>
     </div>
   );

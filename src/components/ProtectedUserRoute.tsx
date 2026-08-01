@@ -4,6 +4,6 @@ import { useAuth } from '../context/AuthContext';
 
 export default function ProtectedUserRoute({ children }: { children: ReactNode }) {
   const { isAuthenticated } = useAuth();
-  if (!isAuthenticated) return <Navigate to="/admin/login" replace />;
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
   return <>{children}</>;
 }

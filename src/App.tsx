@@ -59,10 +59,10 @@ export default function App() {
             />
           </Route>
 
-          {/* Admin & auth zone — bare dark chrome, no marketing footer */}
+          {/* Auth zone — bare dark chrome, no marketing footer */}
           <Route element={<BareLayout />}>
-            <Route path="/admin/login" element={<LoginPage />} />
-            <Route path="/admin/signup" element={<SignupPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
             <Route
               path="/admin"
               element={<ProtectedAdminRoute><DashboardPage /></ProtectedAdminRoute>}

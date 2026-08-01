@@ -78,7 +78,7 @@ export default function MarketingNavbar() {
           {isAuthenticated ? (
             <Button variant="ghost" size="sm" onClick={logout}>Logout</Button>
           ) : (
-            <Link to="/admin/login"><Button variant="ghost" size="sm">Sign In</Button></Link>
+            <Link to="/login"><Button variant="ghost" size="sm">Sign In</Button></Link>
           )}
         </div>
 
@@ -114,7 +114,7 @@ export default function MarketingNavbar() {
                 Logout
               </button>
             ) : (
-              <Link to="/admin/login" onClick={close} className="rounded-lg px-4 py-2.5 text-sm font-medium text-text-muted no-underline">
+              <Link to="/login" onClick={close} className="rounded-lg px-4 py-2.5 text-sm font-medium text-text-muted no-underline">
                 Sign In
               </Link>
             )}

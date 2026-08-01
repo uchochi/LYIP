@@ -8,7 +8,7 @@ export default function ProtectedAdminRoute({ children }: { children: ReactNode 
   const hasLegacyAdmin = isAdminLoggedIn();
   const isAdmin = user?.role === 'admin';
 
-  if (!isAuthenticated && !hasLegacyAdmin) return <Navigate to="/admin/login" replace />;
+  if (!isAuthenticated && !hasLegacyAdmin) return <Navigate to="/login" replace />;
   if (!isAdmin && !hasLegacyAdmin) return <Navigate to="/" replace />;
 
   return <>{children}</>;

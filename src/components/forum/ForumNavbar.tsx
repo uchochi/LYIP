@@ -107,7 +107,7 @@ export default function ForumNavbar() {
               </button>
             </div>
           ) : (
-            <Link to="/admin/login" className="ml-2">
+            <Link to="/login" className="ml-2">
               <Button variant="ghost" size="sm">Sign In</Button>
             </Link>
           )}
@@ -154,7 +154,7 @@ export default function ForumNavbar() {
                 </button>
               </>
             ) : (
-              <Link to="/admin/login" onClick={close} className="rounded-lg px-4 py-2.5 text-sm text-text-muted no-underline">
+              <Link to="/login" onClick={close} className="rounded-lg px-4 py-2.5 text-sm text-text-muted no-underline">
                 Sign In
               </Link>
             )}

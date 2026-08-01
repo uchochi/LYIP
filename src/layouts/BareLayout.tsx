@@ -12,7 +12,6 @@ export default function BareLayout() {
           <Link to="/" className="no-underline">
             <img src="/Loseyourip-logo.png" alt="Loseyourip" className="h-8 w-auto" />
           </Link>
-          <span className="text-xs uppercase tracking-wider text-text-muted">Admin Console</span>
         </div>
       </header>
       <main className="flex-1">

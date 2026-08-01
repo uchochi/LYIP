@@ -256,7 +256,7 @@ export default function ForumTopicPage() {
         ) : (
           <div className="input-box">
             <p style={{ fontSize: '13px', color: 'var(--text-muted)', margin: 0, textAlign: 'center', padding: '6px' }}>
-              <Link to="/admin/login" style={{ color: 'var(--accent-blue)', fontWeight: 600 }}>Sign in</Link> to join the conversation.
+              <Link to="/login" style={{ color: 'var(--accent-blue)', fontWeight: 600 }}>Sign in</Link> to join the conversation.
             </p>
           </div>
         )}
