@@ -40,7 +40,7 @@ export async function closeAll(browser: Browser): Promise<void> {
 
 export async function login(page: Page, email: string, password: string): Promise<boolean> {
   try {
-    await page.goto(`${config.baseUrl}/admin/login`, {
+    await page.goto(`${config.baseUrl}/login`, {
       waitUntil: 'networkidle',
       timeout: 30000,
     })
@@ -57,7 +57,7 @@ export async function login(page: Page, email: string, password: string): Promis
     await page.waitForTimeout(3000)
 
     const currentUrl = page.url()
-    if (currentUrl.includes('/admin/login')) {
+    if (currentUrl.includes('/login')) {
       const errorText = await page.locator('.text-red-500').first().textContent().catch(() => null)
       console.log(`  Login failed: ${errorText || 'unknown error (invalid credentials or already logged in)'}`)
       return false

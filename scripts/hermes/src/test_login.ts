@@ -8,7 +8,7 @@ const browser = await chromium.launch({
   args: ['--no-sandbox', '--disable-gpu', '--disable-dev-shm-usage'],
 })
 const page = await browser.newPage()
-await page.goto('https://jobs.loseyourip.com/admin/login', { waitUntil: 'networkidle', timeout: 30000 })
+await page.goto('https://jobs.loseyourip.com/login', { waitUntil: 'networkidle', timeout: 30000 })
 await page.waitForTimeout(2000)
 
 const emailCount = await page.locator('input[type="email"]').count()

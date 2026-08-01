@@ -10,7 +10,7 @@ const browser = await chromium.launch({
 const page = await browser.newPage()
 
 // Test login as non-admin (Dumisani Khumalo - apprentice)
-await page.goto('https://jobs.loseyourip.com/admin/login', { waitUntil: 'networkidle', timeout: 30000 })
+await page.goto('https://jobs.loseyourip.com/login', { waitUntil: 'networkidle', timeout: 30000 })
 await page.waitForTimeout(1500)
 console.log('URL before:', page.url())
 

@@ -4,7 +4,6 @@
   "type": "module",
   "scripts": {
     "create-users": "tsx src/createUsers.ts",
-    "seed-forum": "tsx src/seedForum.ts",
     "hermes": "tsx src/hermes.ts"
   },
   "dependencies": {

@@ -34,7 +34,7 @@ async function maybeReact(page: Page, account: Account): Promise<void> {
 async function maybeAddSticker(page: Page): Promise<void> {
   if (Math.random() > 0.25) return
   try {
-    const stickerBtn = page.locator('.tool-btn').nth(1)
+    const stickerBtn = page.locator('.tools span[title="Add sticker"]')
     if (await stickerBtn.isVisible()) {
       await stickerBtn.click({ timeout: 3000 })
       await page.waitForTimeout(800)
