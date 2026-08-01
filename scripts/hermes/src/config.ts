@@ -19,4 +19,12 @@ export const config = {
   } as Record<string, number>,
 
   accountsPath: new URL('../accounts.json', import.meta.url).pathname,
+
+  // Agent-driven mode (hermes-agent CLI drives Chromium over CDP).
+  agentCli: process.env.HERMES_AGENT_CLI || '/usr/local/lib/hermes-agent/cli.py',
+  agentPython: process.env.HERMES_AGENT_PYTHON || '/usr/local/lib/hermes-agent/venv/bin/python',
+  agentModel: process.env.HERMES_AGENT_MODEL || 'qwen/qwen3.7-plus',
+  agentMaxTurns: parseInt(process.env.HERMES_AGENT_MAX_TURNS || '25'),
+  agentTimeoutMs: parseInt(process.env.HERMES_AGENT_TIMEOUT_MS || '600000'),
+  agentDryRun: process.env.HERMES_AGENT_DRYRUN === '1',
 }

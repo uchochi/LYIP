@@ -25,7 +25,7 @@ interface ChatResult {
   error?: string
 }
 
-const REGIONS = [
+export const REGIONS = [
   { name: 'Nigerian', slang: 'Nigerian Pidgin slang: abeg, wahala, no dey, o, sha, na so, dem, wetin, e dey, mehn, joor' },
   { name: 'Ghanaian', slang: 'Ghanaian slang: chale, eiii, walahi, make we, dey, I no sabi, hot, asap, my guy' },
   { name: 'Kenyan', slang: 'Kenyan slang: sa wa, poa, niko sawa, sasa, ni kawaida, asante, mzigo, kitu kidogo' },
@@ -33,24 +33,24 @@ const REGIONS = [
   { name: 'East African', slang: 'Swahili-flavoured: pole pole, sawa sawa, hakuna matata, karibu, asante sana' },
 ]
 
-const LANGUAGES = ['Hausa', 'Yoruba', 'Igbo', 'Swahili', 'Zulu', 'Amharic', 'Wolof', 'Shona']
+export const LANGUAGES = ['Hausa', 'Yoruba', 'Igbo', 'Swahili', 'Zulu', 'Amharic', 'Wolof', 'Shona']
 
-function hashString(s: string): number {
+export function hashString(s: string): number {
   let h = 0
   for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0
   return h
 }
 
-function pickFor<T>(seed: number, arr: T[]): T {
+export function pickFor<T>(seed: number, arr: T[]): T {
   return arr[seed % arr.length]
 }
 
-function regionFor(account: Account): string {
+export function regionFor(account: Account): string {
   const r = pickFor(hashString(account.email), REGIONS)
   return `${r.name} (style hints: ${r.slang})`
 }
 
-function languageFor(account: Account): string {
+export function languageFor(account: Account): string {
   return pickFor(hashString(account.email + ':lang'), LANGUAGES)
 }
 

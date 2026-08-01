@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "create-users": "tsx src/createUsers.ts",
-    "hermes": "tsx src/hermes.ts"
+    "hermes": "tsx src/hermes.ts",
+    "hermes-agent": "tsx src/agentLoop.ts"
   },
   "dependencies": {
     "playwright": "^1.52.0",
