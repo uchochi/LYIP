@@ -39,14 +39,26 @@ export async function closeAll(browser: Browser): Promise<void> {
 }
 
 export async function login(page: Page, email: string, password: string): Promise<boolean> {
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      await page.goto(`${config.baseUrl}/login`, {
+        waitUntil: 'domcontentloaded',
+        timeout: 90000,
+      })
+      break
+    } catch (err) {
+      if (attempt === 3) {
+        console.log(`  Login error for ${email}:`, err instanceof Error ? err.message : err)
+        return false
+      }
+      console.log(`  Login navigation failed (attempt ${attempt}/3), retrying...`)
+      await page.waitForTimeout(5000)
+    }
+  }
   try {
-    await page.goto(`${config.baseUrl}/login`, {
-      waitUntil: 'domcontentloaded',
-      timeout: 30000,
-    })
     await page.waitForTimeout(1500)
 
-    await page.waitForSelector('input[type="email"]', { timeout: 10000 })
+    await page.waitForSelector('input[type="email"]', { timeout: 15000 })
     await page.fill('input[type="email"]', email)
 
     await page.waitForSelector('input[type="password"]', { timeout: 5000 })
@@ -73,7 +85,7 @@ export async function login(page: Page, email: string, password: string): Promis
 export async function goToForum(page: Page): Promise<void> {
   await page.goto(`${config.baseUrl}/forum`, {
     waitUntil: 'domcontentloaded',
-    timeout: 30000,
+    timeout: 90000,
   })
   await page.waitForTimeout(1500)
 }
