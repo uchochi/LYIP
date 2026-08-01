@@ -38,10 +38,10 @@ export default function LoginPage() {
 
   return (
     <div className="mx-auto max-w-sm px-6 py-20">
-      <h1 className="text-2xl font-bold text-text-main text-center">Admin Login</h1>
-      <p className="mt-2 text-sm text-text-muted text-center">Sign in to manage your job postings</p>
+      <h1 className="text-2xl font-bold text-text-main text-center">Welcome back</h1>
+      <p className="mt-2 text-sm text-text-muted text-center">Sign in to continue to the community</p>
       <form onSubmit={handleSubmit} className="mt-8 space-y-4">
-        <Input label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="admin@example.com" />
+        <Input label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" />
         <Input label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" />
         {error && <p className="text-sm text-red-500 text-center">{error}</p>}
         <Button type="submit" className="w-full">Sign In</Button>
