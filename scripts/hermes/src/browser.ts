@@ -68,7 +68,7 @@ export async function login(page: Page, email: string, password: string): Promis
 
     // Poll until we leave /login (success) or see an error — the slow CDN
     // link can push the post-login redirect past a fixed sleep.
-    const deadline = Date.now() + 20000
+    const deadline = Date.now() + 60000
     while (Date.now() < deadline) {
       await page.waitForTimeout(1000)
       const url = page.url()
