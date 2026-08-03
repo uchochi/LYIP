@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Plus, Pin, Archive, Lock, Trash2, AlertTriangle, X } from 'lucide-react';
-import { getTopics, deleteTopic, updateTopic, getMemberCount } from '../services/forumService';
+import { getTopics, deleteTopic, updateTopic, getMemberCount, getOnlineCount, updateUserLastSeen, getTopContributors, type TopContributor } from '../services/forumService';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
 import MiniAvatar from '../components/forum/MiniAvatar';
@@ -14,8 +14,9 @@ export default function ForumPage() {
   const [topics, setTopics] = useState<ForumTopic[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [memberCount, setMemberCount] = useState(142804);
-  const [onlineCount, setOnlineCount] = useState(2105);
+  const [memberCount, setMemberCount] = useState(115000);
+  const [onlineCount, setOnlineCount] = useState(5000);
+  const [topContributors, setTopContributors] = useState<TopContributor[]>([]);
   const { user } = useAuth();
 
   const isAdmin = user?.role === 'admin';
@@ -31,15 +32,16 @@ export default function ForumPage() {
 
   useEffect(() => {
     load();
-    getMemberCount().then((c) => setMemberCount(c + 1850));
-    const seed = Math.floor(Date.now() / 60000);
-    setOnlineCount(1850 + (seed % 320));
-    const interval = setInterval(() => {
-      const s = Math.floor(Date.now() / 60000);
-      setOnlineCount(1850 + (s % 320));
-    }, 30000);
-    return () => clearInterval(interval);
-  }, []);
+    getMemberCount().then((c) => setMemberCount(c));
+    getOnlineCount().then((c) => setOnlineCount(c));
+    getTopContributors().then((c) => setTopContributors(c));
+    if (user) updateUserLastSeen();
+
+    const onlineInterval = setInterval(() => {
+      getOnlineCount().then((c) => setOnlineCount(c));
+    }, 60000);
+    return () => clearInterval(onlineInterval);
+  }, [user]);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -113,6 +115,23 @@ export default function ForumPage() {
           onlineCount={onlineCount}
           showCommunityStats={true}
         />
+
+        {topContributors.length > 0 && (
+          <div style={{ marginBottom: '12px' }}>
+            <div style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+              🔥 Top Contributors This Week
+            </div>
+            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+              {topContributors.map((c) => (
+                <div key={c.id} style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'var(--surface-card)', borderRadius: '20px', padding: '3px 10px 3px 4px', border: '1px solid var(--border)', fontSize: '12px' }}>
+                  <MiniAvatar name={c.name || c.username} color={c.avatar_color} />
+                  <span style={{ color: 'var(--text-main)', fontWeight: 500 }}>{c.username || c.name}</span>
+                  <span style={{ color: 'var(--text-muted)', fontSize: '10px' }}>{c.post_count}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', padding: '4px 2px' }}>
           {user && (

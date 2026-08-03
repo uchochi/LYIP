@@ -27,6 +27,8 @@ export interface ForumTopic {
   is_archived: boolean
   is_locked: boolean
   tags: string[]
+  view_count?: number
+  has_dataset_submit?: boolean
   created_at: string
   updated_at: string
   user?: ForumUser
@@ -59,6 +61,20 @@ export interface ForumReaction {
   user_id: string
   emoji: string
   created_at: string
+}
+
+export interface DatasetSubmission {
+  id: string
+  topic_id: string
+  user_id: string
+  title: string
+  content: string
+  url?: string
+  file_url?: string
+  status: 'pending' | 'approved' | 'rejected'
+  admin_notes?: string
+  created_at: string
+  updated_at: string
 }
 
 export interface AuthState {

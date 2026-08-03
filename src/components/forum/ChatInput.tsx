@@ -24,8 +24,8 @@ const STICKERS = [
 ];
 
 export default function ChatInput({
-  placeholder = 'Share a dataset or ask a question...',
-  buttonText = 'Post Update',
+  placeholder = 'Drop your hot take, dataset, or wisdom...',
+  buttonText = 'Drop It 🚀',
   typingUsers,
   replyingTo,
   onCancelReply,

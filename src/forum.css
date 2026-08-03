@@ -257,12 +257,23 @@
 .react:hover {
   background: rgba(255,255,255,0.08);
   color: var(--text-main);
+  transform: scale(1.08);
 }
 
 .react.active {
   background: rgba(16, 185, 129, 0.1);
   border-color: var(--accent-success);
   color: var(--accent-success);
+}
+
+/* Hot badge pulse */
+.badge-mod:has(span:first-child:contains("🔥")) {
+  animation: hotPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes hotPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); }
+  50% { box-shadow: 0 0 0 4px rgba(245, 158, 11, 0); }
 }
 
 /* --- FLOATING INPUT --- */

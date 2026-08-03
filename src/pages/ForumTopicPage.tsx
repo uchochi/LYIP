@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Pin, Lock, AlertTriangle, X } from 'lucide-react';
-import { getTopic, getPosts, createPost, deletePost, getReactions, toggleReaction } from '../services/forumService';
+import { getTopic, getPosts, createPost, deletePost, getReactions, toggleReaction, incrementTopicView, getDatasetSubmissions, type DatasetSubmission } from '../services/forumService';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import Spinner from '../components/ui/Spinner';
@@ -23,6 +23,8 @@ export default function ForumTopicPage() {
   const [showVerifyBanner, setShowVerifyBanner] = useState(false);
   const [typingUsers, setTypingUsers] = useState<string[]>([]);
   const [error, setError] = useState('');
+  const [viewCount, setViewCount] = useState(0);
+  const [datasetSubmissions, setDatasetSubmissions] = useState<DatasetSubmission[]>([]);
 
   const isAdmin = user?.role === 'admin';
   const currentUserId = user?.id;
@@ -32,17 +34,22 @@ export default function ForumTopicPage() {
     const [t, p] = await Promise.all([getTopic(topicId), getPosts(topicId)]);
     setTopic(t);
     setPosts(p);
+    setViewCount(t?.view_count || 0);
     const ids = p.map((x) => x.id);
     if (ids.length > 0) {
       const r = await getReactions(ids);
       setReactions(r);
+    }
+    if (t?.has_dataset_submit) {
+      getDatasetSubmissions(topicId).then(setDatasetSubmissions);
     }
     setLoading(false);
   }, [topicId]);
 
   useEffect(() => {
     load();
-  }, [load]);
+    if (topicId) incrementTopicView(topicId);
+  }, [load, topicId]);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -157,8 +164,12 @@ export default function ForumTopicPage() {
   if (loading) return <div className="forum-dark"><div className="forum-wrapper" style={{ paddingTop: '40px' }}><Spinner /></div></div>;
   if (!topic) return <div className="forum-dark"><div className="forum-wrapper"><p style={{ color: 'var(--text-muted)' }}>Topic not found.</p></div></div>;
 
+  const totalEngagement = Object.values(reactions).flat().length + (posts.length - 1);
+  const isHot = totalEngagement > 5;
+
   const tagChips = (
-    <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '8px' }}>
+    <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '8px', alignItems: 'center' }}>
+      {isHot && <span className="badge badge-mod">🔥 Hot</span>}
       {topic.is_pinned && <span className="badge badge-admin"><Pin size={10} /> PINNED</span>}
       {topic.is_locked && <span className="badge badge-mod"><Lock size={10} /> LOCKED</span>}
       {topic.tags.map((tag) => (
@@ -186,7 +197,7 @@ export default function ForumTopicPage() {
           title={topic.title}
           showCommunityStats={false}
           topicStats={{
-            views: Math.floor(posts.length * 100 + Math.random() * 5000),
+            views: viewCount,
             reactions: Object.values(reactions).flat().length,
             replies: posts.length - 1
           }}
@@ -243,6 +254,19 @@ export default function ForumTopicPage() {
           />
         ))}
 
+        {topic.has_dataset_submit && user && (
+          <div style={{ marginBottom: '12px', textAlign: 'center' }}>
+            <button
+              className="btn-send"
+              type="button"
+              onClick={() => alert('Dataset submission form coming soon!')}
+              style={{ padding: '8px 20px' }}
+            >
+              📦 Submit Dataset
+            </button>
+          </div>
+        )}
+
         {user ? (
           <ChatInput
             typingUsers={typingUsers}
@@ -250,8 +274,8 @@ export default function ForumTopicPage() {
             onCancelReply={() => setReplyingTo(null)}
             onSend={handleSend}
             disabled={sending || topic.is_locked}
-            placeholder={topic.is_locked ? 'This topic is locked' : 'Share a dataset or ask a question...'}
-            buttonText={sending ? 'Posting...' : 'Post Update'}
+            placeholder={topic.is_locked ? 'This topic is locked' : 'Drop your hot take, dataset, or wisdom...'}
+            buttonText={sending ? 'Launching...' : 'Drop It 🚀'}
           />
         ) : (
           <div className="input-box">

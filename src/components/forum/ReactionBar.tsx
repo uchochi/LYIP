@@ -6,7 +6,7 @@ interface ReactionBarProps {
   onToggle: (emoji: string) => void;
 }
 
-const QUICK_EMOJIS = ['🙏', '👀', '✅', '🚀', '🔥', '💎', '🤔', '😂', '❤️'];
+const QUICK_EMOJIS = ['🙏', '👀', '✅', '🚀', '🔥', '💎', '🤔', '😂', '❤️', '🎉', '💡', '👏', '🧠'];
 
 export default function ReactionBar({ reactions, currentUserId, onToggle }: ReactionBarProps) {
   const counts: Record<string, { count: number; active: boolean }> = {};

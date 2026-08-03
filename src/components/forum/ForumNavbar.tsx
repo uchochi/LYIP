@@ -57,7 +57,7 @@ export default function ForumNavbar() {
           <Link to="/forum" className="flex items-center gap-2 no-underline">
             <img src="/Loseyourip-logo.png" alt="Loseyourip" className="h-8 w-auto" />
             <span className="rounded bg-surface-lighter px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-text-muted">
-              Community
+              Global
             </span>
           </Link>
         </div>
