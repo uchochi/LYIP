@@ -1,0 +1,31 @@
+{
+  "id": "forum-upgrades-04",
+  "seq": "04",
+  "title": "Copy updates: placeholder text & button renames",
+  "status": "pending",
+  "depends_on": [],
+  "parallel": true,
+  "suggested_agent": "CoderAgent",
+  "context_files": [
+    ".opencode/context/core/standards/code-quality.md"
+  ],
+  "reference_files": [
+    "src/components/forum/ChatInput.tsx",
+    "src/pages/ForumTopicPage.tsx",
+    "src/pages/NewTopicPage.tsx"
+  ],
+  "acceptance_criteria": [
+    "ChatInput default placeholder: 'Drop your hot take, dataset, or wisdom...'",
+    "NewTopicPage title placeholder: more energetic (e.g. 'What burning question or dataset insight do you have?')",
+    "NewTopicPage content placeholder: more energetic (e.g. 'Spill the details — what do you want the community to know?')",
+    "ChatInput buttonText default: 'Drop It 🚀'",
+    "ChatInput sending buttonText: 'Launching...'",
+    "ForumTopicPage ChatInput placeholder updated to match new tone",
+    "NewTopicPage submit button: 'Creating...' → 'Launching...'"
+  ],
+  "deliverables": [
+    "Updated src/components/forum/ChatInput.tsx (default placeholder, button text)",
+    "Updated src/pages/ForumTopicPage.tsx (ChatInput placeholder/buttonText props)",
+    "Updated src/pages/NewTopicPage.tsx (placeholders, button text)"
+  ]
+}

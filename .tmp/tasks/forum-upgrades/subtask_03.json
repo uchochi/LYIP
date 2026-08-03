@@ -1,0 +1,41 @@
+{
+  "id": "forum-upgrades-03",
+  "seq": "03",
+  "title": "Frontend: Render dataset submissions with status badges & admin actions",
+  "status": "pending",
+  "depends_on": ["01"],
+  "parallel": true,
+  "suggested_agent": "CoderAgent",
+  "context_files": [
+    {
+      "path": ".opencode/context/core/standards/code-quality.md",
+      "lines": "53-94",
+      "reason": "Declarative rendering, composition, pure functions"
+    },
+    {
+      "path": ".opencode/context/core/standards/typescript.md",
+      "lines": "170-198",
+      "reason": "Array operations (map/filter), type guards"
+    }
+  ],
+  "reference_files": [
+    "src/pages/ForumTopicPage.tsx",
+    "src/components/forum/MessageCard.tsx",
+    "src/services/forumService.ts",
+    "src/types/index.ts"
+  ],
+  "acceptance_criteria": [
+    "Below topic replies, a 'Dataset Submissions' section renders when topic.has_dataset_submit is true",
+    "Each submission shows: title, content preview, url link (if present), file download (if present), status badge, submitted by username, relative timestamp",
+    "Status badges: '🟡 Pending', '🟢 Approved', '🔴 Rejected' with distinct colors",
+    "Admin users see Approve/Reject buttons on each submission (calls updateDatasetSubmission)",
+    "Approved submissions get a subtle green left-border; rejected get red with strikethrough",
+    "Empty state: 'No dataset submissions yet. Be the first!' when array is empty",
+    "Real-time updates: new submissions appear without page refresh (Supabase realtime subscription)"
+  ],
+  "deliverables": [
+    "Updated src/pages/ForumTopicPage.tsx (submissions section)",
+    "Updated src/services/forumService.ts (updateDatasetSubmission, realtime subscription)",
+    "New component: src/components/forum/DatasetSubmissionCard.tsx"
+  ]
+}

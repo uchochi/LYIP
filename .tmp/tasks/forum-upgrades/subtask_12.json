@@ -1,0 +1,38 @@
+{
+  "id": "forum-upgrades-12",
+  "seq": "12",
+  "title": "Members counter: use real DB count instead of hardcoded +1850",
+  "status": "pending",
+  "depends_on": [],
+  "parallel": true,
+  "suggested_agent": "CoderAgent",
+  "context_files": [
+    {
+      "path": ".opencode/context/core/standards/code-quality.md",
+      "lines": "53-94",
+      "reason": "Pure functions, immutability"
+    },
+    {
+      "path": ".opencode/context/core/standards/typescript.md",
+      "lines": "89-111",
+      "reason": "Explicit types, avoid any"
+    }
+  ],
+  "reference_files": [
+    "src/pages/ForumPage.tsx",
+    "src/services/forumService.ts"
+  ],
+  "acceptance_criteria": [
+    "ForumPage: `memberCount` initialized from `getMemberCount()` — removes hardcoded `142804` fallback",
+    "ForumPage: removes `+ 1850` offset from `getMemberCount().then((c) => setMemberCount(c + 1850))`",
+    "getMemberCount() returns `115000 + COUNT(*) FROM users` (base of 115000 is the LYIP fictional member base; new signups add 1)",
+    "getMemberCount() updated in forumService.ts to include base offset in the function itself: `const { count } = await supabase.from('users').select('*', { count: 'exact', head: true }); return 115000 + (count || 0);`",
+    "ForumPage: initial state uses `useState(0)` with loading state until count resolves",
+    "CommunityHeader: memberCount renders correctly with formatNumber",
+    "TypeScript types: no `any` types, explicit return type `Promise<number>`"
+  ],
+  "deliverables": [
+    "Updated src/pages/ForumPage.tsx (remove hardcoded offset, fix initial state)",
+    "Updated src/services/forumService.ts (getMemberCount with base offset)"
+  ]
+}

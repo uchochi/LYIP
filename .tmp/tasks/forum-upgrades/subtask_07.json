@@ -1,0 +1,31 @@
+{
+  "id": "forum-upgrades-07",
+  "seq": "07",
+  "title": "Forum copy: rename heading to 'Global Dataset Training Community' + inclusive copy",
+  "status": "pending",
+  "depends_on": [],
+  "parallel": true,
+  "suggested_agent": "CoderAgent",
+  "context_files": [
+    ".opencode/context/core/standards/code-quality.md"
+  ],
+  "reference_files": [
+    "src/components/forum/ForumNavbar.tsx",
+    "src/components/forum/CommunityHeader.tsx",
+    "src/components/forum/ForumFooter.tsx",
+    "src/layouts/ForumLayout.tsx"
+  ],
+  "acceptance_criteria": [
+    "ForumNavbar 'Community' badge unchanged but contextually fits global scope",
+    "ForumFooter: 'Dataset Training Community' heading → 'Global Dataset Training Community'",
+    "ForumFooter description: 'Learn how to format datasets for AI. Ask questions, share tips, and get help from fellow curators.' → globally inclusive version (e.g. 'Connect with dataset curators worldwide. Share techniques, ask questions, and grow together.')",
+    "CommunityHeader: any Africa-specific references removed/made global",
+    "All copy uses inclusive language — 'worldwide', 'global', 'community' instead of Africa-specific terms",
+    "No hardcoded region-specific references remain in forum chrome"
+  ],
+  "deliverables": [
+    "Updated src/components/forum/ForumFooter.tsx (heading + description)",
+    "Updated src/components/forum/CommunityHeader.tsx (if any region-specific copy)",
+    "Updated src/layouts/ForumLayout.tsx (if any region-specific copy)"
+  ]
+}

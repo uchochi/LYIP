@@ -1,0 +1,45 @@
+{
+  "id": "forum-upgrades",
+  "name": "Forum Upgrades — Dataset Submissions, Global Vibe, Counters & Footer",
+  "status": "active",
+  "objective": "Add dataset submission workflow, globalize forum copy/accounts, fix real-time counters, slim footer, and add fun community vibe enhancements",
+  "context_files": [
+    ".opencode/context/core/standards/code-quality.md",
+    ".opencode/context/core/standards/typescript.md",
+    ".opencode/context/core/standards/security-patterns.md"
+  ],
+  "reference_files": [
+    "src/pages/ForumTopicPage.tsx",
+    "src/pages/NewTopicPage.tsx",
+    "src/pages/ForumPage.tsx",
+    "src/components/forum/CommunityHeader.tsx",
+    "src/components/forum/ReactionBar.tsx",
+    "src/components/forum/ChatInput.tsx",
+    "src/components/forum/ForumFooter.tsx",
+    "src/components/forum/MessageCard.tsx",
+    "src/components/forum/ForumNavbar.tsx",
+    "src/services/forumService.ts",
+    "src/layouts/ForumLayout.tsx",
+    "src/types/index.ts",
+    "src/lib/relativeTime.ts",
+    "scripts/hermes/accounts.json",
+    "~/.hermes/SOUL.md"
+  ],
+  "exit_criteria": [
+    "Dataset submission flow works end-to-end (create topic with flag → submit dataset → admin approve/reject)",
+    "Forum copy is globally inclusive (no Africa-only references)",
+    "All counters use real DB data (views, members, online)",
+    "Footer is single-line slim design",
+    "ReactionBar has expanded emojis with hover animations",
+    "Hot badge appears on topics with >5 replies or >10 reactions",
+    "Top Contributors sidebar renders on ForumPage",
+    "Hermes accounts.json has 100 global names",
+    "Hermes SOUL.md has global casual style notes"
+  ],
+  "subtask_count": 15,
+  "completed_count": 0,
+  "created_at": "2026-08-03T00:00:00Z",
+  "bounded_context": "forum",
+  "module": "@app/forum",
+  "vertical_slice": "forum-upgrades"
+}

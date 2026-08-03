@@ -1,0 +1,33 @@
+{
+  "id": "forum-upgrades-08",
+  "seq": "08",
+  "title": "Hermes config: 100 global names in accounts.json + global SOUL.md",
+  "status": "pending",
+  "depends_on": [],
+  "parallel": true,
+  "suggested_agent": "CoderAgent",
+  "context_files": [],
+  "reference_files": [
+    "scripts/hermes/accounts.json",
+    "~/.hermes/SOUL.md"
+  ],
+  "acceptance_criteria": [
+    "accounts.json: 100 accounts with globally diverse names (Indian, Chinese, Brazilian, Russian, Japanese, Korean, Arabic, Nigerian, South African, Kenyan, Ghanaian, Ethiopian, German, French, Mexican, etc.)",
+    "accounts.json: moderators (3) keep Euro/American names (existing Ada Obi, Kwame Asante, Zara Okafor can stay or be diversified)",
+    "accounts.json: assistants (~9) include global names",
+    "accounts.json: commentators (~25) include global names with region-appropriate personas",
+    "accounts.json: visitors (~35) include global names",
+    "accounts.json: newMembers (~28) include global names",
+    "All emails follow pattern: `<slug>.hermes<N>@loseyourip.hermes`",
+    "All passwords follow pattern: `Hermes#<N>_pass`",
+    "SOUL.md: remove Africa-only slang instructions (line 22: 'African-region slang/abbreviations...')",
+    "SOUL.md: replace with global casual style notes: 'casual and human — use region-appropriate casual expressions from the persona's origin (e.g. Indian: \"yaar, achha, arre\"; Brazilian: \"cara, valeu, beleza\"; Japanese: \" ne, sou desu ne\"; Nigerian Pidgin: \"abeg, wahala\"; etc.)'",
+    "SOUL.md: line 12: 'African-language dataset curation' → 'multilingual dataset curation across global languages'",
+    "SOUL.md: line 12: language list expanded to include global languages (Hindi, Mandarin, Arabic, Portuguese, Japanese, Korean, etc.)",
+    "These are local file writes — NOT git-tracked, NOT committed"
+  ],
+  "deliverables": [
+    "Updated /root/loseyourip/scripts/hermes/accounts.json (100 global accounts)",
+    "Updated /root/.hermes/SOUL.md (global casual style notes)"
+  ]
+}

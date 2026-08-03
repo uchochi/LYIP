@@ -1,0 +1,34 @@
+{
+  "id": "forum-upgrades-10",
+  "seq": "10",
+  "title": "Slim footer: single-line horizontal redesign",
+  "status": "pending",
+  "depends_on": [],
+  "parallel": true,
+  "suggested_agent": "CoderAgent",
+  "context_files": [
+    {
+      "path": ".opencode/context/core/standards/code-quality.md",
+      "lines": "53-94",
+      "reason": "Declarative rendering, component simplicity"
+    }
+  ],
+  "reference_files": [
+    "src/components/forum/ForumFooter.tsx",
+    "src/layouts/ForumLayout.tsx"
+  ],
+  "acceptance_criteria": [
+    "ForumFooter: single-line layout, `py-3`, horizontal flex",
+    "Content: `© 2026 LoseYourIP · Privacy · Terms · Cookies` on one line",
+    "Privacy links to /privacy, Terms to /terms, Cookies to /cookies",
+    "Remove: all grid columns, link columns (Community/Help), description text, back-to-site link",
+    "Remove: the existing column-based layout entirely",
+    "Footer has `border-t border-border bg-surface` at top (existing)",
+    "Centered on mobile, left-aligned or centered on desktop",
+    "Uses Tailwind classes exclusively (no custom CSS needed)",
+    "Keep the component simple — under 30 lines total"
+  ],
+  "deliverables": [
+    "Updated src/components/forum/ForumFooter.tsx (complete rewrite to slim version)"
+  ]
+}

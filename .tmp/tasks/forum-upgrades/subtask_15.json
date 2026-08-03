@@ -1,0 +1,44 @@
+{
+  "id": "forum-upgrades-15",
+  "seq": "15",
+  "title": "Update CommunityHeader & ForumPage with new real-time counter queries",
+  "status": "pending",
+  "depends_on": ["11", "13"],
+  "parallel": false,
+  "suggested_agent": "CoderAgent",
+  "context_files": [
+    {
+      "path": ".opencode/context/core/standards/code-quality.md",
+      "lines": "53-94",
+      "reason": "Composition, immutability, pure functions for data transforms"
+    },
+    {
+      "path": ".opencode/context/core/standards/typescript.md",
+      "lines": "248-338",
+      "reason": "Async patterns, Promise.all for parallel queries"
+    }
+  ],
+  "reference_files": [
+    "src/components/forum/CommunityHeader.tsx",
+    "src/pages/ForumPage.tsx",
+    "src/pages/ForumTopicPage.tsx",
+    "src/services/forumService.ts"
+  ],
+  "acceptance_criteria": [
+    "ForumPage: memberCount uses getMemberCount() with 115000 base offset (from task 12)",
+    "ForumPage: onlineCount uses getOnlineCount() from DB (from task 13)",
+    "ForumPage: removes ALL hardcoded/fake counter logic (seed, Math.random, setInterval with fake counts)",
+    "CommunityHeader: topicStats.views uses real view_count from DB (from task 11)",
+    "CommunityHeader: topicStats.reactions uses live count from reactions state",
+    "CommunityHeader: topicStats.replies uses posts.length (already correct)",
+    "CommunityHeader: all formatNumber calls produce correct display values",
+    "Counters refresh: members on mount + 5min interval, online on mount + 30s interval, views on mount only",
+    "Loading states: counters show '...' or skeleton while loading, not '0'",
+    "TypeScript: no any types, all functions have explicit return types"
+  ],
+  "deliverables": [
+    "Updated src/pages/ForumPage.tsx (real counter integration)",
+    "Updated src/pages/ForumTopicPage.tsx (real views from DB)",
+    "Updated src/components/forum/CommunityHeader.tsx (if needed for loading states)"
+  ]
+}

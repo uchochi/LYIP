@@ -254,16 +254,51 @@ export default function ForumTopicPage() {
           />
         ))}
 
-        {topic.has_dataset_submit && user && (
-          <div style={{ marginBottom: '12px', textAlign: 'center' }}>
-            <button
-              className="btn-send"
-              type="button"
-              onClick={() => alert('Dataset submission form coming soon!')}
-              style={{ padding: '8px 20px' }}
-            >
-              📦 Submit Dataset
-            </button>
+        {topic.has_dataset_submit && (
+          <div style={{ marginBottom: '16px' }}>
+            <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-main)', marginBottom: '8px' }}>
+              📦 Dataset Submissions ({datasetSubmissions.length})
+            </div>
+            {datasetSubmissions.length === 0 ? (
+              <div style={{ padding: '12px', background: 'var(--surface-lighter)', borderRadius: '8px', border: '1px solid var(--border)', textAlign: 'center', fontSize: '13px', color: 'var(--text-muted)' }}>
+                No submissions yet. Be the first to share a dataset!
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {datasetSubmissions.map((ds) => (
+                  <div key={ds.id} style={{ padding: '12px', background: 'var(--surface-lighter)', borderRadius: '8px', border: '1px solid var(--border)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                      <span style={{ fontWeight: 600, fontSize: '14px', color: 'var(--text-main)' }}>{ds.title}</span>
+                      <span className={`badge ${ds.status === 'approved' ? 'badge-pro' : ds.status === 'rejected' ? 'badge-admin' : 'badge-mod'}`} style={{ fontSize: '10px' }}>
+                        {ds.status}
+                      </span>
+                    </div>
+                    <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: '4px 0' }}>{ds.content}</p>
+                    {ds.url && (
+                      <a href={ds.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: '12px', color: 'var(--accent-blue)' }}>
+                        {ds.url}
+                      </a>
+                    )}
+                    {isAdmin && ds.status === 'pending' && (
+                      <div style={{ display: 'flex', gap: '6px', marginTop: '8px' }}>
+                        <button className="btn-send" type="button" style={{ fontSize: '11px', padding: '4px 10px' }} onClick={() => alert('Approve flow coming soon')}>✓ Approve</button>
+                        <button type="button" style={{ fontSize: '11px', padding: '4px 10px', background: 'transparent', border: '1px solid var(--live-red)', color: 'var(--live-red)', borderRadius: '6px', cursor: 'pointer' }} onClick={() => alert('Reject flow coming soon')}>✗ Reject</button>
+                      </div>
+                    )}
+                    {ds.admin_notes && (
+                      <p style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px', fontStyle: 'italic' }}>Admin note: {ds.admin_notes}</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+            {user && (
+              <div style={{ marginTop: '10px', textAlign: 'center' }}>
+                <button className="btn-send" type="button" onClick={() => alert('Submission form coming soon')} style={{ padding: '8px 20px' }}>
+                  📦 Submit Dataset
+                </button>
+              </div>
+            )}
           </div>
         )}
 

@@ -1,0 +1,40 @@
+{
+  "id": "forum-upgrades-14",
+  "seq": "14",
+  "title": "Verify real-time subscriptions for reactions & replies",
+  "status": "pending",
+  "depends_on": [],
+  "parallel": true,
+  "suggested_agent": "CoderAgent",
+  "context_files": [
+    {
+      "path": ".opencode/context/core/standards/code-quality.md",
+      "lines": "53-94",
+      "reason": "Pure functions"
+    },
+    {
+      "path": ".opencode/context/core/standards/typescript.md",
+      "lines": "248-338",
+      "reason": "Async patterns, error handling in subscriptions"
+    }
+  ],
+  "reference_files": [
+    "src/pages/ForumTopicPage.tsx",
+    "src/services/forumService.ts",
+    "src/lib/supabase.ts"
+  ],
+  "acceptance_criteria": [
+    "Verify Supabase realtime is enabled on forum_posts and forum_post_reactions tables",
+    "Verify ForumTopicPage post INSERT subscription works: new posts appear without page refresh",
+    "Verify ForumTopicPage reaction subscription works: reaction counts update in real-time",
+    "Verify post DELETE subscription removes posts from view",
+    "Fix any subscription issues: check channel names, filter correctness, cleanup on unmount",
+    "Add error handling to subscription callbacks (log errors, don't crash)",
+    "Reactions: optimistic update still works correctly alongside realtime sync (no double-counting)",
+    "No console errors related to subscription cleanup on page navigation"
+  ],
+  "deliverables": [
+    "Updated src/pages/ForumTopicPage.tsx (subscription verification + fixes)",
+    "Updated src/services/forumService.ts (if subscription helpers needed)"
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "id": "forum-upgrades-05",
+  "seq": "05",
+  "title": "Visual enhancements: Hot badge, expanded ReactionBar, post card polish",
+  "status": "pending",
+  "depends_on": [],
+  "parallel": true,
+  "suggested_agent": "CoderAgent",
+  "context_files": [
+    {
+      "path": ".opencode/context/core/standards/code-quality.md",
+      "lines": "53-94",
+      "reason": "Declarative rendering, immutability"
+    },
+    {
+      "path": ".opencode/context/core/standards/typescript.md",
+      "lines": "170-198,340-398",
+      "reason": "Array operations, early returns"
+    }
+  ],
+  "reference_files": [
+    "src/components/forum/ReactionBar.tsx",
+    "src/components/forum/MessageCard.tsx",
+    "src/pages/ForumPage.tsx",
+    "src/forum.css"
+  ],
+  "acceptance_criteria": [
+    "🔥 Hot badge: appears on topic cards in ForumPage when topic has >5 replies OR >10 reactions (need reply_count/reaction_count — can compute from posts array length or add a derived display)",
+    "Hot badge uses CSS `@keyframes pulse-glow` animation (subtle orange glow)",
+    "ReactionBar QUICK_EMOJIS expanded: ['🙏','👀','✅','🚀','🔥','💎','🤔','😂','❤️','🎉','💡','👏','🧠']",
+    "ReactionBar: existing emoji buttons have CSS hover: scale(1.15) with 150ms transition",
+    "ReactionBar: '+😊' add button replaced with '＋' pill for cleaner look",
+    "MessageCard (post cards): new posts (<1 hour old) get a subtle gradient left-border (linear-gradient from accent-primary to transparent)",
+    "MessageCard: improved visual hierarchy — slightly larger username, muted timestamp, 2px more padding",
+    "All new CSS uses Tailwind classes where possible; custom CSS in forum.css only for animations/gradients"
+  ],
+  "deliverables": [
+    "Updated src/components/forum/ReactionBar.tsx (expanded emojis, hover animations)",
+    "Updated src/components/forum/MessageCard.tsx (gradient border, visual hierarchy)",
+    "Updated src/pages/ForumPage.tsx (Hot badge logic + rendering)",
+    "Updated src/forum.css (keyframes, gradient, scale transitions)"
+  ]
+}

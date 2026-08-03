@@ -1,0 +1,42 @@
+{
+  "id": "forum-upgrades-06",
+  "seq": "06",
+  "title": "Top Contributors This Week sidebar on ForumPage",
+  "status": "pending",
+  "depends_on": [],
+  "parallel": true,
+  "suggested_agent": "CoderAgent",
+  "context_files": [
+    {
+      "path": ".opencode/context/core/standards/code-quality.md",
+      "lines": "53-94",
+      "reason": "Composition, pure functions for data transforms"
+    },
+    {
+      "path": ".opencode/context/core/standards/typescript.md",
+      "lines": "89-165,250-292",
+      "reason": "Type safety, Promise.all for parallel queries"
+    }
+  ],
+  "reference_files": [
+    "src/pages/ForumPage.tsx",
+    "src/services/forumService.ts",
+    "src/components/forum/MiniAvatar.tsx",
+    "src/types/index.ts"
+  ],
+  "acceptance_criteria": [
+    "Sidebar renders on ForumPage (right side on desktop, below topics on mobile)",
+    "Shows top 10 contributors by post count in last 7 days",
+    "Each row: MiniAvatar, username, post count, role badge",
+    "Service function `getTopContributors()` queries forum_posts grouped by author_id, filtered to last 7 days, joined with users table",
+    "Loading state: skeleton placeholders while query runs",
+    "Empty state: 'No posts this week yet — start a conversation!'",
+    "Sidebar has a subtle border-left, `position: sticky` on desktop, max-height with overflow-y scroll",
+    "Uses `Promise.all` for parallel data fetching where applicable"
+  ],
+  "deliverables": [
+    "New component: src/components/forum/TopContributors.tsx",
+    "Updated src/services/forumService.ts (getTopContributors function)",
+    "Updated src/pages/ForumPage.tsx (sidebar integration)"
+  ]
+}

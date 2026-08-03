@@ -1,0 +1,41 @@
+{
+  "id": "forum-upgrades-02",
+  "seq": "02",
+  "title": "Frontend: NewTopicPage checkbox + ForumTopicPage Submit Dataset button & modal",
+  "status": "pending",
+  "depends_on": ["01"],
+  "parallel": false,
+  "suggested_agent": "CoderAgent",
+  "context_files": [
+    {
+      "path": ".opencode/context/core/standards/code-quality.md",
+      "lines": "53-94",
+      "reason": "Pure functions, immutability, early returns"
+    },
+    {
+      "path": ".opencode/context/core/standards/typescript.md",
+      "lines": "89-165",
+      "reason": "Type safety, avoid any, type guards"
+    }
+  ],
+  "reference_files": [
+    "src/pages/NewTopicPage.tsx",
+    "src/pages/ForumTopicPage.tsx",
+    "src/services/forumService.ts",
+    "src/types/index.ts"
+  ],
+  "acceptance_criteria": [
+    "NewTopicPage: checkbox toggle 'Enable dataset submissions' visible ONLY to admin/moderator users (check user.role)",
+    "NewTopicPage: checked state sent as `has_dataset_submit: true` in createTopic call",
+    "ForumTopicPage: when topic.has_dataset_submit is true, renders a 'Submit Dataset' button below the topic header",
+    "ForumTopicPage: 'Submit Dataset' button opens an inline form modal with fields: title, content, url (optional), file upload (stretch/file_url field)",
+    "Form modal submits to a new `createDatasetSubmission()` service function",
+    "Modal has loading state, error display, and closes on success",
+    "All new components follow pure-function patterns and early-return guards"
+  ],
+  "deliverables": [
+    "Updated src/pages/NewTopicPage.tsx (checkbox + logic)",
+    "Updated src/pages/ForumTopicPage.tsx (button + modal)",
+    "Updated src/services/forumService.ts (createDatasetSubmission, getDatasetSubmissions functions)"
+  ]
+}

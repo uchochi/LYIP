@@ -1,0 +1,44 @@
+{
+  "id": "forum-upgrades-13",
+  "seq": "13",
+  "title": "Online counter: schema migration + heartbeat + frontend integration",
+  "status": "pending",
+  "depends_on": [],
+  "parallel": false,
+  "suggested_agent": "CoderAgent",
+  "context_files": [
+    {
+      "path": ".opencode/context/core/standards/security-patterns.md",
+      "lines": "29-51",
+      "reason": "RLS, input validation, least privilege"
+    },
+    {
+      "path": ".opencode/context/core/standards/code-quality.md",
+      "lines": "53-94,126-143",
+      "reason": "Pure functions, dependency injection for heartbeat"
+    }
+  ],
+  "reference_files": [
+    "src/services/forumService.ts",
+    "src/pages/ForumPage.tsx",
+    "src/components/forum/CommunityHeader.tsx",
+    "src/lib/supabase.ts"
+  ],
+  "acceptance_criteria": [
+    "Schema: `ALTER TABLE users ADD COLUMN last_seen_at TIMESTAMPTZ` via supabase_apply_migration",
+    "Heartbeat: on ForumPage mount (and every 60s interval), authenticated users update their `last_seen_at = now()` in users table",
+    "Heartbeat: only for authenticated users (skip if not logged in)",
+    "Online count: `random(3000, 10000) + COUNT(*) FROM users WHERE last_seen_at > now() - interval '5 minutes'`",
+    "New service function `getOnlineCount()` returns computed online count",
+    "ForumPage: `onlineCount` updated via getOnlineCount() on mount + 30s refresh interval",
+    "ForumPage: removes hardcoded `const seed = Math.floor(Date.now() / 60000)` fake online count logic",
+    "Migration applied to project vfemvdzoimvkuedomizn",
+    "RLS: users can only update their own last_seen_at"
+  ],
+  "deliverables": [
+    "Supabase migration: add last_seen_at to users",
+    "Updated src/services/forumService.ts (heartbeat + getOnlineCount functions)",
+    "Updated src/pages/ForumPage.tsx (heartbeat interval, online count from DB)",
+    "Updated src/types/index.ts if needed"
+  ]
+}

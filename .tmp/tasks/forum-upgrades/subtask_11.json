@@ -1,0 +1,43 @@
+{
+  "id": "forum-upgrades-11",
+  "seq": "11",
+  "title": "Views counter: schema migration + RPC + frontend integration",
+  "status": "pending",
+  "depends_on": [],
+  "parallel": false,
+  "suggested_agent": "CoderAgent",
+  "context_files": [
+    {
+      "path": ".opencode/context/core/standards/security-patterns.md",
+      "lines": "29-51",
+      "reason": "RLS policies, input validation"
+    },
+    {
+      "path": ".opencode/context/core/standards/code-quality.md",
+      "lines": "53-94",
+      "reason": "Pure functions for RPC, immutability"
+    }
+  ],
+  "reference_files": [
+    "src/services/forumService.ts",
+    "src/pages/ForumTopicPage.tsx",
+    "src/components/forum/CommunityHeader.tsx",
+    "src/types/index.ts"
+  ],
+  "acceptance_criteria": [
+    "Schema: `ALTER TABLE forum_topics ADD COLUMN view_count INTEGER DEFAULT 0` via supabase_apply_migration",
+    "RPC function `increment_topic_view(topic_id UUID)`: increments view_count by 1, uses session-based dedup (checks a `topic_views` helper table or cookie/sessionStorage on frontend)",
+    "Dedup: same user session only counts once per topic view (use sessionStorage key `viewed_${topicId}`)",
+    "RPC called on ForumTopicPage mount via useEffect — calls supabase.rpc('increment_topic_view', { topic_id })",
+    "ForumTopicPage: views stat in CommunityHeader uses topic.view_count from DB (not computed from posts.length)",
+    "Updated ForumTopic interface in types/index.ts to include view_count",
+    "Migration applied to project vfemvdzoimvkuedomizn"
+  ],
+  "deliverables": [
+    "Supabase migration: add view_count to forum_topics",
+    "Supabase migration: create increment_topic_view RPC function",
+    "Updated src/services/forumService.ts (incrementTopicView function)",
+    "Updated src/pages/ForumTopicPage.tsx (call RPC on mount)",
+    "Updated src/types/index.ts (view_count on ForumTopic)"
+  ]
+}

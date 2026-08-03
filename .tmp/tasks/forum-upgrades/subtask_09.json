@@ -1,0 +1,39 @@
+{
+  "id": "forum-upgrades-09",
+  "seq": "09",
+  "title": "Region dropdown on NewTopicPage",
+  "status": "pending",
+  "depends_on": [],
+  "parallel": true,
+  "suggested_agent": "CoderAgent",
+  "context_files": [
+    {
+      "path": ".opencode/context/core/standards/code-quality.md",
+      "lines": "53-94",
+      "reason": "Pure functions, immutability for form state"
+    },
+    {
+      "path": ".opencode/context/core/standards/typescript.md",
+      "lines": "89-111",
+      "reason": "Explicit types, avoid any"
+    }
+  ],
+  "reference_files": [
+    "src/pages/NewTopicPage.tsx",
+    "src/services/forumService.ts",
+    "src/types/index.ts"
+  ],
+  "acceptance_criteria": [
+    "NewTopicPage: new optional dropdown field 'Region' with options: Africa, Asia, Europe, Americas, Oceania, Global (default: Global)",
+    "Dropdown uses same styling as existing form fields (surface-lighter bg, border, rounded, etc.)",
+    "Selected region stored as a string tag appended to the topic's tags array (e.g. 'region:asia') — NO schema column needed",
+    "Region tag is filterable like other tags on ForumPage",
+    "Region tag renders as a styled chip on topic cards (distinct color from regular tags, e.g. accent-blue bg)",
+    "Dropdown is optional — empty selection means no region tag added",
+    "Form state uses useState with explicit string type"
+  ],
+  "deliverables": [
+    "Updated src/pages/NewTopicPage.tsx (region dropdown)",
+    "Updated src/pages/ForumPage.tsx (region tag chip rendering)"
+  ]
+}
