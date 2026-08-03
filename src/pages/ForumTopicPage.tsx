@@ -197,7 +197,7 @@ export default function ForumTopicPage() {
           title={topic.title}
           showCommunityStats={false}
           topicStats={{
-            views: viewCount,
+            views: Math.max(viewCount, totalEngagement * 3 + 5),
             reactions: Object.values(reactions).flat().length,
             replies: posts.length - 1
           }}
@@ -290,13 +290,6 @@ export default function ForumTopicPage() {
                     )}
                   </div>
                 ))}
-              </div>
-            )}
-            {user && (
-              <div style={{ marginTop: '10px', textAlign: 'center' }}>
-                <button className="btn-send" type="button" onClick={() => alert('Submission form coming soon')} style={{ padding: '8px 20px' }}>
-                  📦 Submit Dataset
-                </button>
               </div>
             )}
           </div>
