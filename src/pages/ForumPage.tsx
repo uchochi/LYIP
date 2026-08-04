@@ -20,8 +20,10 @@ export default function ForumPage() {
   const { user } = useAuth();
 
   const isAdmin = user?.role === 'admin';
+  const isStaff = ['admin', 'senior_instructor', 'instructor'].includes(user?.role || '');
   const welcome = searchParams.get('welcome') === '1';
   const [showVerifyBanner, setShowVerifyBanner] = useState(false);
+  const [contributorsOpen, setContributorsOpen] = useState(false);
 
   const load = async () => {
     setLoading(true);
@@ -118,18 +120,30 @@ export default function ForumPage() {
 
         {topContributors.length > 0 && (
           <div style={{ marginBottom: '12px' }}>
-            <div style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-              🔥 Top Contributors This Week
-            </div>
-            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-              {topContributors.map((c) => (
-                <div key={c.id} style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'var(--surface-card)', borderRadius: '20px', padding: '3px 10px 3px 4px', border: '1px solid var(--border)', fontSize: '12px' }}>
-                  <MiniAvatar name={c.name || c.username} color={c.avatar_color} />
-                  <span style={{ color: 'var(--text-main)', fontWeight: 500 }}>{c.username || c.name}</span>
-                  <span style={{ color: 'var(--text-muted)', fontSize: '10px' }}>{c.post_count}</span>
-                </div>
-              ))}
-            </div>
+            <button
+              type="button"
+              onClick={() => setContributorsOpen(!contributorsOpen)}
+              style={{
+                display: 'flex', alignItems: 'center', gap: '4px',
+                fontSize: '11px', fontWeight: 600, color: 'var(--text-muted)',
+                textTransform: 'uppercase', letterSpacing: '0.5px',
+                background: 'none', border: 'none', cursor: 'pointer',
+                fontFamily: 'inherit', padding: 0, marginBottom: contributorsOpen ? '6px' : 0,
+              }}
+            >
+              {contributorsOpen ? '▾' : '▸'} 🔥 Top Contributors This Week
+            </button>
+            {contributorsOpen && (
+              <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                {topContributors.map((c) => (
+                  <div key={c.id} style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'var(--surface-card)', borderRadius: '20px', padding: '3px 10px 3px 4px', border: '1px solid var(--border)', fontSize: '12px' }}>
+                    <MiniAvatar name={c.name || c.username} color={c.avatar_color} />
+                    <span style={{ color: 'var(--text-main)', fontWeight: 500 }}>{c.username || c.name}</span>
+                    <span style={{ color: 'var(--text-muted)', fontSize: '10px' }}>{c.post_count}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
@@ -177,17 +191,21 @@ export default function ForumPage() {
                         ))}
                       </div>
                     )}
-                    {isAdmin && (
+                    {isStaff && (
                       <div className="card-actions" style={{ opacity: 1 }}>
                         <button className="card-action-btn" onClick={(e) => { e.preventDefault(); handlePin(topic); }} title={topic.is_pinned ? 'Unpin' : 'Pin'} type="button">
                           <Pin size={13} />
                         </button>
-                        <button className="card-action-btn" onClick={(e) => { e.preventDefault(); handleArchive(topic); }} title={topic.is_archived ? 'Unarchive' : 'Archive'} type="button">
-                          <Archive size={13} />
-                        </button>
-                        <button className="card-action-btn" onClick={(e) => { e.preventDefault(); handleDelete(topic.id); }} title="Delete" type="button">
-                          <Trash2 size={13} />
-                        </button>
+                        {isAdmin && (
+                          <>
+                            <button className="card-action-btn" onClick={(e) => { e.preventDefault(); handleArchive(topic); }} title={topic.is_archived ? 'Unarchive' : 'Archive'} type="button">
+                              <Archive size={13} />
+                            </button>
+                            <button className="card-action-btn" onClick={(e) => { e.preventDefault(); handleDelete(topic.id); }} title="Delete" type="button">
+                              <Trash2 size={13} />
+                            </button>
+                          </>
+                        )}
                       </div>
                     )}
                   </div>

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Pin, Lock, AlertTriangle, X } from 'lucide-react';
-import { getTopic, getPosts, createPost, deletePost, getReactions, toggleReaction, incrementTopicView, getDatasetSubmissions, type DatasetSubmission } from '../services/forumService';
+import { getTopic, getPosts, createPost, deletePost, getReactions, toggleReaction, incrementTopicView, getDatasetSubmissions, updateTopic, type DatasetSubmission } from '../services/forumService';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import Spinner from '../components/ui/Spinner';
@@ -27,6 +27,7 @@ export default function ForumTopicPage() {
   const [datasetSubmissions, setDatasetSubmissions] = useState<DatasetSubmission[]>([]);
 
   const isAdmin = user?.role === 'admin';
+  const isStaff = ['admin', 'senior_instructor', 'instructor'].includes(user?.role || '');
   const currentUserId = user?.id;
 
   const load = useCallback(async () => {
@@ -175,6 +176,22 @@ export default function ForumTopicPage() {
       {topic.tags.map((tag) => (
         <span key={tag} className="data-tag">#{tag}</span>
       ))}
+      {isStaff && (
+        <button
+          type="button"
+          onClick={() => updateTopic(topic.id, { is_pinned: !topic.is_pinned }).then(() => setTopic({ ...topic, is_pinned: !topic.is_pinned }))}
+          style={{
+            marginLeft: 'auto', display: 'inline-flex', alignItems: 'center', gap: '3px',
+            background: topic.is_pinned ? 'rgba(245,158,11,0.15)' : 'var(--surface-lighter)',
+            border: '1px solid', borderColor: topic.is_pinned ? 'rgba(245,158,11,0.4)' : 'var(--border)',
+            color: topic.is_pinned ? '#f59e0b' : 'var(--text-muted)',
+            borderRadius: '6px', padding: '3px 8px', fontSize: '11px', fontWeight: 600,
+            cursor: 'pointer', fontFamily: 'inherit',
+          }}
+        >
+          <Pin size={11} /> {topic.is_pinned ? 'Unpin' : 'Pin'}
+        </button>
+      )}
     </div>
   );
 
