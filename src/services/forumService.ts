@@ -255,3 +255,18 @@ export async function updateSubmissionStatus(id: string, status: 'approved' | 'r
   const { error } = await supabase.from('dataset_submissions').update({ status, admin_notes: notes }).eq('id', id);
   if (error) throw error;
 }
+
+// --- Quiz ---
+
+export async function saveQuizResponse(answers: Record<string, unknown>): Promise<void> {
+  const { data: userData } = await supabase.auth.getUser();
+  const userId = userData.user?.id || null;
+  const { error } = await supabase.from('quiz_responses').insert({
+    user_id: userId,
+    answers,
+  });
+  if (error) {
+    // Non-fatal — quiz still works via localStorage
+    console.warn('Could not save quiz response:', error.message);
+  }
+}

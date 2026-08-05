@@ -23,6 +23,7 @@ import DashboardPage from './pages/admin/DashboardPage';
 import CreateJobPage from './pages/admin/CreateJobPage';
 import EditJobPage from './pages/admin/EditJobPage';
 import UserDashboardPage from './pages/UserDashboardPage';
+import QuizPage from './pages/QuizPage';
 import ProtectedAdminRoute from './components/admin/ProtectedAdminRoute';
 import ProtectedUserRoute from './components/ProtectedUserRoute';
 import ScrollToTop from './components/ScrollToTop';
@@ -61,6 +62,7 @@ export default function App() {
 
           {/* Auth zone — bare dark chrome, no marketing footer */}
           <Route element={<BareLayout />}>
+            <Route path="/quiz" element={<QuizPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route
