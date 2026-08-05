@@ -84,7 +84,7 @@ export default function QuizResult({ answers, onRetake }: QuizResultProps) {
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        <Link to="/forum?quiz=done" style={{ textDecoration: 'none' }}>
+        <Link to="/learn" style={{ textDecoration: 'none' }}>
           <button className="btn-send" type="button" style={{ width: '100%', padding: '14px', fontSize: '0.95rem' }}>
             Start Contributing →
           </button>

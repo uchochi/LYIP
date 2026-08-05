@@ -28,12 +28,50 @@ export function parseDataTags(text: string): ParsedSegment[] {
   return segments.length === 0 ? [{ type: 'text', value: text }] : segments;
 }
 
-export function renderWithTags(text: string): ReactNode[] {
-  return parseDataTags(text).map((seg, i) =>
+const YOUTUBE_PATTERN = /\[youtube:([a-zA-Z0-9_-]+)\]/g;
+
+function renderTextSegment(text: string, keyRef: { k: number }): ReactNode[] {
+  return parseDataTags(text).map((seg) =>
     seg.type === 'tag' ? (
-      <span key={i} className="data-tag">{seg.value}</span>
+      <span key={keyRef.k++} className="data-tag">{seg.value}</span>
     ) : (
-      <span key={i}>{seg.value}</span>
+      <span key={keyRef.k++}>{seg.value}</span>
     )
   );
+}
+
+export function renderWithTags(text: string): ReactNode[] {
+  const nodes: ReactNode[] = [];
+  const keyRef = { k: 0 };
+  let lastIndex = 0;
+
+  YOUTUBE_PATTERN.lastIndex = 0;
+  let match: RegExpExecArray | null;
+  while ((match = YOUTUBE_PATTERN.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      nodes.push(...renderTextSegment(text.slice(lastIndex, match.index), keyRef));
+    }
+    const videoId = match[1];
+    nodes.push(
+      <div key={keyRef.k++} style={{ margin: '12px 0', borderRadius: '10px', overflow: 'hidden', position: 'relative' }}>
+        <iframe
+          width="100%"
+          height="280"
+          src={`https://www.youtube.com/embed/${videoId}`}
+          title="YouTube video"
+          frameBorder={0}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          style={{ borderRadius: '10px', border: 'none', display: 'block' }}
+        />
+      </div>
+    );
+    lastIndex = match.index + match[0].length;
+  }
+
+  if (lastIndex < text.length) {
+    nodes.push(...renderTextSegment(text.slice(lastIndex), keyRef));
+  }
+
+  return nodes.length === 0 ? [<span key={0}>{text}</span>] : nodes;
 }
