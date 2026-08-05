@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, type FormEvent } from 'react';
 import TypingIndicator from './TypingIndicator';
+import MarkdownToolbar from './MarkdownToolbar';
 
 interface ChatInputProps {
   placeholder?: string;
@@ -36,6 +37,7 @@ export default function ChatInput({
   const [pendingSticker, setPendingSticker] = useState<string | null>(null);
   const [showEmoji, setShowEmoji] = useState(false);
   const [showSticker, setShowSticker] = useState(false);
+  const [showFormat, setShowFormat] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const boxRef = useRef<HTMLDivElement>(null);
 
@@ -117,11 +119,22 @@ export default function ChatInput({
             }
           }}
         />
+        {showFormat && (
+          <div style={{ marginTop: '8px' }}>
+            <MarkdownToolbar textareaRef={textareaRef} value={content} onChange={setContent} compact />
+          </div>
+        )}
         <div className="input-actions">
           <div className="tools">
             <span onClick={() => setShowEmoji(!showEmoji)} title="Add emoji">😊</span>
             <span onClick={() => setShowSticker(!showSticker)} title="Add sticker">📎</span>
-            <span title="Coming soon">📊</span>
+            <span
+              onClick={() => setShowFormat((s) => !s)}
+              title="Markdown formatting"
+              style={{ color: showFormat ? 'var(--accent-primary)' : undefined }}
+            >
+              Md
+            </span>
             <span title="Coming soon">✨</span>
           </div>
           <button type="submit" className="btn-send" disabled={disabled || (!content.trim() && !pendingSticker)} onClick={handleSubmit}>

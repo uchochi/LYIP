@@ -214,6 +214,155 @@
   font-size: 0.9rem;
   color: #d4d4d8;
   line-height: 1.6;
+  /* Allow block children (p, headings, etc.) to control their own spacing. */
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* --- MARKDOWN RENDERED CONTENT (scoped to message bodies) --- */
+.comment-body .md-root {
+  display: block;
+}
+
+/* Paragraphs: vertical rhythm between blocks, no margin at the edges. */
+.comment-body .md-p {
+  margin: 0 0 10px;
+}
+.comment-body .md-root > .md-p:last-child,
+.comment-body .md-root > *:last-child {
+  margin-bottom: 0;
+}
+.comment-body .md-root > *:first-child {
+  margin-top: 0;
+}
+
+/* Headings: title (#) vs subtitle (##) vs smaller. */
+.comment-body .md-heading {
+  color: var(--text-main);
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 16px 0 8px;
+  letter-spacing: -0.01em;
+}
+.comment-body h3.md-heading {
+  font-size: 1.15rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 6px;
+}
+.comment-body h4.md-heading {
+  font-size: 1rem;
+}
+.comment-body h5.md-heading {
+  font-size: 0.92rem;
+  color: #e4e4e7;
+}
+.comment-body h6.md-heading {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+/* First heading in a message shouldn't push down. */
+.comment-body .md-root > .md-heading:first-child {
+  margin-top: 0;
+}
+
+/* Inline code */
+.comment-body .md-code,
+.comment-body code {
+  font-family: 'SFMono-Regular', ui-monospace, Menlo, Consolas, 'Liberation Mono', monospace;
+  font-size: 0.85em;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1px 5px;
+  color: #f4bf75;
+  white-space: nowrap;
+}
+
+/* Fenced code block */
+.comment-body .md-pre {
+  margin: 10px 0;
+  padding: 12px 14px;
+  background: #0c0c0e;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  overflow-x: auto;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+.comment-body .md-pre code {
+  font-family: 'SFMono-Regular', ui-monospace, Menlo, Consolas, 'Liberation Mono', monospace;
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: #e4e4e7;
+  white-space: pre;
+  font-size: inherit;
+}
+
+/* Blockquote */
+.comment-body .md-quote {
+  margin: 10px 0;
+  padding: 6px 14px;
+  border-left: 3px solid var(--accent-primary);
+  background: rgba(59, 130, 246, 0.06);
+  border-radius: 0 8px 8px 0;
+  color: var(--text-muted);
+}
+.comment-body .md-quote .md-p {
+  margin: 4px 0;
+}
+
+/* Lists */
+.comment-body .md-ul,
+.comment-body .md-ol {
+  margin: 8px 0 10px;
+  padding-left: 24px;
+}
+.comment-body .md-ul { list-style: disc; }
+.comment-body .md-ol { list-style: decimal; }
+.comment-body .md-ul li,
+.comment-body .md-ol li {
+  margin: 3px 0;
+}
+.comment-body .md-ul li::marker,
+.comment-body .md-ol li::marker {
+  color: var(--accent-primary);
+}
+
+/* Horizontal rule */
+.comment-body .md-hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 14px 0;
+}
+
+/* Links */
+.comment-body .md-link {
+  color: var(--accent-primary);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s ease;
+}
+.comment-body .md-link:hover {
+  border-bottom-color: var(--accent-primary);
+}
+
+/* Bold / italic inherit nicely; keep emphasis visible. */
+.comment-body strong { color: var(--text-main); font-weight: 700; }
+.comment-body em { font-style: italic; }
+
+/* YouTube embed wrapper */
+.comment-body .md-youtube {
+  max-width: 100%;
+}
+
+/* --- MARKDOWN TOOLBAR (new-topic form + chat input) --- */
+.md-tool-btn:hover {
+  background: rgba(59, 130, 246, 0.15) !important;
+  border-color: rgba(59, 130, 246, 0.4) !important;
+  color: var(--accent-primary) !important;
 }
 
 .data-tag {

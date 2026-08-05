@@ -7,6 +7,7 @@ import { supabase } from '../lib/supabase';
 import MiniAvatar from '../components/forum/MiniAvatar';
 import CommunityHeader from '../components/forum/CommunityHeader';
 import { formatRelative } from '../lib/relativeTime';
+import { stripMarkdownForPreview } from '../lib/markdown';
 import '../forum.css';
 import type { ForumTopic } from '../types';
 
@@ -186,7 +187,7 @@ export default function ForumPage() {
                       {topic.title}
                     </div>
                     <div className="comment-body" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                      {topic.content}
+                      {stripMarkdownForPreview(topic.content)}
                     </div>
                     {topic.tags.length > 0 && (
                       <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', marginTop: '6px' }}>
