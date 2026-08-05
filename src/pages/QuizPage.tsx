@@ -69,7 +69,7 @@ const QUESTIONS: Question[] = [
     title: 'How familiar are you with data or datasets?',
     subtitle: "There's no wrong answer — we meet you where you are!",
     options: [
-      { emoji: '🌱', label: "I'm completely new", sublabel: 'And that's perfectly fine!' },
+      { emoji: '🌱', label: "I'm completely new", sublabel: "And that's perfectly fine!" },
       { emoji: '🌿', label: "I've worked with data a little bit" },
       { emoji: '🌳', label: "I'm fairly comfortable with datasets" },
       { emoji: '🎯', label: "I'm a data pro" },

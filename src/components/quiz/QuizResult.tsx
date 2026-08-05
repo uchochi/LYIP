@@ -36,7 +36,7 @@ function recommendPath(answers: QuizAnswers): { tag: string; desc: string }[] {
   if (skills.includes('Working with code or scripts')) tags.push({ tag: '💻 Technical', desc: 'Data pipelines, formatting scripts, QA' });
   if (skills.includes('Labeling or categorizing content')) tags.push({ tag: '📊 Annotation', desc: 'Labeling, tagging, categorizing datasets' });
 
-  if (!tags.length) tags.push({ tag: '🌱 Getting Started', desc: 'We'll guide you through your first dataset!' });
+  if (!tags.length) tags.push({ tag: '🌱 Getting Started', desc: "We'll guide you through your first dataset!" });
 
   return tags;
 }
