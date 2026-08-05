@@ -4,7 +4,6 @@ import QuizOption from '../components/quiz/QuizOption';
 import QuizProgress from '../components/quiz/QuizProgress';
 import QuizResult, { type QuizAnswers } from '../components/quiz/QuizResult';
 import { saveQuizResponse } from '../services/forumService';
-import { supabase } from '../lib/supabase';
 import '../forum.css';
 
 interface Option {
@@ -130,7 +129,6 @@ const TOTAL_STEPS = QUESTIONS.length;
 export default function QuizPage() {
   const [step, setStep] = useState(-1);
   const [answers, setAnswers] = useState<QuizAnswers>({});
-  const [direction, setDirection] = useState(1);
   const [saved, setSaved] = useState(false);
 
   const isWelcome = step === -1;
@@ -150,12 +148,10 @@ export default function QuizPage() {
   }, [isResult, saved, answers]);
 
   const goNext = () => {
-    setDirection(1);
     setStep((s) => s + 1);
   };
 
   const goBack = () => {
-    setDirection(-1);
     setStep((s) => Math.max(-1, s - 1));
   };
 

@@ -20,7 +20,6 @@ function recommendPath(answers: QuizAnswers): { tag: string; desc: string }[] {
 
   const skills = answers.skills || [];
   const languages = answers.languages || [];
-  const experience = answers.experience || '';
 
   if (languages.length > 0) {
     tags.push({

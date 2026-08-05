@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { Plus, Pin, Archive, Lock, Trash2, AlertTriangle, X } from 'lucide-react';
+import { Plus, Pin, Archive, Lock, Trash2, AlertTriangle, X, ChevronDown, ChevronRight } from 'lucide-react';
 import { getTopics, deleteTopic, updateTopic, getMemberCount, getOnlineCount, updateUserLastSeen, getTopContributors, type TopContributor } from '../services/forumService';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
@@ -124,14 +124,18 @@ export default function ForumPage() {
               type="button"
               onClick={() => setContributorsOpen(!contributorsOpen)}
               style={{
-                display: 'flex', alignItems: 'center', gap: '4px',
+                display: 'flex', alignItems: 'center', gap: '6px',
                 fontSize: '11px', fontWeight: 600, color: 'var(--text-muted)',
                 textTransform: 'uppercase', letterSpacing: '0.5px',
-                background: 'none', border: 'none', cursor: 'pointer',
-                fontFamily: 'inherit', padding: 0, marginBottom: contributorsOpen ? '6px' : 0,
+                background: 'var(--surface-lighter)', border: '1px solid var(--border)',
+                borderRadius: '8px', padding: '6px 12px',
+                cursor: 'pointer', fontFamily: 'inherit',
+                transition: 'all 0.15s ease',
+                marginBottom: contributorsOpen ? '8px' : '0',
               }}
             >
-              {contributorsOpen ? '▾' : '▸'} 🔥 Top Contributors This Week
+              {contributorsOpen ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+              🔥 Top Contributors
             </button>
             {contributorsOpen && (
               <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>

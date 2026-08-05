@@ -258,7 +258,7 @@ export async function updateSubmissionStatus(id: string, status: 'approved' | 'r
 
 // --- Quiz ---
 
-export async function saveQuizResponse(answers: Record<string, unknown>): Promise<void> {
+export async function saveQuizResponse(answers: object): Promise<void> {
   const { data: userData } = await supabase.auth.getUser();
   const userId = userData.user?.id || null;
   const { error } = await supabase.from('quiz_responses').insert({
