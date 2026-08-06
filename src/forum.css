@@ -245,37 +245,36 @@
 }
 
 /* Headings: clear visual rank. Body text is 0.9rem / weight 400 in #d4d4d8,
-   so each heading step is a noticeable jump in BOTH size and weight. */
+   so each heading step is a BIG jump in both size and weight. */
 .comment-body .md-heading {
   color: var(--text-main);
-  font-weight: 700;
-  line-height: 1.3;
-  margin: 18px 0 8px;
-  letter-spacing: -0.015em;
+  font-weight: 800;
+  line-height: 1.25;
+  margin: 20px 0 10px;
+  letter-spacing: -0.02em;
 }
 /* # Title — the biggest, with a divider underline. */
 .comment-body h3.md-heading {
-  font-size: 1.3rem;
+  font-size: 1.45rem;
   font-weight: 800;
   border-bottom: 1px solid var(--border-strong);
-  padding-bottom: 7px;
+  padding-bottom: 8px;
 }
-/* ## Subtitle — clearly larger and bolder than body text. */
+/* ## Subtitle — much bigger and bolder than body text. */
 .comment-body h4.md-heading {
-  font-size: 1.12rem;
-  font-weight: 700;
-  color: var(--text-main);
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #ffffff;
 }
-/* ### Minor heading — modest size but bold + accent-tinted so it never reads
-   as plain body copy. */
+/* ### Minor heading — clearly larger and bolder than body, accent-tinted. */
 .comment-body h5.md-heading {
-  font-size: 1.0rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: #c4b5fd;
 }
 /* ####+ — small label style. */
 .comment-body h6.md-heading {
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   font-weight: 700;
   color: var(--text-muted);
   text-transform: uppercase;
@@ -368,9 +367,16 @@
   border-bottom-color: var(--accent-primary);
 }
 
-/* Bold / italic inherit nicely; keep emphasis visible. */
-.comment-body strong { color: var(--text-main); font-weight: 700; }
-.comment-body em { font-style: italic; }
+/* Bold / italic inherit nicely; keep emphasis visibly heavier than body. */
+.comment-body strong {
+  color: #ffffff;
+  font-weight: 800;
+}
+.comment-body em {
+  font-style: italic;
+  color: #e4e4e7;
+  font-weight: 600;
+}
 
 /* YouTube embed wrapper */
 .comment-body .md-youtube {
