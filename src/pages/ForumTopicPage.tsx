@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Pin, Lock, AlertTriangle, X } from 'lucide-react';
-import { getTopic, getPosts, createPost, deletePost, getReactions, toggleReaction, incrementTopicView, getDatasetSubmissions, updateTopic, type DatasetSubmission } from '../services/forumService';
+import { getTopic, getPosts, createPost, deletePost, updatePost, getReactions, toggleReaction, incrementTopicView, getDatasetSubmissions, updateTopic, type DatasetSubmission } from '../services/forumService';
 import { supabase } from '../lib/supabase';
+import { useTyping } from '../lib/useTyping';
 import { useAuth } from '../context/AuthContext';
 import Spinner from '../components/ui/Spinner';
 import CommunityHeader from '../components/forum/CommunityHeader';
@@ -21,7 +22,6 @@ export default function ForumTopicPage() {
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
   const [showVerifyBanner, setShowVerifyBanner] = useState(false);
-  const [typingUsers, setTypingUsers] = useState<string[]>([]);
   const [error, setError] = useState('');
   const [viewCount, setViewCount] = useState(0);
   const [datasetSubmissions, setDatasetSubmissions] = useState<DatasetSubmission[]>([]);
@@ -68,6 +68,10 @@ export default function ForumTopicPage() {
         const newPost = payload.new as ForumPost;
         setPosts((prev) => (prev.some((p) => p.id === newPost.id) ? prev : [...prev, newPost]));
       })
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'forum_posts', filter: `topic_id=eq.${topicId}` }, (payload) => {
+        const updated = payload.new as ForumPost;
+        setPosts((prev) => prev.map((p) => (p.id === updated.id ? { ...p, ...updated } : p)));
+      })
       .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'forum_posts', filter: `topic_id=eq.${topicId}` }, (payload) => {
         const oldId = payload.old?.id as string;
         setPosts((prev) => prev.filter((p) => p.id !== oldId));
@@ -91,26 +95,11 @@ export default function ForumTopicPage() {
     };
   }, [topicId, posts]);
 
-  // Simulated typing activity for busyness
-  useEffect(() => {
-    if (!topic) return;
-    const handles = ['DataWiz', 'ScrapeMaster', 'KaggleKing', 'DataBeast_99', 'AutoPython', 'PyCollector', 'CleanData_42'];
-    let timeout: ReturnType<typeof setTimeout>;
-    const schedule = () => {
-      const delay = 8000 + Math.random() * 22000;
-      timeout = setTimeout(() => {
-        if (Math.random() < 0.65) {
-          const count = 1 + Math.floor(Math.random() * 2);
-          const picks = [...handles].sort(() => Math.random() - 0.5).slice(0, count);
-          setTypingUsers(picks);
-          setTimeout(() => setTypingUsers([]), 3000 + Math.random() * 3000);
-        }
-        schedule();
-      }, delay);
-    };
-    schedule();
-    return () => clearTimeout(timeout);
-  }, [topic]);
+  // Real typing indicator (topic-scoped Supabase Realtime broadcast).
+  const { typingNames, notifyTyping, notifyStopped } = useTyping(
+    topicId,
+    user ? { id: user.id, name: user.username || user.name } : null,
+  );
 
   const handleSend = async (content: string, stickerUrl?: string | null) => {
     if (!topicId || (!content.trim() && !stickerUrl)) return;
@@ -135,6 +124,18 @@ export default function ForumTopicPage() {
       await load();
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Failed to delete message.');
+    }
+  };
+
+  const handleEdit = async (postId: string, content: string) => {
+    setError('');
+    try {
+      const updated = await updatePost(postId, content);
+      setPosts((prev) => prev.map((p) => (p.id === postId ? { ...p, ...updated } : p)));
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : 'Failed to edit message.';
+      setError(msg);
+      throw new Error(msg); // rethrow so MessageCard can surface the error inline
     }
   };
 
@@ -267,6 +268,7 @@ export default function ForumTopicPage() {
             isAdmin={isAdmin}
             onReply={user ? () => setReplyingTo(post.id) : undefined}
             onDelete={() => handleDelete(post.id)}
+            onEdit={user ? (content) => handleEdit(post.id, content) : undefined}
             onToggleReaction={(emoji) => handleToggleReaction(post.id, emoji)}
           />
         ))}
@@ -314,7 +316,9 @@ export default function ForumTopicPage() {
 
         {user ? (
           <ChatInput
-            typingUsers={typingUsers}
+            typingUsers={typingNames}
+            onTyping={notifyTyping}
+            onStoppedTyping={notifyStopped}
             replyingTo={replyingTo}
             onCancelReply={() => setReplyingTo(null)}
             onSend={handleSend}

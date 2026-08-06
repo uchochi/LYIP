@@ -209,6 +209,14 @@
   margin-left: auto;
 }
 
+.edited-mark {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  opacity: 0.8;
+  margin-left: 3px;
+  font-style: italic;
+}
+
 /* Content */
 .comment-body {
   font-size: 0.9rem;
@@ -236,31 +244,42 @@
   margin-top: 0;
 }
 
-/* Headings: title (#) vs subtitle (##) vs smaller. */
+/* Headings: clear visual rank. Body text is 0.9rem / weight 400 in #d4d4d8,
+   so each heading step is a noticeable jump in BOTH size and weight. */
 .comment-body .md-heading {
   color: var(--text-main);
   font-weight: 700;
   line-height: 1.3;
-  margin: 16px 0 8px;
-  letter-spacing: -0.01em;
+  margin: 18px 0 8px;
+  letter-spacing: -0.015em;
 }
+/* # Title — the biggest, with a divider underline. */
 .comment-body h3.md-heading {
-  font-size: 1.15rem;
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 6px;
+  font-size: 1.3rem;
+  font-weight: 800;
+  border-bottom: 1px solid var(--border-strong);
+  padding-bottom: 7px;
 }
+/* ## Subtitle — clearly larger and bolder than body text. */
 .comment-body h4.md-heading {
-  font-size: 1rem;
+  font-size: 1.12rem;
+  font-weight: 700;
+  color: var(--text-main);
 }
+/* ### Minor heading — modest size but bold + accent-tinted so it never reads
+   as plain body copy. */
 .comment-body h5.md-heading {
-  font-size: 0.92rem;
-  color: #e4e4e7;
+  font-size: 1.0rem;
+  font-weight: 700;
+  color: #c4b5fd;
 }
+/* ####+ — small label style. */
 .comment-body h6.md-heading {
-  font-size: 0.85rem;
+  font-size: 0.82rem;
+  font-weight: 700;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
 }
 /* First heading in a message shouldn't push down. */
 .comment-body .md-root > .md-heading:first-child {

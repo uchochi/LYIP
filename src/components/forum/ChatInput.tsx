@@ -9,6 +9,8 @@ interface ChatInputProps {
   replyingTo?: string | null;
   onCancelReply?: () => void;
   onSend: (content: string, stickerUrl?: string | null) => void;
+  onTyping?: () => void;
+  onStoppedTyping?: () => void;
   disabled?: boolean;
 }
 
@@ -31,6 +33,8 @@ export default function ChatInput({
   replyingTo,
   onCancelReply,
   onSend,
+  onTyping,
+  onStoppedTyping,
   disabled = false,
 }: ChatInputProps) {
   const [content, setContent] = useState('');
@@ -64,6 +68,7 @@ export default function ChatInput({
     const trimmed = content.trim();
     if (!trimmed && !pendingSticker) return;
     onSend(trimmed || '📦', pendingSticker);
+    onStoppedTyping?.();
     setContent('');
     setPendingSticker(null);
   };
@@ -111,7 +116,14 @@ export default function ChatInput({
           rows={1}
           placeholder={placeholder}
           value={content}
-          onChange={(e) => setContent(e.target.value)}
+          onChange={(e) => {
+            setContent(e.target.value);
+            if (e.target.value.trim()) onTyping?.();
+            else onStoppedTyping?.();
+          }}
+          onBlur={() => {
+            if (!content.trim()) onStoppedTyping?.();
+          }}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
               e.preventDefault();

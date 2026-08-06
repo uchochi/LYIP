@@ -211,8 +211,8 @@ export function randomModeratorTopic(): TopicTemplate {
       language: pick(languages),
       pay: pick(pays),
       payRange: pick(payRanges),
-      modName: pick(['Ada', 'Kwame', 'Zara']),
-      modName2: pick(['Chidi', 'Amina', 'Tunde', 'Fatima']),
+      modName: pick(['Aaron', 'Claire', 'Ethan']),
+      modName2: pick(['Adam', 'Amber', 'Andrew', 'Erin']),
     }),
     tags: t.tags.map(tag => fill(tag, { language: pick(languages) })),
   }

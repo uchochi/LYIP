@@ -96,6 +96,17 @@ export async function deletePost(id: string): Promise<boolean> {
   return true;
 }
 
+export async function updatePost(id: string, content: string): Promise<ForumPost> {
+  const { data, error } = await supabase
+    .from('forum_posts')
+    .update({ content, updated_at: new Date().toISOString() })
+    .eq('id', id)
+    .select(`*, ${USER_SELECT}`)
+    .single();
+  if (error) throw error;
+  return data;
+}
+
 // --- Reactions ---
 
 export async function getReactions(postIds: string[]): Promise<Record<string, ForumReaction[]>> {
