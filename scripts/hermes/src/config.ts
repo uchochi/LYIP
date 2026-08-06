@@ -18,7 +18,8 @@ export const config = {
     newMember: 0.25,
   } as Record<string, number>,
 
-  accountsPath: new URL('../accounts.json', import.meta.url).pathname,
+  // Accounts live under the agent's device dir (~/.hermes), not in the repo.
+  accountsPath: process.env.HERMES_ACCOUNTS_PATH || '/root/.hermes/accounts.json',
 
   // Agent-driven mode (hermes-agent CLI drives Chromium over CDP).
   agentCli: process.env.HERMES_AGENT_CLI || '/usr/local/lib/hermes-agent/cli.py',

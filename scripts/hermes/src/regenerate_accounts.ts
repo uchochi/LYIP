@@ -1,5 +1,6 @@
 import { allPersonas } from './personas.js'
 import { writeFileSync } from 'node:fs'
+import { config } from './config.js'
 
 const accounts = allPersonas.map(p => ({
   email: p.email,
@@ -9,5 +10,5 @@ const accounts = allPersonas.map(p => ({
   role: p.role,
 }))
 
-writeFileSync(new URL('../accounts.json', import.meta.url).pathname, JSON.stringify(accounts, null, 2))
-console.log(`Regenerated accounts.json with ${accounts.length} entries`)
+writeFileSync(config.accountsPath, JSON.stringify(accounts, null, 2))
+console.log(`Regenerated accounts.json -> ${config.accountsPath} (${accounts.length} entries)`)
