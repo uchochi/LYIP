@@ -16,6 +16,7 @@ export default function MarketingNavbar() {
   const links = [
     { to: '/', label: 'Home' },
     { to: '/jobs', label: 'Open Positions' },
+    { to: '/start', label: 'Learn' },
     { to: '/about', label: 'About' },
     { to: '/platform', label: 'Platform' },
     { to: '/research', label: 'Research' },
@@ -75,6 +76,9 @@ export default function MarketingNavbar() {
               My Dashboard
             </Link>
           )}
+          <Link to="/submit" className="no-underline">
+            <Button size="sm">Submit Dataset</Button>
+          </Link>
           {isAuthenticated ? (
             <Button variant="ghost" size="sm" onClick={logout}>Logout</Button>
           ) : (
@@ -106,6 +110,9 @@ export default function MarketingNavbar() {
                 {l.label}
               </Link>
             ))}
+            <Link to="/submit" onClick={close} className="rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white no-underline">
+              Submit Dataset
+            </Link>
             {isAuthenticated ? (
               <button
                 onClick={() => { logout(); close(); }}

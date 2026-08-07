@@ -84,9 +84,21 @@ export default function QuizResult({ answers, onRetake }: QuizResultProps) {
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        <Link to="/learn" style={{ textDecoration: 'none' }}>
+        <Link to="/start" style={{ textDecoration: 'none' }}>
           <button className="btn-send" type="button" style={{ width: '100%', padding: '14px', fontSize: '0.95rem' }}>
-            Start Contributing →
+            Start the Tutorial →
+          </button>
+        </Link>
+        <Link to="/learn" style={{ textDecoration: 'none' }}>
+          <button
+            type="button"
+            style={{
+              background: 'none', border: '1px solid var(--border)', color: 'var(--text-muted)',
+              width: '100%', padding: '12px', fontSize: '0.85rem', borderRadius: '12px', cursor: 'pointer',
+              fontFamily: 'inherit',
+            }}
+          >
+            Watch training videos
           </button>
         </Link>
         <button

@@ -93,3 +93,32 @@ export interface UserInfo {
   avatarUrl: string
   avatarColor: string
 }
+
+// --- Dataset Curation -------------------------------------------------------
+export type SubmissionStatus = 'pending' | 'under_review' | 'approved' | 'rejected' | 'needs_revision'
+export type DatasetFormat = 'json' | 'csv' | 'txt' | 'parquet' | 'other'
+
+export interface CuratorSubmission {
+  id: string
+  user_id: string
+  title: string
+  description: string | null
+  content: string | null
+  dataset_url: string | null
+  storage_path: string | null
+  file_name: string | null
+  file_size_bytes: number | null
+  mime_type: string | null
+  category: string
+  custom_category: string | null
+  format: string | null
+  entry_count: number | null
+  status: SubmissionStatus
+  proposed_price: number | null
+  admin_notes: string | null
+  reviewed_by: string | null
+  reviewed_at: string | null
+  created_at: string
+  updated_at: string
+  user?: { name: string | null; email: string | null; username: string | null }
+}

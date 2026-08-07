@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Plus, Briefcase, CheckCircle, Clock, FileEdit } from 'lucide-react';
+import { Plus, Briefcase, CheckCircle, Clock, FileEdit, Inbox } from 'lucide-react';
 import { useJobs } from '../../hooks/useJobs';
 import JobTable from '../../components/admin/JobTable';
 import Button from '../../components/ui/Button';
@@ -29,12 +29,20 @@ export default function DashboardPage() {
           <h1 className="text-2xl font-bold text-text-main">Dashboard</h1>
           <p className="mt-1 text-sm text-text-muted">Manage your job postings</p>
         </div>
-        <Link to="/admin/jobs/new" className="no-underline">
-          <Button>
-            <Plus size={18} />
-            New Job
-          </Button>
-        </Link>
+        <div className="flex flex-wrap items-center gap-2">
+          <Link to="/admin/reviews" className="no-underline">
+            <Button variant="secondary">
+              <Inbox size={16} />
+              Dataset Reviews
+            </Button>
+          </Link>
+          <Link to="/admin/jobs/new" className="no-underline">
+            <Button>
+              <Plus size={18} />
+              New Job
+            </Button>
+          </Link>
+        </div>
       </div>
 
       {/* Stats */}

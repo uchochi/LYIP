@@ -25,6 +25,11 @@ import EditJobPage from './pages/admin/EditJobPage';
 import UserDashboardPage from './pages/UserDashboardPage';
 import QuizPage from './pages/QuizPage';
 import LearnPage from './pages/LearnPage';
+import GatewayPage from './pages/start/GatewayPage';
+import ToolDeepDivePage from './pages/start/ToolDeepDivePage';
+import SubmitDatasetPage from './pages/SubmitDatasetPage';
+import FaqPage from './pages/FaqPage';
+import ReviewsPage from './pages/admin/ReviewsPage';
 import ProtectedAdminRoute from './components/admin/ProtectedAdminRoute';
 import ProtectedUserRoute from './components/ProtectedUserRoute';
 import ScrollToTop from './components/ScrollToTop';
@@ -47,6 +52,13 @@ export default function App() {
             <Route path="/terms" element={<TermsPage />} />
             <Route path="/privacy" element={<PrivacyPage />} />
             <Route path="/cookies" element={<CookiesPage />} />
+            <Route path="/start" element={<GatewayPage />} />
+            <Route path="/start/:tool" element={<ToolDeepDivePage />} />
+            <Route path="/faq" element={<FaqPage />} />
+            <Route
+              path="/submit"
+              element={<ProtectedUserRoute><SubmitDatasetPage /></ProtectedUserRoute>}
+            />
             <Route path="*" element={<NotFoundPage />} />
           </Route>
 
@@ -78,6 +90,10 @@ export default function App() {
             <Route
               path="/admin/jobs/:id/edit"
               element={<ProtectedAdminRoute><EditJobPage /></ProtectedAdminRoute>}
+            />
+            <Route
+              path="/admin/reviews"
+              element={<ProtectedAdminRoute><ReviewsPage /></ProtectedAdminRoute>}
             />
           </Route>
         </Routes>
