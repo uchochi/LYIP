@@ -157,6 +157,9 @@
   padding: 0.15rem 0.35rem;
   border-radius: 4px;
   color: #f472b6;
+  /* Keep long inline snippets (URLs, code) from overflowing the line. */
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 /* --- Code blocks --- */
@@ -166,12 +169,16 @@
   border-radius: 8px;
   border: 1px solid var(--docs-border);
   margin: 1.25rem 0;
+  max-width: 100%;
+  /* Safety net only — pre-wrap below means content wraps, not overflows. */
   overflow-x: auto;
 }
 .docs-pre,
 .docs-pre code {
   font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  white-space: pre;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
   color: #e2e8f0;
   background: transparent;
   font-size: 0.9rem;
@@ -185,6 +192,11 @@
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
   margin: 1.25rem 0;
+}
+/* Let each panel shrink so long example lines wrap instead of
+   pushing the grid wider than the screen. */
+.docs-code-grid > div {
+  min-width: 0;
 }
 .docs-code-grid .docs-code-label {
   font-size: 0.7rem;
@@ -203,6 +215,9 @@
   margin: 1.5rem 0;
   background: var(--docs-callout-bg);
   border: 1px solid var(--docs-callout-border);
+  /* Long URLs / unbroken strings wrap instead of overflowing. */
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 .docs-callout-title {
   font-weight: 600;
@@ -255,6 +270,9 @@
   border-bottom: 1px solid var(--docs-border);
   font-family: 'JetBrains Mono', ui-monospace, monospace;
   font-size: 0.85rem;
+  /* Monospace example text wraps instead of stretching the table. */
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 .docs-table th {
   background: #18181b;
