@@ -1,9 +1,19 @@
 import { Link, useParams, Navigate } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Quote } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Database, Quote, Check, X } from 'lucide-react';
 import { TOOL_DEEP_DIVES, getToolBySlug } from '../../content/tutorial';
 import Reveal from '../../components/start/Reveal';
 import StepCard from '../../components/start/StepCard';
-import ProsConsSplit from '../../components/start/ProsConsSplit';
+
+function SectionTitle({ children, accent }: { children: React.ReactNode; accent: string }) {
+  return (
+    <Reveal>
+      <div className="mb-6 flex items-center gap-3">
+        <span className="h-5 w-1 rounded-full" style={{ background: accent }} />
+        <h2 className="text-2xl font-bold text-text-main">{children}</h2>
+      </div>
+    </Reveal>
+  );
+}
 
 export default function ToolDeepDivePage() {
   const { tool } = useParams();
@@ -14,6 +24,7 @@ export default function ToolDeepDivePage() {
   const idx = TOOL_DEEP_DIVES.findIndex((t) => t.slug === data.slug);
   const prev = TOOL_DEEP_DIVES[idx - 1];
   const next = TOOL_DEEP_DIVES[idx + 1];
+  const stepNum = idx + 1;
 
   return (
     <div className="relative">
@@ -24,34 +35,35 @@ export default function ToolDeepDivePage() {
       />
 
       {/* ── Hero ── */}
-      <header className="relative mx-auto max-w-3xl px-6 pt-20 pb-10 text-center">
+      <header className="relative mx-auto max-w-3xl px-6 pt-20 pb-8 text-center">
         <Reveal>
           <Link
             to="/start"
             className="mb-8 inline-flex items-center gap-1.5 text-sm font-medium text-text-muted transition-colors hover:text-text-main"
           >
-            <ArrowLeft size={15} /> Back to Pipeline
+            <ArrowLeft size={15} /> Back to the pipeline
           </Link>
           <div className="mb-5 text-6xl">{data.emoji}</div>
           <p className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: accent }}>
             {data.role}
           </p>
-          <h1 className="mt-2 text-4xl font-extrabold tracking-tight text-text-main sm:text-5xl">{data.name}</h1>
+          <h1 className="mt-2 text-4xl font-extrabold tracking-tight text-text-main sm:text-5xl">
+            {data.name}
+          </h1>
           <p className="mt-3 text-lg italic text-text-muted">{data.tagline}</p>
           <p className="mx-auto mt-6 max-w-2xl leading-relaxed text-text-muted">{data.intro}</p>
-          <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-1.5 text-xs font-medium text-text-muted">
-            Primary stages: <span style={{ color: accent }}>{data.primaryStages}</span>
+          <div
+            className="mt-6 inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-medium text-text-muted"
+            style={{ borderColor: `${accent}44`, background: `${accent}0a` }}
+          >
+            Best for: <span style={{ color: accent }}>{data.bestFor}</span>
           </div>
         </Reveal>
       </header>
 
       {/* ── Setup ── */}
-      <section className="mx-auto max-w-3xl px-6 py-12">
-        <Reveal>
-          <h2 className="mb-6 text-2xl font-bold text-text-main">
-            {data.setup.title || 'Setup'}
-          </h2>
-        </Reveal>
+      <section className="mx-auto max-w-3xl px-6 py-10">
+        <SectionTitle accent={accent}>{data.setup.title}</SectionTitle>
         <div className="space-y-4">
           {data.setup.steps.map((s, i) => (
             <Reveal key={s.title} delay={i * 0.06}>
@@ -64,12 +76,8 @@ export default function ToolDeepDivePage() {
       </section>
 
       {/* ── How to use ── */}
-      <section className="mx-auto max-w-3xl px-6 py-12">
-        <Reveal>
-          <h2 className="mb-6 text-2xl font-bold text-text-main">
-            {data.usage.title || 'How to use it'}
-          </h2>
-        </Reveal>
+      <section className="mx-auto max-w-3xl px-6 py-10">
+        <SectionTitle accent={accent}>{data.usage.title}</SectionTitle>
         <div className="space-y-4">
           {data.usage.steps.map((s, i) => (
             <Reveal key={s.title} delay={i * 0.06}>
@@ -82,29 +90,29 @@ export default function ToolDeepDivePage() {
       </section>
 
       {/* ── Pricing ── */}
-      <section className="mx-auto max-w-3xl px-6 py-12">
-        <Reveal>
-          <h2 className="mb-2 text-2xl font-bold text-text-main">{data.pricing.title || 'Pricing'}</h2>
-          {data.pricing.trial && (
-            <p className="mb-6 rounded-lg border border-border bg-surface px-4 py-2.5 text-sm text-text-muted">
+      <section className="mx-auto max-w-3xl px-6 py-10">
+        <SectionTitle accent={accent}>Pricing & trial</SectionTitle>
+        {data.pricing.trialNote && (
+          <Reveal>
+            <p className="mb-6 rounded-lg border border-border bg-surface px-4 py-3 text-sm text-text-muted">
               <span className="font-semibold" style={{ color: accent }}>
-                Trial:
-              </span>{' '}
-              {data.pricing.trial}
+                Trial.{' '}
+              </span>
+              {data.pricing.trialNote}
             </p>
-          )}
-        </Reveal>
+          </Reveal>
+        )}
         <div className="grid gap-4 sm:grid-cols-2">
           {data.pricing.cards.map((c, i) => (
             <Reveal key={c.label} delay={i * 0.08}>
               <div
                 className="h-full rounded-2xl border bg-surface p-6"
-                style={{ borderColor: c.highlight ? `${accent}55` : 'var(--color-border)' }}
+                style={{ borderColor: `${accent}33` }}
               >
-                <p className="text-xs font-semibold uppercase tracking-wider text-text-muted">{c.label}</p>
-                <p className="mt-2 text-3xl font-extrabold" style={{ color: c.highlight ? accent : 'var(--color-text-main)' }}>
-                  {c.value}
+                <p className="text-xs font-semibold uppercase tracking-wider text-text-muted">
+                  {c.label}
                 </p>
+                <p className="mt-2 text-3xl font-extrabold text-text-main">{c.value}</p>
                 {c.note && <p className="mt-1 text-sm text-text-muted">{c.note}</p>}
               </div>
             </Reveal>
@@ -112,26 +120,58 @@ export default function ToolDeepDivePage() {
         </div>
       </section>
 
-      {/* ── Pros / Cons ── */}
-      <section className="mx-auto max-w-3xl px-6 py-12">
-        <Reveal>
-          <h2 className="mb-6 text-2xl font-bold text-text-main">The trade-offs</h2>
-        </Reveal>
-        <ProsConsSplit pros={data.pros} cons={data.cons} />
+      {/* ── Can do / Can't do ── */}
+      <section className="mx-auto max-w-3xl px-6 py-10">
+        <SectionTitle accent={accent}>What you can & can't do</SectionTitle>
+        <div className="grid gap-4 md:grid-cols-2">
+          <Reveal>
+            <div className="h-full rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.04] p-6">
+              <h4 className="mb-4 flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-emerald-400">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500/15">
+                  <Check size={14} />
+                </span>
+                What you can do
+              </h4>
+              <ul className="space-y-3">
+                {data.canDo.map((c, i) => (
+                  <li key={i} className="flex gap-2.5 text-sm text-text-main">
+                    <Check size={16} className="mt-0.5 shrink-0 text-emerald-400" />
+                    <span>{c}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <div className="h-full rounded-2xl border border-red-500/20 bg-red-500/[0.04] p-6">
+              <h4 className="mb-4 flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-red-400">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-red-500/15">
+                  <X size={14} />
+                </span>
+                Limitations
+              </h4>
+              <ul className="space-y-3">
+                {data.cantDo.map((c, i) => (
+                  <li key={i} className="flex gap-2.5 text-sm text-text-main">
+                    <X size={16} className="mt-0.5 shrink-0 text-red-400" />
+                    <span>{c}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Reveal>
+        </div>
       </section>
 
       {/* ── Summary table ── */}
-      <section className="mx-auto max-w-3xl px-6 py-12">
+      <section className="mx-auto max-w-3xl px-6 py-10">
+        <SectionTitle accent={accent}>Summary</SectionTitle>
         <Reveal>
-          <h2 className="mb-6 text-2xl font-bold text-text-main">Summary</h2>
-        </Reveal>
-        <Reveal delay={0.05}>
           <div className="overflow-hidden rounded-xl border border-border bg-surface">
             <table className="w-full text-left text-sm">
               <thead>
                 <tr style={{ background: `${accent}12` }}>
-                  <th className="px-5 py-3 font-bold text-text-main">{data.summaryHeaders[0]}</th>
-                  {data.summaryHeaders.slice(1).map((h) => (
+                  {data.summaryHeaders.map((h) => (
                     <th key={h} className="px-5 py-3 font-bold text-text-main">
                       {h}
                     </th>
@@ -156,13 +196,16 @@ export default function ToolDeepDivePage() {
       </section>
 
       {/* ── Bottom line ── */}
-      <section className="mx-auto max-w-3xl px-6 py-12">
+      <section className="mx-auto max-w-3xl px-6 py-10">
         <Reveal>
-          <div className="rounded-2xl border p-8" style={{ borderColor: `${accent}33`, background: `${accent}0a` }}>
+          <div
+            className="rounded-2xl border p-8"
+            style={{ borderColor: `${accent}33`, background: `${accent}0a` }}
+          >
             <Quote size={28} style={{ color: accent }} />
             <p className="mt-3 text-lg font-medium leading-relaxed text-text-main">
               <span className="font-bold" style={{ color: accent }}>
-                The Bottom Line.{' '}
+                The bottom line.{' '}
               </span>
               {data.bottomLine}
             </p>
@@ -172,15 +215,18 @@ export default function ToolDeepDivePage() {
 
       {/* ── Prev / Next ── */}
       <nav className="mx-auto max-w-3xl px-6 pb-20">
+        <div className="mb-4 text-center text-xs font-medium uppercase tracking-wider text-text-muted">
+          Deep dive {stepNum} of {TOOL_DEEP_DIVES.length}
+        </div>
         <div className="grid gap-4 sm:grid-cols-2">
           {prev ? (
             <Link
               to={`/start/${prev.slug}`}
               className="group flex items-center gap-3 rounded-xl border border-border bg-surface p-4 transition-colors hover:bg-surface-lighter"
             >
-              <ArrowLeft size={18} className="text-text-muted transition-transform group-hover:-translate-x-1" />
+              <ArrowLeft size={18} className="shrink-0 text-text-muted transition-transform group-hover:-translate-x-1" />
               <span>
-                <span className="block text-xs text-text-muted">Previous</span>
+                <span className="block text-xs text-text-muted">Previous tool</span>
                 <span className="font-semibold text-text-main">
                   {prev.emoji} {prev.name}
                 </span>
@@ -201,7 +247,11 @@ export default function ToolDeepDivePage() {
                   {next.emoji} {next.name}
                 </span>
               </span>
-              <ArrowRight size={18} style={{ color: next.accent }} className="transition-transform group-hover:translate-x-1" />
+              <ArrowRight
+                size={18}
+                style={{ color: next.accent }}
+                className="shrink-0 transition-transform group-hover:translate-x-1"
+              />
             </Link>
           ) : (
             <Link
@@ -210,8 +260,11 @@ export default function ToolDeepDivePage() {
             >
               <span>
                 <span className="block text-xs text-text-muted">You're ready</span>
-                <span className="font-semibold text-primary">Submit a dataset →</span>
+                <span className="inline-flex items-center gap-1 font-semibold text-primary">
+                  <Database size={15} /> Submit a dataset
+                </span>
               </span>
+              <ArrowRight size={18} className="shrink-0 text-primary transition-transform group-hover:translate-x-1" />
             </Link>
           )}
         </div>

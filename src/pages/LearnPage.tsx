@@ -1,191 +1,134 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, CheckCircle2 } from 'lucide-react';
-import '../forum.css';
+import { ArrowRight, BookOpen, Database, GraduationCap, PlayCircle } from 'lucide-react';
+import { TOOL_DEEP_DIVES } from '../content/tutorial';
+import Reveal from '../components/start/Reveal';
 
-interface VideoPart {
-  num: string;
+interface Resource {
   title: string;
-  videoId?: string;
-  points: string[];
+  blurb: string;
+  href: string;
+  cta: string;
+  icon: React.ReactNode;
+  accent: string;
+  external?: boolean;
 }
 
-const PARTS: VideoPart[] = [
-  {
-    num: '1',
-    title: 'Writing & Editing Text',
-    videoId: 'ERZ4pO4yPRk',
-    points: [
-      'Standardize casing and punctuation for consistency',
-      'Remove noise: HTML tags, excessive emojis, random characters',
-      'Keep text clear and concise — strip fluff words',
-    ],
-  },
-  {
-    num: '2',
-    title: 'Translating Between Languages',
-    videoId: 'UuobID14bSE',
-    points: [
-      '1:1 alignment — every source entry needs exactly one translation',
-      'Always use UTF-8 encoding to preserve special characters',
-      'Match tone — formal source = formal translation',
-    ],
-  },
-  {
-    num: '3',
-    title: 'Researching & Collecting Data',
-    videoId: '4SUGOKVVfOg',
-    points: [
-      'Diversity is everything — narrow data creates biased AI',
-      'Source from reputable, verified origins',
-      'Never mix testing data with training data',
-    ],
-  },
-  {
-    num: '4',
-    title: 'Working with Code or Scripts',
-    videoId: 'PfVxFV1ZPnk',
-    points: [
-      'Convert raw data to structured formats: JSON, CSV, Parquet',
-      'Use Pandas to automate cleaning at scale — never by hand',
-      'Enforce schema consistency across every entry',
-    ],
-  },
-  {
-    num: '5',
-    title: 'Labeling & Categorizing Content',
-    videoId: 'OqdPoWmRPBU',
-    points: [
-      'Define your taxonomy (label list) BEFORE you start',
-      'Choose the right granularity — not too broad, not too narrow',
-      'Ensure inter-annotator agreement — same rules for everyone',
-    ],
-  },
-];
-
 export default function LearnPage() {
-  const [completed, setCompleted] = useState<Set<string>>(new Set());
-
-  const toggleComplete = (num: string) => {
-    setCompleted((prev) => {
-      const next = new Set(prev);
-      if (next.has(num)) next.delete(num);
-      else next.add(num);
-      return next;
-    });
-  };
-
-  const allDone = completed.size === PARTS.length;
+  const resources: Resource[] = [
+    {
+      title: 'The Dataset Curation Tutorial',
+      blurb:
+        'The full 4-step pipeline — cleaning, alignment, structuring, and labelling. Start here if you are new.',
+      href: '/start',
+      cta: 'Open the tutorial',
+      icon: <BookOpen size={22} />,
+      accent: '#3b82f6',
+    },
+    {
+      title: 'Submit your first dataset',
+      blurb: 'Ready to earn? Upload a cleaned dataset and our team will review it and propose a price.',
+      href: '/submit',
+      cta: 'Submit a dataset',
+      icon: <Database size={22} />,
+      accent: '#34d399',
+    },
+    {
+      title: 'Dataset Curation FAQ',
+      blurb: 'Answers to the questions every new curator asks — formats, pricing, reviews, and more.',
+      href: '/faq',
+      cta: 'Read the FAQ',
+      icon: <GraduationCap size={22} />,
+      accent: '#a855f7',
+    },
+  ];
 
   return (
-    <div className="forum-dark" style={{ minHeight: '100vh' }}>
-      <div className="forum-wrapper" style={{ maxWidth: '760px', paddingTop: '20px' }}>
-        <Link to="/forum" className="back-link" style={{ textDecoration: 'none' }}>
-          <ArrowLeft size={14} /> Back to Forum
-        </Link>
-
-        <div className="topic-header" style={{ padding: '20px', marginBottom: '16px' }}>
-          <h2 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '6px' }}>
-            Understanding Dataset Formatting for AI
-          </h2>
-          <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '4px' }}>
-            The foundation of high-performance machine learning. No experience needed — we'll teach you everything!
-          </p>
-          <p style={{ fontSize: '0.8rem', color: 'var(--accent-primary)', fontWeight: 600 }}>
-            {completed.size} of {PARTS.length} sections complete
+    <div className="mx-auto max-w-4xl px-6 py-16">
+      <Reveal>
+        <div className="mb-12 text-center">
+          <h1 className="text-4xl font-extrabold tracking-tight text-text-main sm:text-5xl">
+            Learning Hub
+          </h1>
+          <p className="mx-auto mt-3 max-w-xl text-text-muted">
+            Everything you need to go from beginner to paid dataset curator — the tutorial, the tools,
+            and the community.
           </p>
         </div>
+      </Reveal>
 
-        {PARTS.map((part) => {
-          const isDone = completed.has(part.num);
-          return (
-            <div key={part.num} className="comment-card" style={{ padding: '20px', marginBottom: '12px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
-                <div style={{
-                  width: '32px', height: '32px', borderRadius: '50%',
-                  background: isDone ? 'var(--accent-success)' : 'var(--surface-lighter)',
-                  color: isDone ? '#fff' : 'var(--text-muted)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: '0.85rem', fontWeight: 700, flexShrink: 0,
-                  border: isDone ? 'none' : '1.5px solid var(--border)',
-                }}>
-                  {isDone ? <CheckCircle2 size={18} /> : part.num}
-                </div>
-                <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-main)', margin: 0, flex: 1 }}>
-                  {part.title}
-                </h3>
-                <button
-                  type="button"
-                  onClick={() => toggleComplete(part.num)}
-                  style={{
-                    background: isDone ? 'rgba(16,185,129,0.15)' : 'var(--surface-lighter)',
-                    border: '1px solid',
-                    borderColor: isDone ? 'var(--accent-success)' : 'var(--border)',
-                    color: isDone ? 'var(--accent-success)' : 'var(--text-muted)',
-                    borderRadius: '6px', padding: '4px 10px', fontSize: '0.75rem',
-                    fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit',
-                  }}
-                >
-                  {isDone ? '✓ Done' : 'Mark Done'}
-                </button>
-              </div>
-
-              <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 12px 42px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                {part.points.map((pt, i) => (
-                  <li key={i} style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', paddingLeft: '16px', position: 'relative' }}>
-                    <span style={{ position: 'absolute', left: 0, color: 'var(--accent-primary)' }}>▸</span>
-                    {pt}
-                  </li>
-                ))}
-              </ul>
-
-              {part.videoId && (
-                <div style={{ marginLeft: '42px', borderRadius: '10px', overflow: 'hidden' }}>
-                  <iframe
-                    width="100%"
-                    height="260"
-                    src={`https://www.youtube.com/embed/${part.videoId}`}
-                    title={`Part ${part.num}: ${part.title}`}
-                    frameBorder={0}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    style={{ borderRadius: '10px', border: 'none', display: 'block' }}
-                  />
-                </div>
-              )}
-            </div>
-          );
-        })}
-
-        {allDone && (
-          <div className="comment-card" style={{ padding: '24px', textAlign: 'center', marginBottom: '20px' }}>
-            <div style={{ fontSize: '2.5rem', marginBottom: '8px' }}>🎉</div>
-            <h3 style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '6px' }}>
-              You completed all 5 sections!
-            </h3>
-            <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '16px' }}>
-              You're ready to start contributing datasets. Join the community!
+      {/* Featured tutorial */}
+      <Reveal>
+        <Link
+          to="/start"
+          className="group mb-10 flex flex-col gap-4 rounded-2xl border border-primary/30 bg-primary/[0.05] p-7 transition-colors hover:bg-primary/[0.08] sm:flex-row sm:items-center"
+        >
+          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-primary/15 text-primary">
+            <BookOpen size={26} />
+          </div>
+          <div className="flex-1">
+            <p className="text-xs font-bold uppercase tracking-wider text-primary">Start here</p>
+            <h2 className="mt-1 text-xl font-bold text-text-main">
+              Understanding AI Dataset Formatting
+            </h2>
+            <p className="mt-1 text-sm text-text-muted">
+              The friendly, step-by-step guide to building world-class datasets — no coding required to
+              begin.
             </p>
-            <Link to="/forum" style={{ textDecoration: 'none' }}>
-              <button className="btn-send" type="button" style={{ padding: '12px 28px' }}>
-                Enter the Forum →
-              </button>
-            </Link>
           </div>
-        )}
+          <ArrowRight size={20} className="shrink-0 text-primary transition-transform group-hover:translate-x-1" />
+        </Link>
+      </Reveal>
 
-        {!allDone && (
-          <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-            <Link to="/forum" style={{ textDecoration: 'none' }}>
-              <button type="button" style={{
-                background: 'none', border: 'none', color: 'var(--text-muted)',
-                fontSize: '0.85rem', cursor: 'pointer', fontFamily: 'inherit',
-              }}>
-                Skip for now — enter forum →
-              </button>
+      {/* Resource grid */}
+      <div className="grid gap-4 sm:grid-cols-3">
+        {resources.map((r, i) => (
+          <Reveal key={r.title} delay={i * 0.08}>
+            <Link
+              to={r.href}
+              className="group flex h-full flex-col rounded-2xl border border-border bg-surface p-5 transition-colors hover:border-[color:var(--ac)]"
+              style={{ ['--ac' as string]: r.accent }}
+            >
+              <span
+                className="mb-3 flex h-11 w-11 items-center justify-center rounded-xl"
+                style={{ background: `${r.accent}1a`, color: r.accent }}
+              >
+                {r.icon}
+              </span>
+              <h3 className="font-bold text-text-main">{r.title}</h3>
+              <p className="mt-1 flex-1 text-sm text-text-muted">{r.blurb}</p>
+              <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-text-main">
+                {r.cta}
+                <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+              </span>
             </Link>
-          </div>
-        )}
+          </Reveal>
+        ))}
+      </div>
+
+      {/* Tool deep-dives */}
+      <Reveal>
+        <h2 className="mb-5 mt-14 text-2xl font-bold text-text-main">Tool deep dives</h2>
+      </Reveal>
+      <div className="grid gap-4 sm:grid-cols-3">
+        {TOOL_DEEP_DIVES.map((tool, i) => (
+          <Reveal key={tool.slug} delay={i * 0.08}>
+            <Link
+              to={`/start/${tool.slug}`}
+              className="group flex h-full flex-col rounded-2xl border border-border bg-surface p-5 transition-colors hover:border-[color:var(--ac)]"
+              style={{ ['--ac' as string]: tool.accent }}
+            >
+              <span className="text-2xl">{tool.emoji}</span>
+              <h3 className="mt-2 font-bold text-text-main">{tool.name}</h3>
+              <p className="mt-1 text-xs" style={{ color: tool.accent }}>
+                {tool.role}
+              </p>
+              <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-text-main">
+                <PlayCircle size={14} /> Read the guide
+                <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+              </span>
+            </Link>
+          </Reveal>
+        ))}
       </div>
     </div>
   );

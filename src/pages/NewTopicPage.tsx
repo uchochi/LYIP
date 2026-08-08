@@ -2,7 +2,6 @@ import { useState, useRef, type FormEvent, type CSSProperties } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, ChevronDown, ChevronRight } from 'lucide-react';
 import { createTopic } from '../services/forumService';
-import { useAuth } from '../context/AuthContext';
 import { renderWithTags } from '../lib/parseDataTags';
 import MarkdownToolbar from '../components/forum/MarkdownToolbar';
 import '../forum.css';
@@ -21,19 +20,15 @@ const cheat: CSSProperties = {
 
 export default function NewTopicPage() {
   const navigate = useNavigate();
-  const { user } = useAuth();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [tags, setTags] = useState('');
   const [region, setRegion] = useState('');
-  const [enableDatasetSubmit, setEnableDatasetSubmit] = useState(false);
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [preview, setPreview] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
   const contentRef = useRef<HTMLTextAreaElement>(null);
-
-  const isStaff = user?.role === 'admin' || user?.role === 'senior_instructor' || user?.role === 'instructor';
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -48,7 +43,6 @@ export default function NewTopicPage() {
         title: title.trim(),
         content: content.trim(),
         tags: tagList,
-        has_dataset_submit: enableDatasetSubmit,
       });
       navigate(`/forum/${topic.id}`);
     } catch (err) {
@@ -180,20 +174,6 @@ export default function NewTopicPage() {
                 ))}
               </select>
             </div>
-            {isStaff && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '22px' }}>
-                <input
-                  type="checkbox"
-                  id="enable-dataset-submit"
-                  checked={enableDatasetSubmit}
-                  onChange={(e) => setEnableDatasetSubmit(e.target.checked)}
-                  style={{ accentColor: 'var(--accent-primary)', width: '16px', height: '16px', cursor: 'pointer' }}
-                />
-                <label htmlFor="enable-dataset-submit" style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-main)', cursor: 'pointer' }}>
-                  Enable dataset submissions for this topic
-                </label>
-              </div>
-            )}
           </div>
           {error && <p style={{ fontSize: '12px', color: 'var(--live-red)', margin: '0 0 8px' }}>{error}</p>}
           <div style={{ display: 'flex', gap: '8px' }}>

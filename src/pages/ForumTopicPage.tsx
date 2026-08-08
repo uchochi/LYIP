@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Pin, Lock, AlertTriangle, X } from 'lucide-react';
-import { getTopic, getPosts, createPost, deletePost, updatePost, getReactions, toggleReaction, incrementTopicView, getDatasetSubmissions, updateTopic, type DatasetSubmission } from '../services/forumService';
+import { getTopic, getPosts, createPost, deletePost, updatePost, getReactions, toggleReaction, incrementTopicView, updateTopic } from '../services/forumService';
 import { supabase } from '../lib/supabase';
 import { useTyping } from '../lib/useTyping';
 import { useAuth } from '../context/AuthContext';
@@ -24,7 +24,6 @@ export default function ForumTopicPage() {
   const [showVerifyBanner, setShowVerifyBanner] = useState(false);
   const [error, setError] = useState('');
   const [viewCount, setViewCount] = useState(0);
-  const [datasetSubmissions, setDatasetSubmissions] = useState<DatasetSubmission[]>([]);
 
   const isAdmin = user?.role === 'admin';
   const isStaff = ['admin', 'senior_instructor', 'instructor'].includes(user?.role || '');
@@ -40,9 +39,6 @@ export default function ForumTopicPage() {
     if (ids.length > 0) {
       const r = await getReactions(ids);
       setReactions(r);
-    }
-    if (t?.has_dataset_submit) {
-      getDatasetSubmissions(topicId).then(setDatasetSubmissions);
     }
     setLoading(false);
   }, [topicId]);
@@ -273,47 +269,6 @@ export default function ForumTopicPage() {
           />
         ))}
 
-        {topic.has_dataset_submit && (
-          <div style={{ marginBottom: '16px' }}>
-            <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-main)', marginBottom: '8px' }}>
-              📦 Dataset Submissions ({datasetSubmissions.length})
-            </div>
-            {datasetSubmissions.length === 0 ? (
-              <div style={{ padding: '12px', background: 'var(--surface-lighter)', borderRadius: '8px', border: '1px solid var(--border)', textAlign: 'center', fontSize: '13px', color: 'var(--text-muted)' }}>
-                No submissions yet. Be the first to share a dataset!
-              </div>
-            ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                {datasetSubmissions.map((ds) => (
-                  <div key={ds.id} style={{ padding: '12px', background: 'var(--surface-lighter)', borderRadius: '8px', border: '1px solid var(--border)' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-                      <span style={{ fontWeight: 600, fontSize: '14px', color: 'var(--text-main)' }}>{ds.title}</span>
-                      <span className={`badge ${ds.status === 'approved' ? 'badge-pro' : ds.status === 'rejected' ? 'badge-admin' : 'badge-mod'}`} style={{ fontSize: '10px' }}>
-                        {ds.status}
-                      </span>
-                    </div>
-                    <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: '4px 0' }}>{ds.content}</p>
-                    {ds.url && (
-                      <a href={ds.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: '12px', color: 'var(--accent-blue)' }}>
-                        {ds.url}
-                      </a>
-                    )}
-                    {isAdmin && ds.status === 'pending' && (
-                      <div style={{ display: 'flex', gap: '6px', marginTop: '8px' }}>
-                        <button className="btn-send" type="button" style={{ fontSize: '11px', padding: '4px 10px' }} onClick={() => alert('Approve flow coming soon')}>✓ Approve</button>
-                        <button type="button" style={{ fontSize: '11px', padding: '4px 10px', background: 'transparent', border: '1px solid var(--live-red)', color: 'var(--live-red)', borderRadius: '6px', cursor: 'pointer' }} onClick={() => alert('Reject flow coming soon')}>✗ Reject</button>
-                      </div>
-                    )}
-                    {ds.admin_notes && (
-                      <p style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px', fontStyle: 'italic' }}>Admin note: {ds.admin_notes}</p>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-
         {user ? (
           <ChatInput
             typingUsers={typingNames}
@@ -323,7 +278,7 @@ export default function ForumTopicPage() {
             onCancelReply={() => setReplyingTo(null)}
             onSend={handleSend}
             disabled={sending || topic.is_locked}
-            placeholder={topic.is_locked ? 'This topic is locked' : 'Drop your hot take, dataset, or wisdom...'}
+            placeholder={topic.is_locked ? 'This topic is locked' : 'Drop your hot take or wisdom...'}
             buttonText={sending ? 'Launching...' : 'Drop It 🚀'}
           />
         ) : (
