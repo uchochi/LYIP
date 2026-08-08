@@ -127,6 +127,12 @@
   margin: 1.5rem 0 0.75rem;
   font-weight: 600;
 }
+.docs-main h4 {
+  font-size: 0.95rem;
+  color: var(--docs-heading);
+  margin: 1.25rem 0 0.5rem;
+  font-weight: 600;
+}
 .docs-main p {
   margin: 0 0 1.25rem;
   line-height: 1.6;
@@ -273,6 +279,25 @@
   flex-wrap: wrap;
 }
 .docs-footer a { font-weight: 500; }
+
+/* --- Tool image (toolkit section, gateway) --- */
+.docs-tool-img {
+  width: 100%;
+  display: block;
+  border-radius: 8px;
+  border: 1px solid var(--docs-border);
+  margin-bottom: 1rem;
+}
+
+/* --- Deep-dive hero image --- */
+.docs-hero-img {
+  max-width: 100%;
+  width: 640px;
+  display: block;
+  margin: 0 auto 1.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--docs-border);
+}
 
 /* --- Tool card (toolkit section, gateway) --- */
 .docs-tool {

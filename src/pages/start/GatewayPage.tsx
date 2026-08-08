@@ -172,33 +172,80 @@ export default function GatewayPage() {
       {/* Toolkit */}
       <section id="toolkit">
         <Reveal y={10} duration={0.5}>
-          <h2>The Super-Power Toolkit</h2>
+          <h2>The Super-Power Toolkit You Need</h2>
           <p>
-            To run this pipeline at professional scale you need the right tools. Treat them not just as
-            software, but as <strong>specialised engines</strong> — using the wrong one for a stage
-            creates friction: wasted time, manual errors, and broken schemas.
+            <em>The Engines of Automation</em>
           </p>
-          <p>Each tool below has a full deep dive (setup, usage, pricing, and trade-offs).</p>
+          <p>
+            Below is the tactical breakdown of the <strong>tools</strong> you need, mapped to the four
+            stages of the pipeline. To execute the above 4 stages at professional scale, using the
+            right tools and technological strategy are required. You must treat these tools not just as
+            software, but as <strong>specialized engines</strong>. Using the wrong engine for a specific
+            stage will result in &ldquo;friction&rdquo;—wasted time, manual errors, and broken schemas.
+          </p>
         </Reveal>
 
-        {TOOL_DEEP_DIVES.map((tool, i) => (
-          <Reveal key={tool.slug} y={10} duration={0.5}>
-            <div className="docs-tool">
-              <div className="docs-tool-head">
-                <span className="docs-tool-num">0{i + 1}</span>
-                <h3>
-                  {tool.emoji} {tool.name}
-                </h3>
+        {TOOL_DEEP_DIVES.map((tool, i) => {
+          const tk = tool.toolkit;
+          return (
+            <Reveal key={tool.slug} y={10} duration={0.5}>
+              <div className="docs-tool">
+                <img src={tool.image} alt={`${tool.name} screenshot`} className="docs-tool-img" />
+                <div className="docs-tool-head">
+                  <span className="docs-tool-num">0{i + 1}</span>
+                  <h3>{tool.name}</h3>
+                </div>
+                <div className="docs-tool-role">{tk.subtitle}</div>
+                <p>{tk.intro}</p>
+
+                <h4>What stages can it handle?</h4>
+                <ul>
+                  {tk.stages.map((s) => (
+                    <li key={s.lead}>
+                      <strong>{s.lead}:</strong> {s.detail}
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="docs-callout">
+                  <span className="docs-callout-title">When &amp; How to Use It</span>
+                  {tk.whenToUse}
+                </div>
+
+                <h4>The Advantage (Pros)</h4>
+                <ul>
+                  {tk.pros.map((p) => (
+                    <li key={p.lead}>
+                      <strong>{p.lead}:</strong> {p.detail}
+                    </li>
+                  ))}
+                </ul>
+
+                <h4>The Friction (Cons)</h4>
+                <ul>
+                  {tk.cons.map((c) => (
+                    <li key={c.lead}>
+                      <strong>{c.lead}:</strong> {c.detail}
+                    </li>
+                  ))}
+                </ul>
+
+                <h4>Investment (Cost / Budget)</h4>
+                <ul>
+                  {tk.investment.map((inv) => (
+                    <li key={inv.lead}>
+                      <strong>{inv.lead}:</strong> {inv.detail}
+                    </li>
+                  ))}
+                </ul>
+
+                <p style={{ marginTop: '1rem', marginBottom: 0 }}>
+                  <Link to={`/start/${tool.slug}`}>Learn the full guide on how to use it →</Link>
+                </p>
               </div>
-              <div className="docs-tool-role">{tool.role}</div>
-              <p style={{ marginTop: '0.6rem', marginBottom: '0.5rem' }}>{tool.gatewayBlurb}</p>
-              <p style={{ marginBottom: 0 }}>
-                <strong>Best for:</strong> {tool.bestFor} ·{' '}
-                <Link to={`/start/${tool.slug}`}>Read the deep dive →</Link>
-              </p>
-            </div>
-          </Reveal>
-        ))}
+            </Reveal>
+          );
+        })}
       </section>
     </DocsShell>
   );

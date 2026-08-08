@@ -70,6 +70,7 @@ export default function ToolDeepDivePage() {
       }
     >
       <Reveal y={10} duration={0.5}>
+        <img src={data.image} alt={`${data.name} screenshot`} className="docs-hero-img" />
         <p>
           <strong>{data.role}.</strong> {data.intro}
         </p>

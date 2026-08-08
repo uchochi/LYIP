@@ -167,17 +167,41 @@ export interface PricingCard {
   note?: string;
 }
 
+/** A bold lead-in plus its detail — mirrors the AA.md bullet style. */
+export interface ToolkitPoint {
+  lead: string;
+  detail: string;
+}
+
+/**
+ * The gateway-level breakdown of a tool (AA.md "Super-Power Toolkit").
+ * Kept distinct from the deep-dive content (AB.md) so the gateway stays
+ * a concise overview that still links into the full guide.
+ */
+export interface ToolkitBreakdown {
+  /** AA.md role subtitle, e.g. "The Engineering Command Center". */
+  subtitle: string;
+  intro: string;
+  stages: ToolkitPoint[];
+  whenToUse: string;
+  pros: ToolkitPoint[];
+  cons: ToolkitPoint[];
+  investment: ToolkitPoint[];
+}
+
 export interface ToolDeepDive {
   slug: string;
   name: string;
   emoji: string;
+  /** Screenshot/logo served from /public, shown in the toolkit + deep dive hero. */
+  image: string;
   /** Short role tag, e.g. "The AI-Powered Developer's Toolkit". */
   role: string;
   /** One-line italic tagline under the title. */
   tagline: string;
   accent: string;
-  /** Blurb used on the gateway toolkit card. */
-  gatewayBlurb: string;
+  /** Gateway-level breakdown (AA.md toolkit section). */
+  toolkit: ToolkitBreakdown;
   /** Which stages / use-case it fits best (pill on the card). */
   bestFor: string;
   intro: string;
@@ -196,11 +220,39 @@ export const TOOL_DEEP_DIVES: ToolDeepDive[] = [
     slug: 'vscode-copilot',
     name: 'VS Code & GitHub Copilot',
     emoji: '💻',
+    image: '/VScode_CoPilote.png',
     role: "The AI-Powered Developer's Toolkit",
     tagline: 'Your workbench for cleaning and structuring data at scale.',
     accent: '#3b82f6',
-    gatewayBlurb:
-      'The foundational tool. This is where you write the scripts that clean, transform, and structure your data.',
+    toolkit: {
+      subtitle: 'The Engineering Command Center',
+      intro: 'This is the foundational tool. This is the tool that moves and transforms the data.',
+      stages: [
+        { lead: 'Stage 1 (The Cleaning Of The Dataset)', detail: 'Writing regex and cleaning scripts.' },
+        { lead: 'Stage 2 (Language Alignment)', detail: 'Scripting translation pipelines and encoding checks.' },
+        {
+          lead: 'Stage 3 (Structuring the Data)',
+          detail: 'The core stage. Building the logic that converts raw files into structured JSON/Parquet.',
+        },
+      ],
+      whenToUse:
+        'Use this when you are dealing with scale. If you have 10 million rows of messy text, you do not open a labeling tool; you open VS Code. You use GitHub Copilot to rapidly write Python/Pandas scripts that "sweep" through the data, removing noise (Stage 1) and enforcing the mathematical structure (Stage 3).',
+      pros: [
+        { lead: 'Infinite Scalability', detail: 'Code can process terabytes of data that no human interface could ever load.' },
+        { lead: 'Precision', detail: 'You can write exact logic for every edge case.' },
+      ],
+      cons: [
+        { lead: 'High Barrier to Entry', detail: 'Requires proficiency in Python or similar languages.' },
+        { lead: 'Logic Risk', detail: 'A single bug in your script can corrupt your entire dataset instantly.' },
+      ],
+      investment: [
+        { lead: 'VS Code', detail: 'Free (Open Source).' },
+        {
+          lead: 'GitHub Copilot',
+          detail: 'Low-to-medium monthly subscription (Individual or Business). Highly cost-effective for the speed it provides.',
+        },
+      ],
+    },
     bestFor: 'Stages 1–3 · Cleaning, alignment & structuring',
     intro:
       'VS Code is your "workbench" — the place where you write the scripts that clean, transform, and structure your data. GitHub Copilot is your AI assistant sitting next to you, suggesting code, fixing errors, and writing complex data-processing functions in seconds. Together they turn hours of manual coding into a fast, guided process.',
@@ -272,11 +324,38 @@ export const TOOL_DEEP_DIVES: ToolDeepDive[] = [
     slug: 'label-studio',
     name: 'Label Studio',
     emoji: '🎨',
+    image: '/Label_Studio.png',
     role: 'The Versatile Multi-Modal Annotator',
     tagline: 'A jack-of-all-trades for labelling text, images, audio, and video.',
     accent: '#a855f7',
-    gatewayBlurb:
-      'The "generalist." Built for high-complexity projects where the data is a mix of formats — image, video, audio, and text together.',
+    toolkit: {
+      subtitle: 'The Multimodal Orchestrator',
+      intro:
+        'Label Studio is the "Generalist." It is designed for high-complexity projects where the data isn\'t just text, but a combination of various formats.',
+      stages: [
+        {
+          lead: 'Stage 4 (Intelligent Ground-Truthing)',
+          detail: 'Specifically for Multimodal projects (e.g., labeling an image, video, or audio with descriptive text simultaneously).',
+        },
+      ],
+      whenToUse:
+        'Use this when your "Ground Truth" requires a custom interface. If you need a human to look at a video and tag the timestamp, or look at a medical scan and a patient report, Label Studio allows you to build a custom UI for that specific task. It is your tool for ensuring the final output is exported in a perfectly structured JSON format that also matches Stage 3 (Structuring the Dataset).',
+      pros: [
+        { lead: 'Versatility', detail: 'One tool for text, audio, image, and video, and more.' },
+        { lead: 'Schema Control', detail: 'Excellent at ensuring the final export follows your strict structural requirements.' },
+      ],
+      cons: [
+        { lead: 'Configuration Overhead', detail: 'Setting up complex, custom labeling interfaces can be time-consuming.' },
+        { lead: 'Performance', detail: 'Can become sluggish if not hosted on powerful hardware.' },
+      ],
+      investment: [
+        { lead: 'Community Edition', detail: 'Free (Open Source).' },
+        {
+          lead: 'Enterprise Edition',
+          detail: 'High (Significant budget required for large teams, security, and advanced management features).',
+        },
+      ],
+    },
     bestFor: 'Stage 4 · Multimodal labelling',
     intro:
       'Label Studio is a highly flexible, multi-modal data-labelling tool. While tools like Prodigy focus almost exclusively on text, Label Studio is a jack-of-all-trades. It lets you label virtually any type of data — text, images, audio, video, time-series, and even multi-modal combinations (e.g. an image with a text description). It is the most popular choice for teams that need a single platform for diverse AI training data.',
@@ -341,11 +420,37 @@ export const TOOL_DEEP_DIVES: ToolDeepDive[] = [
     slug: 'prodigy',
     name: 'Prodigy',
     emoji: '⚡',
+    image: '/Prodigy.png',
     role: "The Professional's Choice for NLP",
     tagline: 'A precision instrument built for high-velocity text labelling.',
     accent: '#34d399',
-    gatewayBlurb:
-      'The "specialist." Built by the creators of spaCy and optimised for one thing: high-velocity text labelling with active learning.',
+    toolkit: {
+      subtitle: 'The NLP Speed Demon',
+      intro:
+        'Prodigy is the "Specialist." It is built by the creators of spaCy (the leading NLP library) and is optimized for one thing: high-velocity text labeling.',
+      stages: [
+        {
+          lead: 'Stage 4 (Intelligent Dataset Labeling)',
+          detail: 'Specifically for Linguistic/NLP or text-only projects.',
+        },
+      ],
+      whenToUse:
+        'Use this when your goal is purely text-based (Sentiment, Named Entity Recognition, Text Classification). You don\'t just "label" in Prodigy; you "train while you label." You use its Active Learning feature: the tool shows you the data it is most "confused" about. You provide the answer, the model learns, and it immediately becomes smarter, showing you even better samples.',
+      pros: [
+        { lead: 'Blazing Speed', detail: 'Active learning reduces the amount of data a human needs to see by up to 80%.' },
+        { lead: 'NLP Integration', detail: 'Seamlessly integrates with advanced linguistic models.' },
+      ],
+      cons: [
+        { lead: 'Narrow Scope', detail: 'Not suitable for image, video, or audio labeling.' },
+        { lead: 'No Free Tier', detail: 'It is a strictly professional, paid product.' },
+      ],
+      investment: [
+        {
+          lead: 'Commercial License',
+          detail: 'Medium-to-High (Usually a one-time or subscription-based license per user/project). It is an investment in time-saving.',
+        },
+      ],
+    },
     bestFor: 'Stage 4 · Text / NLP labelling',
     intro:
       'Prodigy is a high-end, developer-centric data-annotation tool designed specifically for Natural Language Processing (NLP). It was built by the creators of spaCy, one of the most widely used NLP libraries in the world. It solves the biggest problem in AI training: manual labelling is slow, expensive, and prone to human error.',
