@@ -42,7 +42,7 @@ export default function MarketingFooter() {
               <img src="/Loseyourip-logo.png" alt="Loseyourip" className="h-9 w-auto" />
             </Link>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-text-muted">
-              Building AI that is safe, powerful, and aligned with human values.
+              Building the high-quality datasets that train AI — clean, structured, and aligned with human values.
             </p>
           </div>
           {columns.map((col) => (

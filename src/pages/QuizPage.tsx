@@ -106,7 +106,7 @@ const QUESTIONS: Question[] = [
     options: [
       { emoji: '💵', label: 'Earning consistent income' },
       { emoji: '📈', label: 'Building skills for my career' },
-      { emoji: '🏆', label: 'Contributing to cutting-edge AI' },
+      { emoji: '🏆', label: 'Contributing to cutting-edge AI datasets' },
       { emoji: '🌐', label: 'Helping underrepresented languages thrive' },
       { emoji: '🎯', label: 'All of the above!' },
     ],

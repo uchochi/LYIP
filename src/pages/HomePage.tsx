@@ -14,7 +14,7 @@ import type { Job } from '../types';
 const values = [
   { icon: Brain, title: 'Intellectual Curiosity', desc: 'The best breakthroughs come from relentless questioning and exploration.' },
   { icon: Users, title: 'Radical Collaboration', desc: 'The hardest problems require diverse perspectives and genuine partnership.' },
-  { icon: Heart, title: 'Safety First', desc: 'We build AI that is safe, aligned, and beneficial for everyone.' },
+  { icon: Heart, title: 'Safety First', desc: 'We curate data that is safe, aligned, and beneficial for everyone.' },
   { icon: Zap, title: 'Ship with Purpose', desc: 'We move fast but never lose sight of the impact we want to create.' },
   { icon: Globe, title: 'Global Impact', desc: 'Our work reaches across borders. We think globally from day one.' },
   { icon: BookOpen, title: 'Open Knowledge', desc: 'We contribute to and share with the broader research community.' },
@@ -30,20 +30,20 @@ const perks = [
 ];
 
 const platformFeatures = [
-  { icon: Brain, title: 'Advanced Inference Engine', desc: 'State-of-the-art reasoning with complex multi-step workflows and chain-of-thought prompting.' },
-  { icon: Shield, title: 'Built-in Safety Guardrails', desc: 'Automated content filtering, hallucination detection, and alignment scoring on every call.' },
-  { icon: Zap, title: 'Real-Time Streaming', desc: 'Sub-100ms time-to-first-token with optimized streaming endpoints.' },
-  { icon: Lock, title: 'Enterprise Security', desc: 'SOC 2 Type II, end-to-end encryption, data residency, and custom deployment zones.' },
-  { icon: BarChart3, title: 'Observability Dashboard', desc: 'Monitor usage, latency, cost, and quality in real-time with built-in alerting.' },
-  { icon: Globe, title: 'Global Edge Network', desc: 'Inference endpoints across 12 regions for low-latency worldwide access.' },
+  { icon: Brain, title: 'Curation Pipeline', desc: 'The full 4-step pipeline — cleaning, language alignment, structuring, and labelling — with tools that do the heavy lifting for you.' },
+  { icon: Shield, title: 'Human Quality Review', desc: 'Every dataset is reviewed by people against strict quality standards before it is approved for training.' },
+  { icon: Zap, title: 'Smart Labelling Tools', desc: 'AI-assisted labelling with Label Studio and Prodigy so you can tag data 10x faster.' },
+  { icon: Lock, title: 'Secure Submissions', desc: 'Your datasets are protected by row-level security — only you and the review team can see them.' },
+  { icon: BarChart3, title: 'Curator Dashboard', desc: 'Track submission status, review notes, and earnings in real time.' },
+  { icon: Globe, title: 'Multilingual Coverage', desc: 'Local-language and translation datasets that help AI understand the whole world.' },
 ];
 
 const researchPapers = [
-  { title: 'Scaling Alignment: Lessons from Training LoseYourIP-Max', venue: 'NeurIPS 2026' },
-  { title: 'Real-Time Hallucination Detection in Large Language Models', venue: 'ICML 2026' },
-  { title: 'Constitutional AI at Scale: A Practical Framework', venue: 'ICLR 2026' },
-  { title: 'Efficient Fine-Tuning with LoRA++: Dynamic Rank Adaptation', venue: 'arXiv 2026' },
-  { title: 'Measuring What Matters: New Benchmarks for AI Trustworthiness', venue: 'NeurIPS 2025' },
+  { title: 'Scaling Data Curation: Lessons from Building Training Corpora', venue: 'NeurIPS 2026' },
+  { title: 'Real-Time Data Quality Detection in AI Training Sets', venue: 'ICML 2026' },
+  { title: 'Constitutional Data: A Practical Framework for Ethical Curation', venue: 'ICLR 2026' },
+  { title: 'Efficient Dataset Structuring: Dynamic Schema Adaptation', venue: 'arXiv 2026' },
+  { title: 'Measuring What Matters: New Benchmarks for Data Trustworthiness', venue: 'NeurIPS 2025' },
 ];
 
 export default function HomePage() {
@@ -65,21 +65,21 @@ export default function HomePage() {
             We're hiring
           </div>
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-text-main leading-tight">
-            Build the future of
+            Build the datasets behind
             <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"> Artificial Intelligence</span>
           </h1>
           <p className="mx-auto mt-6 max-w-xl text-lg text-text-muted leading-relaxed">
-            Join Loseyourip and work with world-class researchers and engineers to push the boundaries of what AI can do — building AI that is safe, powerful, and aligned with human values.
+            Loseyourip is the platform for building high-quality datasets that train modern AI. Clean, structured, and labelled with care — no experience needed, we teach you everything.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-            <Link to="/jobs">
+            <Link to="/start">
               <Button size="lg">
-                View Open Positions
+                Start the Tutorial
                 <ArrowRight size={18} />
               </Button>
             </Link>
-            <Link to="/about" className="no-underline">
-              <Button size="lg" variant="secondary">Learn About Us</Button>
+            <Link to="/jobs" className="no-underline">
+              <Button size="lg" variant="secondary">View Open Positions</Button>
             </Link>
           </div>
         </div>
@@ -90,7 +90,7 @@ export default function HomePage() {
         <div className="mx-auto max-w-6xl px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-8">
           {[
             { icon: Users, value: '50+', label: 'Team Members' },
-            { icon: Zap, value: '12', label: 'AI Models Shipped' },
+            { icon: Globe, value: '12', label: 'Languages Covered' },
             { icon: Sparkles, value: '3', label: 'Global Offices' },
             { icon: Sparkles, value: '$45M', label: 'Series A Funded' },
           ].map((s) => (
@@ -108,7 +108,7 @@ export default function HomePage() {
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-text-main">What we believe</h2>
           <p className="mx-auto mt-3 max-w-2xl text-text-muted">
-            We build AI systems that are genuinely helpful, transparent, and aligned with human interests — trustworthy AI as the standard, not the exception.
+            We build the datasets that make AI genuinely helpful, transparent, and aligned with human interests — trustworthy training data as the standard, not the exception.
           </p>
         </div>
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -153,9 +153,9 @@ export default function HomePage() {
       <section className="mx-auto max-w-6xl px-6 py-20">
         <div className="flex flex-wrap items-end justify-between gap-4 mb-10">
           <div>
-            <h2 className="text-3xl font-bold text-text-main">The Loseyourip Platform</h2>
+            <h2 className="text-3xl font-bold text-text-main">The Loseyourip Dataset Platform</h2>
             <p className="mt-3 max-w-xl text-text-muted">
-              A complete AI platform for developers who need powerful, safe, and reliable infrastructure. From prototype to production in minutes.
+              A complete platform for building the clean, structured datasets that train modern AI. From raw data to ready-to-train in minutes.
             </p>
           </div>
           <Link to="/platform" className="no-underline text-sm font-medium text-primary hover:text-primary-dark">
@@ -242,7 +242,7 @@ export default function HomePage() {
           </div>
           <h2 className="text-2xl font-bold text-text-main">Join the community</h2>
           <p className="mx-auto mt-3 max-w-md text-text-muted">
-            Connect with 12,000+ developers, researchers, and AI enthusiasts building with Loseyourip.
+            Connect with 12,000+ curators, developers, and AI enthusiasts building datasets with Loseyourip.
           </p>
           <Link to="/community" className="no-underline">
             <Button size="lg" variant="secondary" className="mt-6">Explore Community</Button>

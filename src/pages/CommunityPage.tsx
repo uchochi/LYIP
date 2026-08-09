@@ -1,9 +1,9 @@
 import { MessageCircle, Code2, Users, BookOpen } from 'lucide-react';
 
 const channels = [
-  { icon: MessageCircle, title: 'Discord Server', desc: 'Join 12,000+ developers chatting about AI, sharing projects, and getting help in real-time.', action: 'Join Discord' },
-  { icon: Code2, title: 'GitHub Discussions', desc: 'Ask questions, share ideas, and collaborate on open source projects with the community.', action: 'Visit GitHub' },
-  { icon: Users, title: 'Meetups & Events', desc: 'Local and virtual meetups in 15+ cities. Connect with fellow builders in person.', action: 'View Events' },
+  { icon: MessageCircle, title: 'Discord Server', desc: 'Join 12,000+ curators and AI enthusiasts chatting about datasets, sharing tips, and getting help in real-time.', action: 'Join Discord' },
+  { icon: Code2, title: 'GitHub Discussions', desc: 'Ask questions, share ideas, and collaborate on open source data tools and pipelines with the community.', action: 'Visit GitHub' },
+  { icon: Users, title: 'Meetups & Events', desc: 'Local and virtual meetups in 15+ cities. Connect with fellow dataset builders in person.', action: 'View Events' },
   { icon: BookOpen, title: 'Community Blog', desc: 'Tutorials, case studies, and stories written by community members using Loseyourip.', action: 'Read Stories' },
 ];
 
@@ -13,7 +13,7 @@ export default function CommunityPage() {
       <div className="text-center mb-12">
         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-text-main">Community</h1>
         <p className="mx-auto mt-3 max-w-xl text-lg text-text-muted">
-          Connect with thousands of developers, researchers, and AI enthusiasts building with Loseyourip.
+          Connect with thousands of curators, developers, and AI enthusiasts building datasets with Loseyourip.
         </p>
       </div>
 
@@ -33,7 +33,7 @@ export default function CommunityPage() {
       <div className="mt-12 rounded-3xl border border-border bg-surface p-10 text-center">
         <h2 className="text-2xl font-bold text-text-main">Join the conversation</h2>
         <p className="mx-auto mt-3 max-w-md text-text-muted">
-          Whether you are just getting started or building production systems, there is a place for you.
+          Whether you are just getting started or curating at scale, there is a place for you.
         </p>
         <a href="#" className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 mt-6 font-semibold text-white no-underline transition-colors hover:bg-primary-dark">
           <MessageCircle size={16} /> Join our Discord

@@ -3,23 +3,23 @@ import { Target, Lightbulb, Shield, ArrowRight } from 'lucide-react';
 import Button from '../components/ui/Button';
 
 const pillars = [
-  { icon: Target, title: 'Our Mission', desc: 'To build AI systems that are genuinely helpful, transparent, and aligned with human interests. We want to make trustworthy AI the standard, not the exception.' },
-  { icon: Lightbulb, title: 'Our Vision', desc: 'A world where artificial intelligence amplifies human potential while respecting human values. Where AI systems are understood, trusted, and beneficial for everyone.' },
-  { icon: Shield, title: 'Our Approach', desc: 'We combine cutting-edge research with rigorous engineering. Every model we build undergoes extensive safety testing, and we publish our findings to advance the field.' },
+  { icon: Target, title: 'Our Mission', desc: 'To build the high-quality datasets that make AI genuinely helpful, transparent, and aligned with human interests. We want trustworthy training data to be the standard, not the exception.' },
+  { icon: Lightbulb, title: 'Our Vision', desc: 'A world where AI amplifies human potential while respecting human values — powered by clean, structured, multilingual datasets that everyone helps shape.' },
+  { icon: Shield, title: 'Our Approach', desc: 'We combine careful curation with rigorous quality review. Every dataset is cleaned, structured, and verified by people before it is used to train AI, and we publish what we learn along the way.' },
 ];
 
 const timeline = [
-  { year: '2021', title: 'Founded', desc: 'Loseyourip was established with a mission to build trustworthy AI.' },
+  { year: '2021', title: 'Founded', desc: 'Loseyourip was established with a mission to build trustworthy training data for AI.' },
   { year: '2022', title: 'Seed Round', desc: 'Raised $15M seed round led by top-tier investors.' },
-  { year: '2023', title: 'First Product', desc: 'Launched our core AI platform to early access users.' },
-  { year: '2024', title: 'Series A', desc: 'Closed $120M Series A to scale the team and platform.' },
-  { year: '2025', title: 'Global Expansion', desc: 'Expanded to 12 countries with 150+ team members.' },
+  { year: '2023', title: 'First Datasets', desc: 'Launched our first curated local-language datasets for early access users.' },
+  { year: '2024', title: 'Series A', desc: 'Closed $120M Series A to scale the platform and curator community.' },
+  { year: '2025', title: 'Global Expansion', desc: 'Expanded to 12 languages and 150+ team members across 3 offices.' },
 ];
 
 const teams = [
   { name: 'Leadership', count: 8, desc: 'Guiding our vision and strategy' },
-  { name: 'Engineering', count: 65, desc: 'Building the core platform' },
-  { name: 'Research', count: 30, desc: 'Pushing the frontiers of AI' },
+  { name: 'Engineering', count: 65, desc: 'Building the curation platform' },
+  { name: 'Curation & Review', count: 30, desc: 'Pushing the frontiers of data quality' },
   { name: 'Design & Product', count: 20, desc: 'Crafting the user experience' },
   { name: 'Operations', count: 15, desc: 'Keeping everything running smoothly' },
   { name: 'Marketing & Sales', count: 12, desc: 'Sharing our story with the world' },
@@ -34,10 +34,10 @@ export default function AboutPage() {
             Our Story
           </div>
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-text-main">
-            Building AI you can <span className="bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">trust</span>
+            Building data AI can <span className="bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">trust</span>
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-lg text-text-muted leading-relaxed">
-            We believe AI should be powerful, safe, and aligned with human values. Our team is dedicated to creating artificial intelligence that earns trust through transparency, reliability, and alignment.
+            We believe AI is only as good as the data it learns from. Our team of curators, linguists, and engineers is dedicated to building datasets that are clean, structured, and aligned with human values.
           </p>
         </div>
       </section>
@@ -97,7 +97,7 @@ export default function AboutPage() {
       <section className="mx-auto max-w-6xl px-6 pb-20">
         <div className="rounded-3xl bg-gradient-to-br from-primary to-accent p-10 text-center text-white">
           <h2 className="text-2xl font-bold">Come build with us</h2>
-          <p className="mx-auto mt-3 max-w-md text-white/80">Explore open roles and help shape the future of trustworthy AI.</p>
+          <p className="mx-auto mt-3 max-w-md text-white/80">Explore open roles and help shape the future of trustworthy AI data.</p>
           <Link to="/jobs" className="no-underline">
             <Button variant="secondary" size="lg" className="mt-6 bg-white text-primary hover:bg-white/90">
               View Open Positions <ArrowRight size={18} />
