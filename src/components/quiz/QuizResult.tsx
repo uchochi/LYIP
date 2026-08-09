@@ -42,7 +42,9 @@ function recommendPath(answers: QuizAnswers): { tag: string; desc: string }[] {
 
 export default function QuizResult({ answers, onRetake }: QuizResultProps) {
   const recs = recommendPath(answers);
-  const isBeginner = answers.experience === "I'm completely new — and that's perfectly fine!";
+  // Matches the option label from QuizPage ("I'm completely new", sublabel
+  // "And that's perfectly fine!" is separate and not part of the stored value).
+  const isBeginner = answers.experience === "I'm completely new";
 
   return (
     <div style={{ textAlign: 'center' }}>
@@ -84,6 +86,9 @@ export default function QuizResult({ answers, onRetake }: QuizResultProps) {
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <span style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '-4px' }}>
+          Next up
+        </span>
         <Link to="/start" style={{ textDecoration: 'none' }}>
           <button className="btn-send" type="button" style={{ width: '100%', padding: '14px', fontSize: '0.95rem' }}>
             Start the Tutorial →
