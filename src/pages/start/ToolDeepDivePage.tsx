@@ -39,6 +39,12 @@ function StepList({ steps }: { steps: ToolStep[] }) {
   );
 }
 
+/** Convert a YouTube watch/share URL (youtu.be/... or watch?v=...) into an embed URL. */
+function toEmbedUrl(url: string): string {
+  const id = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([\w-]+)/)?.[1];
+  return id ? `https://www.youtube.com/embed/${id}` : url;
+}
+
 export default function ToolDeepDivePage() {
   const { tool } = useParams();
   const data = getToolBySlug(tool);
@@ -79,6 +85,22 @@ export default function ToolDeepDivePage() {
           {data.bestFor}
         </div>
       </Reveal>
+
+      {/* Video walkthrough */}
+      {data.video && (
+        <Reveal y={10} duration={0.5}>
+          <h2>Watch the deep dive</h2>
+          <div className="docs-video">
+            <iframe
+              src={toEmbedUrl(data.video)}
+              title={`${data.name} walkthrough video`}
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            />
+          </div>
+        </Reveal>
+      )}
 
       {/* Setup */}
       <Reveal y={10} duration={0.5}>

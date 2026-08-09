@@ -200,6 +200,8 @@ export interface ToolDeepDive {
   /** One-line italic tagline under the title. */
   tagline: string;
   accent: string;
+  /** Optional YouTube walkthrough URL, embedded on the deep-dive page. */
+  video?: string;
   /** Gateway-level breakdown (AA.md toolkit section). */
   toolkit: ToolkitBreakdown;
   /** Which stages / use-case it fits best (pill on the card). */
@@ -224,6 +226,7 @@ export const TOOL_DEEP_DIVES: ToolDeepDive[] = [
     role: "The AI-Powered Developer's Toolkit",
     tagline: 'Your workbench for cleaning and structuring data at scale.',
     accent: '#3b82f6',
+    video: 'https://youtu.be/2sc-abZhUxU',
     toolkit: {
       subtitle: 'The Engineering Command Center',
       intro: 'This is the foundational tool. This is the tool that moves and transforms the data.',
@@ -328,6 +331,7 @@ export const TOOL_DEEP_DIVES: ToolDeepDive[] = [
     role: 'The Versatile Multi-Modal Annotator',
     tagline: 'A jack-of-all-trades for labelling text, images, audio, and video.',
     accent: '#a855f7',
+    video: 'https://youtu.be/A0cob_f5BmM',
     toolkit: {
       subtitle: 'The Multimodal Orchestrator',
       intro:
@@ -424,6 +428,7 @@ export const TOOL_DEEP_DIVES: ToolDeepDive[] = [
     role: "The Professional's Choice for NLP",
     tagline: 'A precision instrument built for high-velocity text labelling.',
     accent: '#34d399',
+    video: 'https://youtu.be/h1LNbAH0V0U',
     toolkit: {
       subtitle: 'The NLP Speed Demon',
       intro:
