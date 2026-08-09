@@ -250,15 +250,13 @@ export default function ForumPage() {
                           <Pin size={13} />
                         </button>
                         {isAdmin && (
-                          <>
-                            <button className="card-action-btn" onClick={(e) => { e.preventDefault(); handleArchive(topic); }} title={topic.is_archived ? 'Unarchive' : 'Archive'} type="button">
-                              <Archive size={13} />
-                            </button>
-                            <button className="card-action-btn" onClick={(e) => { e.preventDefault(); handleDelete(topic.id); }} title="Delete" type="button">
-                              <Trash2 size={13} />
-                            </button>
-                          </>
+                          <button className="card-action-btn" onClick={(e) => { e.preventDefault(); handleArchive(topic); }} title={topic.is_archived ? 'Unarchive' : 'Archive'} type="button">
+                            <Archive size={13} />
+                          </button>
                         )}
+                        <button className="card-action-btn" onClick={(e) => { e.preventDefault(); handleDelete(topic.id); }} title="Delete" type="button">
+                          <Trash2 size={13} />
+                        </button>
                       </div>
                     )}
                   </div>

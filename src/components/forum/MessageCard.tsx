@@ -14,6 +14,7 @@ interface MessageCardProps {
   reactions: ForumReaction[];
   currentUserId?: string;
   isAdmin?: boolean;
+  isStaff?: boolean;
   showActions?: boolean;
   onReply?: () => void;
   onDelete?: () => void;
@@ -41,6 +42,7 @@ export default function MessageCard({
   reactions,
   currentUserId,
   isAdmin = false,
+  isStaff = false,
   showActions = true,
   onReply,
   onDelete,
@@ -50,7 +52,9 @@ export default function MessageCard({
   const user = post.user;
   const displayName = user?.username || user?.name || 'Unknown';
   const badge = badgeFor(user?.role);
-  const canModify = isAdmin || post.author_id === currentUserId;
+  // Moderators can delete any post; editing stays author-or-admin only.
+  const canEdit = isAdmin || post.author_id === currentUserId;
+  const canDelete = isAdmin || isStaff || post.author_id === currentUserId;
 
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(post.content);
@@ -147,19 +151,19 @@ export default function MessageCard({
 
       <ReactionBar reactions={reactions} currentUserId={currentUserId} onToggle={onToggleReaction} />
 
-      {showActions && !editing && (onReply || (canModify && (onDelete || onEdit))) && (
+      {showActions && !editing && (onReply || (canDelete && onDelete) || (canEdit && onEdit)) && (
         <div className="card-actions">
           {onReply && (
             <button className="card-action-btn" onClick={onReply} title="Reply" type="button">
               <Reply size={13} />
             </button>
           )}
-          {canModify && onEdit && (
+          {canEdit && onEdit && (
             <button className="card-action-btn" onClick={startEdit} title="Edit" type="button">
               <Pencil size={13} />
             </button>
           )}
-          {canModify && onDelete && (
+          {canDelete && onDelete && (
             <button className="card-action-btn" onClick={onDelete} title="Delete" type="button">
               <Trash2 size={13} />
             </button>

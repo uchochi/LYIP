@@ -249,6 +249,7 @@ export default function ForumTopicPage() {
           reactions={reactions[topic.id] || []}
           currentUserId={currentUserId}
           isAdmin={isAdmin}
+          isStaff={isStaff}
           showActions={false}
           onToggleReaction={(emoji) => handleToggleReaction(topic.id, emoji)}
         />
@@ -262,6 +263,7 @@ export default function ForumTopicPage() {
             reactions={reactions[post.id] || []}
             currentUserId={currentUserId}
             isAdmin={isAdmin}
+            isStaff={isStaff}
             onReply={user ? () => setReplyingTo(post.id) : undefined}
             onDelete={() => handleDelete(post.id)}
             onEdit={user ? (content) => handleEdit(post.id, content) : undefined}
