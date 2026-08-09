@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Pin, Lock, AlertTriangle, X } from 'lucide-react';
-import { getTopic, getPosts, createPost, deletePost, updatePost, getReactions, toggleReaction, incrementTopicView, updateTopic } from '../services/forumService';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { ArrowLeft, Pin, Lock, AlertTriangle, X, Trash2 } from 'lucide-react';
+import { getTopic, getPosts, createPost, deletePost, deleteTopic, updatePost, getReactions, toggleReaction, incrementTopicView, updateTopic } from '../services/forumService';
 import { supabase } from '../lib/supabase';
 import { useTyping } from '../lib/useTyping';
 import { useAuth } from '../context/AuthContext';
@@ -15,6 +15,7 @@ import type { ForumTopic, ForumPost, ForumReaction } from '../types';
 export default function ForumTopicPage() {
   const { topicId } = useParams<{ topicId: string }>();
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [topic, setTopic] = useState<ForumTopic | undefined>();
   const [posts, setPosts] = useState<ForumPost[]>([]);
   const [reactions, setReactions] = useState<Record<string, ForumReaction[]>>({});
@@ -123,6 +124,18 @@ export default function ForumTopicPage() {
     }
   };
 
+  const handleDeleteTopic = async () => {
+    if (!topic) return;
+    if (!confirm('Delete this topic and all its replies permanently?')) return;
+    setError('');
+    try {
+      await deleteTopic(topic.id);
+      navigate('/forum');
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Failed to delete topic.');
+    }
+  };
+
   const handleEdit = async (postId: string, content: string) => {
     setError('');
     try {
@@ -187,6 +200,23 @@ export default function ForumTopicPage() {
           }}
         >
           <Pin size={11} /> {topic.is_pinned ? 'Unpin' : 'Pin'}
+        </button>
+      )}
+      {isStaff && (
+        <button
+          type="button"
+          onClick={handleDeleteTopic}
+          title="Delete this topic and all its replies"
+          style={{
+            display: 'inline-flex', alignItems: 'center', gap: '3px',
+            background: 'rgba(239,68,68,0.1)',
+            border: '1px solid rgba(239,68,68,0.35)',
+            color: '#ef4444',
+            borderRadius: '6px', padding: '3px 8px', fontSize: '11px', fontWeight: 600,
+            cursor: 'pointer', fontFamily: 'inherit',
+          }}
+        >
+          <Trash2 size={11} /> Delete Topic
         </button>
       )}
     </div>

@@ -52,9 +52,10 @@ export default function MessageCard({
   const user = post.user;
   const displayName = user?.username || user?.name || 'Unknown';
   const badge = badgeFor(user?.role);
-  // Moderators can delete any post; editing stays author-or-admin only.
+  // Deletion is a moderation action: staff (moderators + admins) only, like pin/unpin.
+  // Editing stays author-or-admin.
   const canEdit = isAdmin || post.author_id === currentUserId;
-  const canDelete = isAdmin || isStaff || post.author_id === currentUserId;
+  const canDelete = isAdmin || isStaff;
 
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(post.content);

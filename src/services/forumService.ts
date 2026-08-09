@@ -57,7 +57,7 @@ export async function updateTopic(id: string, updates: Partial<Pick<ForumTopic, 
 }
 
 export async function deleteTopic(id: string): Promise<boolean> {
-  const { error } = await supabase.from('forum_topics').delete().eq('id', id);
+  const { error } = await supabase.rpc('delete_forum_topic', { topic_uuid: id });
   if (error) throw error;
   return true;
 }
@@ -91,7 +91,7 @@ export async function createPost(post: { topic_id: string; content: string; pare
 }
 
 export async function deletePost(id: string): Promise<boolean> {
-  const { error } = await supabase.from('forum_posts').delete().eq('id', id);
+  const { error } = await supabase.rpc('delete_forum_post', { post_uuid: id });
   if (error) throw error;
   return true;
 }
