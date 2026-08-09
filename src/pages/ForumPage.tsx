@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { Plus, Pin, Archive, Lock, Trash2, AlertTriangle, X, ChevronDown, ChevronRight } from 'lucide-react';
+import { Plus, Pin, Archive, Lock, Trash2, AlertTriangle, X, ChevronDown, ChevronRight, Search } from 'lucide-react';
 import { getTopics, deleteTopic, updateTopic, getMemberCount, getOnlineCount, updateUserLastSeen, getTopContributors, type TopContributor } from '../services/forumService';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
@@ -23,8 +23,16 @@ export default function ForumPage() {
   const isAdmin = user?.role === 'admin';
   const isStaff = ['admin', 'senior_instructor', 'instructor'].includes(user?.role || '');
   const welcome = searchParams.get('welcome') === '1';
+  const query = searchParams.get('q') || '';
   const [showVerifyBanner, setShowVerifyBanner] = useState(false);
   const [contributorsOpen, setContributorsOpen] = useState(false);
+
+  const updateQuery = (value: string) => {
+    const next = new URLSearchParams(searchParams);
+    if (value.trim()) next.set('q', value.trim());
+    else next.delete('q');
+    setSearchParams(next, { replace: true });
+  };
 
   const load = async () => {
     setLoading(true);
@@ -97,6 +105,13 @@ export default function ForumPage() {
 
   const visibleTopics = topics.filter((t) => !t.is_archived || isAdmin);
 
+  const normalizedQuery = query.trim().toLowerCase();
+  const filteredTopics = visibleTopics.filter((t) => {
+    if (!normalizedQuery) return true;
+    const haystack = [t.title, stripMarkdownForPreview(t.content), ...t.tags].join(' ').toLowerCase();
+    return haystack.includes(normalizedQuery);
+  });
+
   return (
     <div className="forum-dark">
       <div className="forum-wrapper">
@@ -152,15 +167,42 @@ export default function ForumPage() {
           </div>
         )}
 
-        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', padding: '4px 2px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '4px 2px' }}>
+          <div style={{ position: 'relative', flex: 1 }}>
+            <Search size={14} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)', pointerEvents: 'none' }} />
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => updateQuery(e.target.value)}
+              placeholder="Search topics by title, content, or tag…"
+              aria-label="Search topics"
+              style={{
+                width: '100%',
+                background: 'var(--surface-lighter)',
+                border: '1px solid var(--border)',
+                color: 'var(--text-main)',
+                borderRadius: '8px',
+                padding: '8px 12px 8px 30px',
+                fontSize: '13px',
+                fontFamily: 'inherit',
+                outline: 'none',
+              }}
+            />
+          </div>
           {user && (
             <Link to="/forum/new" style={{ textDecoration: 'none' }}>
-              <button className="btn-send" type="button" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+              <button className="btn-send" type="button" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' }}>
                 <Plus size={14} /> New Topic
               </button>
             </Link>
           )}
         </div>
+
+        {normalizedQuery && (
+          <p style={{ fontSize: '12px', color: 'var(--text-muted)', padding: '0 2px', margin: '0 0 8px' }}>
+            {filteredTopics.length} result{filteredTopics.length === 1 ? '' : 's'} for “{query.trim()}”
+          </p>
+        )}
 
         {visibleTopics.length === 0 ? (
           <div className="comment-card" style={{ textAlign: 'center', padding: '40px 14px' }}>
@@ -168,9 +210,15 @@ export default function ForumPage() {
               {user ? 'Be the first to start a discussion! 🚀' : 'Sign in to create a new topic.'}
             </p>
           </div>
+        ) : filteredTopics.length === 0 ? (
+          <div className="comment-card" style={{ textAlign: 'center', padding: '40px 14px' }}>
+            <p style={{ color: 'var(--text-muted)', margin: 0 }}>
+              No topics match “{query.trim()}”. Try a different search.
+            </p>
+          </div>
         ) : (
           <div className="comment-container">
-            {visibleTopics.map((topic) => {
+            {filteredTopics.map((topic) => {
               const u = topic.user;
               const displayName = u?.username || u?.name || 'Unknown';
               return (
