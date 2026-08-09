@@ -26,22 +26,34 @@ function mapUser(user: import('@supabase/supabase-js').User): UserInfo {
   };
 }
 
+/** The role in public.users is authoritative (app_metadata only carries 'admin'). */
+async function fetchUserRole(userId: string): Promise<string | null> {
+  const { data } = await supabase.from('users').select('role').eq('id', userId).maybeSingle();
+  return data?.role ?? null;
+}
+
+async function resolveUser(authUser: import('@supabase/supabase-js').User): Promise<UserInfo> {
+  const info = mapUser(authUser);
+  const role = await fetchUserRole(authUser.id);
+  return role ? { ...info, role } : info;
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<UserInfo | null>(null);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       if (session?.user) {
         setIsAuthenticated(true);
-        setUser(mapUser(session.user));
+        setUser(await resolveUser(session.user));
       }
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session?.user) {
         setIsAuthenticated(true);
-        setUser(mapUser(session.user));
+        resolveUser(session.user).then(setUser);
       } else {
         setIsAuthenticated(false);
         setUser(null);
@@ -59,7 +71,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
     if (data.user) {
       setIsAuthenticated(true);
-      setUser(mapUser(data.user));
+      setUser(await resolveUser(data.user));
       return true;
     }
     return false;
