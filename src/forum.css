@@ -607,12 +607,6 @@ textarea {
   right: 10px;
   display: flex;
   gap: 4px;
-  opacity: 0;
-  transition: opacity 0.15s;
-}
-
-.comment-card:hover .card-actions {
-  opacity: 1;
 }
 
 .card-action-btn {
