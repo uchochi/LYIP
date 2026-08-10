@@ -93,7 +93,7 @@ Please revise and resubmit. Happy to answer any questions!`,
 **Step 2:** Format according to our template (source, date, text, word count)
 **Step 3:** If using a non-standard dialect, mark it clearly
 
-If you are unsure about a specific sentence, include it with a [NEEDS REVIEW] tag and we will look at it.
+If you are unsure about a specific sentence, include it with a NEEDS REVIEW tag and we will look at it.
 
 Hope this helps!`,
   },
@@ -159,43 +159,18 @@ export const visitorTemplates: ReplyTemplate[] = [
   { content: `Thanks for the detailed explanation. Makes it easy to get started.` },
 ]
 
-export const newMemberTemplates: TopicTemplate[] = [
+export const newMemberReplyTemplates: ReplyTemplate[] = [
   {
-    title: `Hello from {{name}} — excited to join!`,
-    content: `Hi everyone! I am {{name}} and I just joined the forum. I am a {{language}} speaker and I am excited to contribute to the dataset training project.
-
-I have some experience with language documentation but I am new to AI dataset curation. Looking forward to learning from everyone here.
-
-If anyone has tips for getting started, I would really appreciate them. Thanks!`,
-    tags: ['introductions', '{{language}}', 'new-member'],
+    content: `Hi everyone! I just joined and I am really excited about the {{language}} dataset work. I am new to AI dataset curation but keen to learn. If anyone has tips for getting started, I would really appreciate them. Thanks!`,
   },
   {
-    title: `Question: How do I get started with {{language}} curation?`,
-    content: `Hello everyone! I just signed up and I am interested in contributing to the {{language}} dataset project.
-
-I read through the pinned topics but I still have a few questions:
-1. Do I need any special software or tools?
-2. What types of sources are preferred for a beginner?
-3. How long does the review process usually take?
-
-Any guidance would be greatly appreciated. Thanks in advance!`,
-    tags: ['getting-started', '{{language}}', 'question'],
+    content: `Hello! New here and interested in contributing to the {{language}} dataset project. I read the pinned topics but still have a few questions: do I need any special software or tools, and what types of sources are preferred for a beginner? Any guidance would be great.`,
   },
   {
-    title: `New {{language}} curator — sharing my background`,
-    content: `Hi all! I am {{name}} and I wanted to introduce myself properly. I am a {{language}} speaker from {{city}} with a background in linguistics.
-
-I found this project through a colleague and I am really impressed with the quality standards you maintain. I would like to help expand the {{language}} dataset.
-
-I will start working on my first submission this week. Wish me luck!`,
-    tags: ['introductions', '{{language}}', 'curator'],
+    content: `Just signed up and looking forward to helping with the {{language}} dataset. I have some experience with language documentation but I am new to AI dataset curation. What should I read first before starting my first submission?`,
   },
   {
-    title: `Quick introduction — {{name}} from {{city}}`,
-    content: `Hey forum! Quick intro — I am {{name}}, {{language}} speaker based in {{city}}. I work in education and I am interested in how AI can support language learning.
-
-Looking forward to contributing to the datasets and learning from the community. Please let me know if there is anything I should read first before starting!`,
-    tags: ['introductions', '{{language}}'],
+    content: `Hey everyone! New member here. I found this project through a colleague and I am impressed with the quality standards. I would like to help expand the {{language}} dataset. Let me know if there is anything I should read first!`,
   },
 ]
 
@@ -205,16 +180,17 @@ export function fill(template: string, vars: Record<string, string>): string {
 
 export function randomModeratorTopic(): TopicTemplate {
   const t = pick(moderatorTemplates)
+  const vars = {
+    language: pick(languages),
+    pay: pick(pays),
+    payRange: pick(payRanges),
+    modName: pick(['Aaron', 'Claire', 'Ethan']),
+    modName2: pick(['Adam', 'Amber', 'Andrew', 'Erin']),
+  }
   return {
-    title: t.title,
-    content: fill(t.content, {
-      language: pick(languages),
-      pay: pick(pays),
-      payRange: pick(payRanges),
-      modName: pick(['Aaron', 'Claire', 'Ethan']),
-      modName2: pick(['Adam', 'Amber', 'Andrew', 'Erin']),
-    }),
-    tags: t.tags.map(tag => fill(tag, { language: pick(languages) })),
+    title: fill(t.title, vars),
+    content: fill(t.content, vars),
+    tags: t.tags.map(tag => fill(tag, { language: vars.language })),
   }
 }
 
@@ -236,11 +212,8 @@ export function randomVisitorReply(): string {
   })
 }
 
-export function randomNewMemberTopic(name: string): TopicTemplate {
-  const t = pick(newMemberTemplates)
-  return {
-    title: fill(t.title, { name, language: pick(languages), city: pick(['Lagos', 'Nairobi', 'Accra', 'Addis Ababa', 'Dakar', 'Harare', 'Kampala', 'Dar es Salaam']) }),
-    content: fill(t.content, { name, language: pick(languages), city: pick(['Lagos', 'Nairobi', 'Accra', 'Addis Ababa', 'Dakar', 'Harare', 'Kampala', 'Dar es Salaam']) }),
-    tags: t.tags.map(tag => fill(tag, { language: pick(languages) })),
-  }
+export function randomNewMemberReply(): string {
+  return fill(pick(newMemberReplyTemplates).content, {
+    language: pick(languages),
+  })
 }

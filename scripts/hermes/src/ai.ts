@@ -6,8 +6,9 @@ import type { Account } from './browser.js'
  * AI content generation for Hermes posts.
  *
  * Personas:
- *  - moderator / assistant → proper, professional English (staff voices)
- *  - commentator / visitor / newMember → casual, regional slang + abbreviations
+ *  - moderator → staff voice; the ONLY persona that creates topics
+ *  - assistant → professional staff voice, replies only
+ *  - commentator / visitor / newMember → casual, regional slang + abbreviations, replies only
  *
  * Region and language are derived deterministically from the account email so
  * each persona stays consistent (same region every time).
@@ -35,6 +36,15 @@ export const REGIONS = [
 
 export const LANGUAGES = ['Hausa', 'Yoruba', 'Igbo', 'Swahili', 'Zulu', 'Amharic', 'Wolof', 'Shona']
 
+/** Plausible cities per region, used to replace [ADDRESS]-style placeholders. */
+export const CITY_BY_REGION: Record<string, string[]> = {
+  Nigerian: ['Lagos', 'Abuja', 'Ibadan', 'Kano', 'Port Harcourt'],
+  Ghanaian: ['Accra', 'Kumasi', 'Takoradi', 'Tamale'],
+  Kenyan: ['Nairobi', 'Mombasa', 'Kisumu', 'Nakuru'],
+  'South African': ['Johannesburg', 'Cape Town', 'Durban', 'Pretoria'],
+  'East African': ['Dar es Salaam', 'Kampala', 'Kigali', 'Arusha'],
+}
+
 export function hashString(s: string): number {
   let h = 0
   for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0
@@ -52,6 +62,32 @@ export function regionFor(account: Account): string {
 
 export function languageFor(account: Account): string {
   return pickFor(hashString(account.email + ':lang'), LANGUAGES)
+}
+
+export function cityFor(account: Account): string {
+  const region = pickFor(hashString(account.email), REGIONS).name
+  const cities = CITY_BY_REGION[region] ?? ['Lagos', 'Nairobi', 'Accra']
+  return pickFor(hashString(account.email + ':city'), cities)
+}
+
+/**
+ * Final safety net: no placeholder tokens may ever reach the forum.
+ *  - name tokens ([PERSON_NAME], [NAME], ...) → the account's real name
+ *  - address tokens ([ADDRESS], [CITY], [LOCATION], ...) → a plausible city
+ *  - any other leftover [UPPERCASE] token → removed entirely
+ */
+export function sanitizeContent(text: string, account: Account): string {
+  let out = text
+    .replace(/\[(?:PERSON_NAME|NAME|USER|USERNAME|AUTHOR)\]/gi, account.name)
+    .replace(
+      /\[(?:ADDRESS|CITY|TOWN|LOCATION|PLACE|COUNTRY|REGION|STATE|AREA|HOMETOWN|VILLAGE)\]/gi,
+      cityFor(account)
+    )
+    .replace(/\[[A-Z][A-Z0-9_ -]{1,40}\]/g, '')
+    .replace(/[ \t]{2,}/g, ' ')
+    .replace(/\s+([,.;:!?])/g, '$1')
+    .trim()
+  return out
 }
 
 function readOpenRouterKey(): string | null {
@@ -120,7 +156,7 @@ async function chat(
 }
 
 /** Strip surrounding quotes / labels a model sometimes adds. */
-function cleanReply(content: string, accountName: string): string {
+function cleanReply(content: string, account: Account): string {
   let out = content.trim()
   // Remove common wrapping: `Here's something like: "..."` → take the quoted part
   const quoteMatch = out.match(/"[^"]{20,}"/)
@@ -129,20 +165,19 @@ function cleanReply(content: string, accountName: string): string {
   out = out.replace(/^(comment|reply|response|content|title|topic)\s*[:.-]\s*/i, '').trim()
   // Remove any surrounding quotes
   if (out.startsWith('"') && out.endsWith('"')) out = out.slice(1, -1)
-  // Models sometimes emit placeholder tokens like [PERSON_NAME] — swap in the account name
-  out = out.replace(/\[(?:PERSON_NAME|NAME|USER|USERNAME|AUTHOR)\]/gi, accountName)
-  return out.trim()
+  // Never let placeholder tokens like [PERSON_NAME] / [ADDRESS] reach the forum
+  return sanitizeContent(out, account)
 }
 
-function parseTopicJson(raw: string, accountName: string): GeneratedTopic | null {
+function parseTopicJson(raw: string, account: Account): GeneratedTopic | null {
   try {
     const cleaned = raw.replace(/```json|```/g, '').trim()
     const start = cleaned.indexOf('{')
     const end = cleaned.lastIndexOf('}')
     if (start === -1 || end === -1) return null
     const obj = JSON.parse(cleaned.slice(start, end + 1)) as Record<string, unknown>
-    const title = String(obj.title ?? '').trim().replace(/\[(?:PERSON_NAME|NAME|USER|USERNAME|AUTHOR)\]/gi, accountName)
-    const content = String(obj.content ?? '').trim().replace(/\[(?:PERSON_NAME|NAME|USER|USERNAME|AUTHOR)\]/gi, accountName)
+    const title = sanitizeContent(String(obj.title ?? '').trim(), account)
+    const content = sanitizeContent(String(obj.content ?? '').trim(), account)
     const tags = Array.isArray(obj.tags) ? obj.tags.map((t) => String(t).trim()).filter(Boolean) : []
     if (!title || !content) return null
     return { title, content, tags: tags.slice(0, 4) }
@@ -155,6 +190,8 @@ const SYSTEM_STAFF =
   'You are a staff member of the LoseYourIP dataset-training community (moderator or assistant). ' +
   'You write in clear, professional but warm English. You help community members with dataset ' +
   'curation for African languages. Be specific, encouraging, and slightly formal. ' +
+  'Never introduce yourself or mention your name or location — the forum already shows your name. ' +
+  'Never use placeholder tokens in square brackets like [PERSON_NAME] or [ADDRESS]. ' +
   'Your reply must be ONLY the output text — no quotes, no labels, no explanation.'
 
 const SYSTEM_CASUAL =
@@ -162,23 +199,19 @@ const SYSTEM_CASUAL =
   'You write the way real people actually write on forums: casual, informal, with natural ' +
   'slang and abbreviations from your region, occasional lowercase, short sentences. ' +
   'Your English is NOT perfectly correct — you type naturally, like a normal person, not an AI. ' +
-  'Never use placeholder tokens like [PERSON_NAME]. ' +
+  'Do not introduce yourself or mention your name or address — the forum already shows your name. ' +
+  'Never use placeholder tokens in square brackets like [PERSON_NAME] or [ADDRESS]. ' +
   'Your reply must be ONLY the output text — no quotes, no labels, no explanation.'
-
-const TOPIC_SYSTEM_CASUAL =
-  'You are a regular member of a dataset-curation community for African languages. ' +
-  'You write the way real people actually write on forums: casual, informal, with natural ' +
-  'slang and abbreviations from your region, occasional lowercase. ' +
-  'Reply ONLY with a JSON object: {"title": "...", "content": "...", "tags": ["a", "b"]}. ' +
-  'No markdown, no extra text.'
 
 const TOPIC_SYSTEM_STAFF =
   'You are a staff member of the LoseYourIP dataset-training community. You post official ' +
   'announcements and helpful topics in clear, professional but warm English. ' +
+  'Do not introduce yourself or mention your name — the forum already shows your name. ' +
+  'Never use placeholder tokens in square brackets like [PERSON_NAME] or [ADDRESS]. ' +
   'Reply ONLY with a JSON object: {"title": "...", "content": "...", "tags": ["a", "b"]}. ' +
   'No markdown, no extra text.'
 
-export async function generateReply(persona: 'moderator' | 'assistant' | 'commentator' | 'visitor', account: Account): Promise<string | null> {
+export async function generateReply(persona: 'moderator' | 'assistant' | 'commentator' | 'visitor' | 'newMember', account: Account): Promise<string | null> {
   const language = languageFor(account)
   const region = regionFor(account)
 
@@ -191,7 +224,9 @@ export async function generateReply(persona: 'moderator' | 'assistant' | 'commen
         'Clear professional English.\n'
       : `Write a casual forum comment on a topic about ${language} dataset curation (contributors get paid per dataset).\n` +
         `Your region: ${region}.\n` +
-        `Persona: ${persona === 'visitor' ? 'new visitor who just found the project — short, excited, very casual' : 'active community member — a few sentences, asks a question or shares an experience'}.\n` +
+        `Persona: ${persona === 'visitor' ? 'new visitor who just found the project — short, excited, very casual' : persona === 'newMember' ? 'new community member — say you just joined, share why you want to contribute, and ask one real question about getting started' : 'active community member — a few sentences, asks a question or shares an experience'}.\n` +
+        'Do not introduce yourself or mention your name or address — the forum already shows your name. ' +
+        'Engage with the topic meaningfully: react to it, ask a real question, or share a small experience. ' +
         'Use natural slang, abbreviations and casual style. 2-4 sentences. Make it feel human, not written by an AI.\n'
 
   const res = await chat(
@@ -202,31 +237,26 @@ export async function generateReply(persona: 'moderator' | 'assistant' | 'commen
     300
   )
   if (!res.ok) return null
-  const cleaned = cleanReply(res.content!, account.name)
+  const cleaned = cleanReply(res.content!, account)
   return cleaned.length >= 20 ? cleaned : null
 }
 
-export async function generateTopic(persona: 'moderator' | 'newMember', account: Account): Promise<GeneratedTopic | null> {
+export async function generateTopic(account: Account): Promise<GeneratedTopic | null> {
+  // Only admin/moderator accounts create topics. Topic voice is always staff.
   const language = languageFor(account)
-  const region = regionFor(account)
 
   const user =
-    persona === 'moderator'
-      ? `Write a community announcement topic for ${language} dataset contributors.\n` +
-        'Announce a new dataset opportunity, share quality-review findings, or give guidelines. ' +
-        'Include a short header line, 2-4 short sections, and clear English. Clear professional English.\n'
-      : `Write a short introduction topic from a new community member.\n` +
-        `Your region: ${region}.\n` +
-        'Introduce yourself, mention you want to contribute to African-language dataset curation, and ask a question. ' +
-        'Use natural casual style with region-appropriate slang — like a real person, not an AI.\n'
+    `Write a community announcement topic for ${language} dataset contributors.\n` +
+    'Announce a new dataset opportunity, share quality-review findings, or give guidelines. ' +
+    'Include a short header line, 2-4 short sections, and clear English. Clear professional English.\n'
 
   const res = await chat(
     [
-      { role: 'system', content: persona === 'moderator' ? TOPIC_SYSTEM_STAFF : TOPIC_SYSTEM_CASUAL },
+      { role: 'system', content: TOPIC_SYSTEM_STAFF },
       { role: 'user', content: user },
     ],
     450
   )
   if (!res.ok) return null
-  return parseTopicJson(res.content!, account.name)
+  return parseTopicJson(res.content!, account)
 }
