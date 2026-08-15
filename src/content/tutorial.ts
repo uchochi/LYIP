@@ -228,7 +228,7 @@ export const TOOL_DEEP_DIVES: ToolDeepDive[] = [
     accent: '#ef4444',
     toolkit: {
       subtitle: 'The All-in-One Solution',
-      intro: 'This is the absolute choice for anyone building LLM datasets. Get 70-80% off your first dataset — pay less for content worth hundreds of dollars! Works on mobile, keeps your data private, and handles images, audio, video, and text all in one place.',
+      intro: 'The absolute first choice for building LLM datasets. New users get 70-80% off their first dataset! Works perfectly on mobile phones, keeps your data private, and handles images, audio, video, and text all in one place. No coding needed — just drag and drop nodes to build your data pipeline. The AI cleans, analyzes, tags, translates, and formats your data automatically. Export ready-to-use datasets for AI training.',
       stages: [
         { lead: 'Stage 1 (The Cleaning Of The Dataset)', detail: 'Built-in data cleaning with AI-powered noise removal.' },
         { lead: 'Stage 2 (Language Alignment)', detail: 'Smart multilingual translation that preserves humor and cultural context.' },
@@ -242,60 +242,48 @@ export const TOOL_DEEP_DIVES: ToolDeepDive[] = [
         },
       ],
       whenToUse:
-        'Use this when you want the easiest way to build LLM datasets. No coding needed. Just drag and drop nodes to build your pipeline. Perfect for beginners who want to create professional datasets without learning programming.',
+        'Use this when you want the easiest way to build professional LLM datasets. Perfect for beginners who don't want to learn programming. Also great for experts who want a fast visual workflow.',
       pros: [
         {
-          lead: 'Huge Savings for New Users',
-          detail: '70-80% off your first dataset means you can build datasets worth hundreds of dollars for very little money.',
+          lead: 'Huge Savings',
+          detail: '70-80% off for new users means you can build datasets worth hundreds of dollars for very little money.',
         },
         {
-          lead: 'Works on Any Device',
-          detail: 'Use your phone, tablet, or computer. The interface is designed for mobile use.',
+          lead: 'Works Anywhere',
+          detail: 'Use your phone, tablet, or computer — designed for mobile use.',
         },
         {
-          lead: 'Keeps Your Data Private',
-          detail: 'Media files are deleted after you finish. Only your exported dataset is saved.',
+          lead: 'Privacy First',
+          detail: 'Your data stays private. Media files are deleted after you finish.',
         },
         {
-          lead: 'Handles Many Content Types',
-          detail: 'Text, images, audio, video, and PDF files — all processed in one tool.',
-        },
-        {
-          lead: 'No Coding Required',
-          detail: 'Visual drag-and-drop interface. Just connect nodes and run.',
-        },
-        {
-          lead: 'AI Does the Hard Work',
-          detail: 'Automatic analysis, tagging, translation, and explanation generation.',
+          lead: 'All-in-One',
+          detail: 'Handles text, images, audio, video, and PDF files in one tool.',
         },
       ],
       cons: [
         { lead: 'Requires Internet', detail: 'You need an active connection to use the Telegram Mini App.' },
         {
-          lead: 'Media is Temporary',
-          detail: 'Media files are deleted when you close. You may need to re-upload them later.',
+          lead: 'Temporary Media',
+          detail: 'Media files are deleted when you close the app.',
         },
         {
-          lead: 'Token-Based Cost',
-          detail: 'You pay for AI work in credits. Large projects can get expensive without discounts.',
-        },
-        {
-          lead: 'Limited to Export Formats',
-          detail: 'Exports mainly as JSONL, JSON, or CSV — fewer format options than some tools.',
+          lead: 'Token Costs',
+          detail: 'You pay for AI work in credits, but discounts make it very affordable.',
         },
       ],
       investment: [
         {
           lead: 'Starter Plan',
-          detail: '$10 for 10,000 credits (1M tokens). With 75% off coupon, just $2.50!',
+          detail: '$10 for 10,000 credits (1M tokens) — just $2.50 with 75% off coupon!',
         },
         {
           lead: 'Pro Plan',
-          detail: '$20 for 20,000 credits (2M tokens). Good for medium projects.',
+          detail: '$20 for 20,000 credits (2M tokens).',
         },
         {
           lead: 'Business Plan',
-          detail: '$40 for 40,000 credits (4M tokens). For large teams and big projects.',
+          detail: '$40 for 40,000 credits (4M tokens).',
         },
       ],
     },
@@ -409,7 +397,7 @@ export const TOOL_DEEP_DIVES: ToolDeepDive[] = [
     video: 'https://youtu.be/2sc-abZhUxU',
     toolkit: {
       subtitle: 'The Engineering Command Center',
-      intro: 'This is the foundational tool. This is the tool that moves and transforms the data.',
+      intro: 'The foundational tool that moves and transforms data. Use this when dealing with scale. If you have 10 million rows of messy text, open VS Code. Use GitHub Copilot to rapidly write Python/Pandas scripts that "sweep" through data, removing noise (Stage 1) and enforcing structure (Stage 3).',
       stages: [
         { lead: 'Stage 1 (The Cleaning Of The Dataset)', detail: 'Writing regex and cleaning scripts.' },
         { lead: 'Stage 2 (Language Alignment)', detail: 'Scripting translation pipelines and encoding checks.' },
@@ -419,7 +407,7 @@ export const TOOL_DEEP_DIVES: ToolDeepDive[] = [
         },
       ],
       whenToUse:
-        'Use this when you are dealing with scale. If you have 10 million rows of messy text, you do not open a labeling tool; you open VS Code. You use GitHub Copilot to rapidly write Python/Pandas scripts that "sweep" through the data, removing noise (Stage 1) and enforcing the mathematical structure (Stage 3).',
+        'Use this when dealing with scale. If you have 10 million rows of messy text, open VS Code. Use GitHub Copilot to rapidly write Python/Pandas scripts that "sweep" through data, removing noise (Stage 1) and enforcing structure (Stage 3).',
       pros: [
         { lead: 'Infinite Scalability', detail: 'Code can process terabytes of data that no human interface could ever load.' },
         { lead: 'Precision', detail: 'You can write exact logic for every edge case.' },
@@ -514,8 +502,7 @@ export const TOOL_DEEP_DIVES: ToolDeepDive[] = [
     video: 'https://youtu.be/A0cob_f5BmM',
     toolkit: {
       subtitle: 'The Multimodal Orchestrator',
-      intro:
-        'Label Studio is the "Generalist." It is designed for high-complexity projects where the data isn\'t just text, but a combination of various formats.',
+      intro: 'The generalist for high-complexity projects with mixed data formats. Use this when ground truth requires custom interfaces — looking at video to tag timestamps, or medical scans with patient reports.',
       stages: [
         {
           lead: 'Stage 4 (Intelligent Ground-Truthing)',
@@ -523,7 +510,7 @@ export const TOOL_DEEP_DIVES: ToolDeepDive[] = [
         },
       ],
       whenToUse:
-        'Use this when your "Ground Truth" requires a custom interface. If you need a human to look at a video and tag the timestamp, or look at a medical scan and a patient report, Label Studio allows you to build a custom UI for that specific task. It is your tool for ensuring the final output is exported in a perfectly structured JSON format that also matches Stage 3 (Structuring the Dataset).',
+        'Use this when ground truth requires custom interfaces — looking at video to tag timestamps, or medical scans with patient reports.',
       pros: [
         { lead: 'Versatility', detail: 'One tool for text, audio, image, and video, and more.' },
         { lead: 'Schema Control', detail: 'Excellent at ensuring the final export follows your strict structural requirements.' },
@@ -611,8 +598,7 @@ export const TOOL_DEEP_DIVES: ToolDeepDive[] = [
     video: 'https://youtu.be/h1LNbAH0V0U',
     toolkit: {
       subtitle: 'The NLP Speed Demon',
-      intro:
-        'Prodigy is the "Specialist." It is built by the creators of spaCy (the leading NLP library) and is optimized for one thing: high-velocity text labeling.',
+      intro: 'The specialist from spaCy creators, optimized for high-velocity text labeling. Use this for text-only projects like sentiment analysis, named entity recognition, and text classification.',
       stages: [
         {
           lead: 'Stage 4 (Intelligent Dataset Labeling)',
@@ -620,7 +606,7 @@ export const TOOL_DEEP_DIVES: ToolDeepDive[] = [
         },
       ],
       whenToUse:
-        'Use this when your goal is purely text-based (Sentiment, Named Entity Recognition, Text Classification). You don\'t just "label" in Prodigy; you "train while you label." You use its Active Learning feature: the tool shows you the data it is most "confused" about. You provide the answer, the model learns, and it immediately becomes smarter, showing you even better samples.',
+        'Use this for text-only projects like sentiment analysis, named entity recognition, and text classification. Don\'t just label — "train while you label." Active learning shows the most confusing data first, making the model smarter with your input.',
       pros: [
         { lead: 'Blazing Speed', detail: 'Active learning reduces the amount of data a human needs to see by up to 80%.' },
         { lead: 'NLP Integration', detail: 'Seamlessly integrates with advanced linguistic models.' },
