@@ -219,6 +219,186 @@ export interface ToolDeepDive {
 
 export const TOOL_DEEP_DIVES: ToolDeepDive[] = [
   {
+    slug: 'ooguy',
+    name: 'ooguy — LLM Dataset Formatter',
+    emoji: '🚀',
+    image: '/ooguy.jpg',
+    role: 'The Complete Dataset Building Platform',
+    tagline: 'Build, format, translate, and export LLM datasets on any device.',
+    accent: '#ef4444',
+    toolkit: {
+      subtitle: 'The All-in-One Solution',
+      intro: 'This is the absolute choice for anyone building LLM datasets. Get 70-80% off your first dataset — pay less for content worth hundreds of dollars! Works on mobile, keeps your data private, and handles images, audio, video, and text all in one place.',
+      stages: [
+        { lead: 'Stage 1 (The Cleaning Of The Dataset)', detail: 'Built-in data cleaning with AI-powered noise removal.' },
+        { lead: 'Stage 2 (Language Alignment)', detail: 'Smart multilingual translation that preserves humor and cultural context.' },
+        {
+          lead: 'Stage 3 (Structuring the Data)',
+          detail: 'Automatic JSONL formatting with rich metadata and ID assignment.',
+        },
+        {
+          lead: 'Stage 4 (Dataset Labelling)',
+          detail: 'AI-powered tagging, categorization, and explanation generation.',
+        },
+      ],
+      whenToUse:
+        'Use this when you want the easiest way to build LLM datasets. No coding needed. Just drag and drop nodes to build your pipeline. Perfect for beginners who want to create professional datasets without learning programming.',
+      pros: [
+        {
+          lead: 'Huge Savings for New Users',
+          detail: '70-80% off your first dataset means you can build datasets worth hundreds of dollars for very little money.',
+        },
+        {
+          lead: 'Works on Any Device',
+          detail: 'Use your phone, tablet, or computer. The interface is designed for mobile use.',
+        },
+        {
+          lead: 'Keeps Your Data Private',
+          detail: 'Media files are deleted after you finish. Only your exported dataset is saved.',
+        },
+        {
+          lead: 'Handles Many Content Types',
+          detail: 'Text, images, audio, video, and PDF files — all processed in one tool.',
+        },
+        {
+          lead: 'No Coding Required',
+          detail: 'Visual drag-and-drop interface. Just connect nodes and run.',
+        },
+        {
+          lead: 'AI Does the Hard Work',
+          detail: 'Automatic analysis, tagging, translation, and explanation generation.',
+        },
+      ],
+      cons: [
+        { lead: 'Requires Internet', detail: 'You need an active connection to use the Telegram Mini App.' },
+        {
+          lead: 'Media is Temporary',
+          detail: 'Media files are deleted when you close. You may need to re-upload them later.',
+        },
+        {
+          lead: 'Token-Based Cost',
+          detail: 'You pay for AI work in credits. Large projects can get expensive without discounts.',
+        },
+        {
+          lead: 'Limited to Export Formats',
+          detail: 'Exports mainly as JSONL, JSON, or CSV — fewer format options than some tools.',
+        },
+      ],
+      investment: [
+        {
+          lead: 'Starter Plan',
+          detail: '$10 for 10,000 credits (1M tokens). With 75% off coupon, just $2.50!',
+        },
+        {
+          lead: 'Pro Plan',
+          detail: '$20 for 20,000 credits (2M tokens). Good for medium projects.',
+        },
+        {
+          lead: 'Business Plan',
+          detail: '$40 for 40,000 credits (4M tokens). For large teams and big projects.',
+        },
+      ],
+    },
+    bestFor: 'All stages · Complete solution for beginners and experts',
+    intro:
+      'ooguy is a smart Telegram Mini App that makes building LLM training datasets easy. You do not need to write code or be a computer expert. Just drag and drop nodes on your screen to build a data pipeline. Add your content, let the AI clean and analyze it, organize it by topic or language, translate it into many languages, and export it ready for AI training. It works perfectly on phones, keeps your data private, and saves you money with big discounts for new users.',
+    setup: {
+      title: 'How to set it up',
+      steps: [
+        {
+          title: 'Find the Telegram Bot',
+          body: 'Search for the ooguy bot in Telegram. Click "Start" to open the Mini App.',
+        },
+        {
+          title: 'Sign In',
+          body: 'Use your Telegram account to sign in. No extra registration is needed.',
+        },
+        {
+          title: 'Get Your Discount',
+          body: 'New users get 70-80% off. Use the welcome offer to buy credits at a huge discount.',
+        },
+        {
+          title: 'Start Building',
+          body: 'The onboarding screen shows you how to use the tool. Click "Get Started" to begin.',
+        },
+      ],
+    },
+    usage: {
+      title: 'How to use it',
+      steps: [
+        {
+          title: 'Add Your Data',
+          body: 'Click the Input node and paste your text or upload media files (images, audio, video, PDF).',
+        },
+        {
+          title: 'Format and Organize',
+          body: 'Connect nodes to clean your data, structure it, and add AI analysis. The Format node adds IDs and metadata.',
+        },
+        {
+          title: 'Add Smart Tags',
+          body: 'The Tag & Categorize node finds themes and organizes your content automatically.',
+        },
+        {
+          title: 'Translate to Many Languages',
+          body: 'The Translate node turns your dataset into many languages while keeping the meaning intact.',
+        },
+        {
+          title: 'Export Your Dataset',
+          body: 'The Output node downloads your data as JSONL ready for AI training platforms.',
+        },
+      ],
+    },
+    pricing: {
+      trialNote: 'New users get 70-80% off their first dataset purchase with the welcome offer.',
+      cards: [
+        {
+          label: 'Starter',
+          value: '10,000 credits (1M tokens)',
+          note: '$10 normally, but 75% off with coupon means just $2.50!',
+        },
+        {
+          label: 'Pro',
+          value: '20,000 credits (2M tokens)',
+          note: '$20. Good for medium-sized projects and regular use.',
+        },
+        {
+          label: 'Business',
+          value: '40,000 credits (4M tokens)',
+          note: '$40. For large teams and big dataset projects.',
+        },
+      ],
+    },
+    canDo: [
+      'Process text, images, audio, video, and PDF files in one place.',
+      'Build complete LLM datasets without writing any code.',
+      'Use AI to clean, analyze, tag, and categorize your content.',
+      'Translate your dataset into many languages while preserving meaning.',
+      'Export data in standard formats ready for AI training.',
+      'Use the app on any device with Telegram.',
+      'Keep your data private — media files are temporary.',
+    ],
+    cantDo: [
+      'Work offline — you need an internet connection to use the app.',
+      'Process media files permanently — they are deleted when you close the app.',
+      'Export in many different formats — mainly JSONL, JSON, and CSV.',
+      'Store your media long-term — only the text analysis is saved.',
+      'Build extremely custom pipelines — you are limited to the available nodes.',
+      'Use advanced code for complex transformations.',
+    ],
+    summaryHeaders: ['Feature', 'ooguy'],
+    summary: [
+      { feature: 'Ease of use', cols: ['Very easy (no coding needed)'] },
+      { feature: 'Device support', cols: ['Mobile, tablet, and computer'] },
+      { feature: 'Content types', cols: ['Text, images, audio, video, PDF'] },
+      { feature: 'New user discount', cols: ['70-80% off first purchase'] },
+      { feature: 'Privacy', cols: ['Data stays private, media is temporary'] },
+      { feature: 'Export formats', cols: ['JSONL, JSON, CSV'] },
+      { feature: 'Cost', cols: ['Pay for credits used, with big discounts'] },
+    ],
+    bottomLine:
+      'ooguy is the absolute choice for anyone building LLM datasets. The huge discount for new users means you can create your first dataset for very little money. It works on any device, keeps your data private, and handles all types of content. No coding required — just drag and drop nodes and let the AI do the work. This tool makes professional dataset building accessible to everyone.',
+  },
+  {
     slug: 'vscode-copilot',
     name: 'VS Code & GitHub Copilot',
     emoji: '💻',

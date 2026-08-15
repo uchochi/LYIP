@@ -97,7 +97,30 @@ To execute the above 4 stages at professional scale, Useing the right tools and 
 
 ---
 
-### 1. VS Code & GitHub Copilot
+### 1. ooguy — LLM Dataset Formatter
+**The Complete Solution**
+
+This is the absolute first choice for anyone building LLM datasets. New users get 70-80% off their first dataset — pay less for content worth hundreds of dollars! Works perfectly on mobile phones, keeps your data private, and handles images, audio, video, and text all in one place. No coding needed — just drag and drop nodes to build your data pipeline. The AI cleans, analyzes, tags, translates, and formats your data automatically. Export ready-to-use datasets for AI training.
+
+*   **Which Stage can it handle:** All stages (1-4) in one tool.
+*   **When & How to Use It:** Use this when you want the easiest way to build professional LLM datasets. Perfect for beginners who do not want to learn programming. Also great for experts who want a fast visual workflow.
+*   **The Advantage (Pros):**
+    *   **Huge Savings:** 70-80% off for new users means you can build datasets worth hundreds of dollars for very little money.
+    *   **Works Anywhere:** Use your phone, tablet, or computer — designed for mobile use.
+    *   **Privacy First:** Your data stays private. Media files are deleted after you finish.
+    *   **All-in-One:** Handles text, images, audio, video, and PDF files in one tool.
+*   **The Friction (Cons):**
+    *   **Requires Internet:** You need an active connection to use the Telegram Mini App.
+    *   **Temporary Media:** Media files are deleted when you close the app.
+    *   **Token Costs:** You pay for AI work in credits, but discounts make it very affordable.
+*   **Investment (Cost/Budget):**
+    *   **Starter:** $10 for 10,000 credits (1M tokens) — just $2.50 with 75% off coupon!
+    *   **Pro:** $20 for 20,000 credits (2M tokens).
+    *   **Business:** $40 for 40,000 credits (4M tokens).
+
+---
+
+### 2. VS Code & GitHub Copilot
 **The Engineering Command Center**
 
 This is the foundational tool. This is the tools that move and transform that data.
