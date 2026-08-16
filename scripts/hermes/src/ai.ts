@@ -209,7 +209,17 @@ const TOPIC_SYSTEM_STAFF =
   'Do not introduce yourself or mention your name — the forum already shows your name. ' +
   'Never use placeholder tokens in square brackets like [PERSON_NAME] or [ADDRESS]. ' +
   'Reply ONLY with a JSON object: {"title": "...", "content": "...", "tags": ["a", "b"]}. ' +
-  'No markdown, no extra text.'
+  'No markdown, no extra text.\n\n' +
+  'For dataset announcement topics, you MUST use this exact structure:\n\n' +
+  '# [Topic of Dataset]\n\n' +
+  '**Payment Range:** $X - $Y per dataset\n\n' +
+  '*Note: Final payment is subject to the quality, accuracy, and current market demand of your submission.*\n\n' +
+  '**Project Goal:** [1-2 sentences explaining the dataset purpose]\n\n' +
+  '**Examples:**\n\n' +
+  '**Raw Data:** [authentic example text in the target language]\n\n' +
+  '**Formatted JSON:** [complete JSON example showing structure including raw, explanation_for_ai, ai_processed, tags, categories, categorized]\n\n' +
+  '**Recommended tools to use and link to learn:**\n\n' +
+  'We recommend using **ooguy**, **VSCode**, or **GitHub Copilot** to manage and format your dataset. [[Click the link below to access the tutorial on how to use these tools for formatting.] ](https://jobs.loseyourip.com/start)'
 
 export async function generateReply(persona: 'moderator' | 'assistant' | 'commentator' | 'visitor' | 'newMember', account: Account): Promise<string | null> {
   const language = languageFor(account)

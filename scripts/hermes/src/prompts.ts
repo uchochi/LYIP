@@ -19,35 +19,75 @@ export interface ReplyTemplate {
 export const moderatorTemplates: TopicTemplate[] = [
   {
     title: `New Dataset Opportunity: {{language}} — {{pay}}/dataset`,
-    content: `We are launching a new {{language}} dataset curation project and are looking for contributors.
+    content: `# {{language}} to English Translation and Semantic Analysis Dataset
 
-**Pay:** {{pay}} per dataset (1500+ words)
-**Focus:** Authentic {{language}} text from news, literature, and social discourse.
+**Payment Range:** $50 - $500 per dataset
 
-**Requirements:**
-- Native speaker proficiency
-- Clean formatting with proper orthography
-- Source attribution required
-- No machine-translated content
+*Note: Final payment is subject to the quality, accuracy, and current market demand of your submission.*
 
-Post your submissions here or ask questions below. Our review team will get back to you within 48 hours.`,
+**Project Goal:** We are seeking contributors to provide high-quality datasets designed to teach AI models how to properly interpret {{language}}. The objective is to empower {{language}} content creators by enabling AI tools to generate and understand authentic {{language}} content.
+
+**Examples:**
+
+**Raw Data:** "[Example {{language}} text here]"
+
+**Formatted JSON:**
+\`\`\`json [
+  {
+    "raw": "[Example {{language}} text here]",
+    "explanation_for_ai": "The content is a {{language}} phrase/text with specific cultural and linguistic meaning",
+    "key_topics": [
+      "{{language}}",
+      "[Topic1]",
+      "[Topic2]"
+    ],
+    "sentiment": "Neutral",
+    "language": "{{language}}",
+    "literal_translation": "[English translation]"
+  }
+]
+\`\`\`
+
+**Recommended tools to use and link to learn:**
+
+We recommend using **ooguy**, **VSCode**, or **GitHub Copilot** to manage and format your dataset. [[Click the link below to access the tutorial on how to use these tools for formatting.] ](https://jobs.loseyourip.com/start)`,
     tags: ['{{language}}', 'dataset-training', 'curation'],
   },
   {
     title: `Urgent: {{language}} Audio Transcription Project — {{payRange}}`,
-    content: `We have an urgent need for {{language}} audio transcription specialists.
+    content: `# {{language}} Audio Speech Recognition Dataset
 
-**Pay:** {{payRange}} per audio hour
-**Format:** Timestamped transcription
-**Audio length:** 15-45 minute clips
+**Payment Range:** $30 - $250 per audio hour
 
-**Guidelines:**
-1. Transcribe verbatim including fillers
-2. Timestamp every 30 seconds
-3. Note speaker changes
-4. Include dialect information
+*Note: Final payment is subject to the quality, accuracy, and current market demand of your submission.*
 
-Audio files are being prepared. Comment below if you are interested and we will assign clips.`,
+**Project Goal:** We are seeking contributors to provide high-quality audio transcription datasets for {{language}} speech recognition. The objective is to train AI models to accurately understand and transcribe {{language}} audio across different accents and speaking styles.
+
+**Examples:**
+
+**Raw Data:** "[Example {{language}} audio transcription]"
+
+**Formatted JSON:**
+\`\`\`json [
+  {
+    "raw": "[Example {{language}} audio transcription]",
+    "explanation_for_ai": "The content is {{language}} speech with specific dialect features and speaking patterns",
+    "key_topics": [
+      "{{language}} audio",
+      "speech recognition",
+      "transcription"
+    ],
+    "sentiment": "Neutral",
+    "language": "{{language}}",
+    "audio_timestamp": "00:00:00 - 00:00:30",
+    "speaker_info": "Adult speaker, native accent"
+  }
+]
+\`\`\`
+
+**Recommended tools to use and link to learn:**
+
+We recommend using **ooguy**, **VSCode**, or **GitHub Copilot** to manage and format your dataset. [[Click the link below to access the tutorial on how to use these tools for formatting.] ](https://jobs.loseyourip.com/start)`,
     tags: ['{{language}}', 'audio-transcription', 'speech-recognition'],
   },
   {
