@@ -91,19 +91,19 @@ export default function QuizResult({ answers, onRetake }: QuizResultProps) {
         </span>
         <Link to="/start" style={{ textDecoration: 'none' }}>
           <button className="btn-send" type="button" style={{ width: '100%', padding: '14px', fontSize: '0.95rem' }}>
-            Start the Tutorial →
+            I want to learn how to format dataset →
           </button>
         </Link>
-        <Link to="/learn" style={{ textDecoration: 'none' }}>
+        <Link to="/forum" style={{ textDecoration: 'none' }}>
           <button
             type="button"
             style={{
-              background: 'none', border: '1px solid var(--border)', color: 'var(--text-muted)',
-              width: '100%', padding: '12px', fontSize: '0.85rem', borderRadius: '12px', cursor: 'pointer',
-              fontFamily: 'inherit',
+              background: 'var(--accent-primary)', border: '1px solid var(--accent-primary)', color: 'white',
+              width: '100%', padding: '14px', fontSize: '0.95rem', borderRadius: '12px', cursor: 'pointer',
+              fontFamily: 'inherit', fontWeight: 600,
             }}
           >
-            Watch training videos
+            I already know how to format dataset, Start getting jobs →
           </button>
         </Link>
         <button
