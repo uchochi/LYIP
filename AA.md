@@ -100,52 +100,85 @@ To execute the above 4 stages at professional scale, Useing the right tools and 
 ### 1. ooguy — LLM Dataset Formatter
 **The Complete Solution**
 
-The absolute first choice for building LLM datasets. New users get 70-80% off their first dataset! Works perfectly on mobile phones, keeps your data private, and handles images, audio, video, and text all in one place. No coding needed — just drag and drop nodes to build your data pipeline. The AI cleans, analyzes, tags, translates, and formats your data automatically. Export ready-to-use datasets for AI training.
+This is your absolute first choice for building LLM datasets. New users get 70-80% off their first dataset — pay less for content worth hundreds of dollars! Works perfectly on mobile phones, keeps your data private, and handles images, audio, video, and text all in one place. No coding needed — just drag and drop nodes to build your data pipeline. The AI cleans, analyzes, tags, translates, and formats your data automatically. Export ready-to-use datasets for AI training.
 
-*   **Stages:** All stages (1-4) in one tool.
-*   **When & How:** Use this when you want the easiest way to build professional LLM datasets. Perfect for beginners who don't want to learn programming. Also great for experts who want a fast visual workflow.
-*   **Pros:** Huge savings (70-80% off), works anywhere (phone/tablet/computer), privacy-first data handling, all-in-one for text/images/audio/video/PDF.
-*   **Cons:** Requires internet, temporary media files, token costs for AI work.
-*   **Cost:** Starter: $10 (1M tokens) — just $2.50 with 75% off! Pro: $20 (2M tokens). Business: $40 (4M tokens).
+*   **Which Stage can it handle:** All stages (1-4) in one tool.
+*   **When & How to Use It:** Use this when you want the easiest way to build professional LLM datasets. Perfect for beginners who do not want to learn programming. Also great for experts who want a fast visual workflow.
+*   **The Advantage (Pros):**
+    *   **Huge Savings:** 70-80% off for new users means you can build datasets worth hundreds of dollars for very little money.
+    *   **Works Anywhere:** Use your phone, tablet, or computer — designed for mobile use.
+    *   **Privacy First:** Your data stays private. Media files are deleted after you finish.
+*   **The Friction (Cons):**
+    *   **Requires Internet:** You need an active connection to use the Telegram Mini App.
+    *   **Temporary Media:** Media files are deleted when you close the app.
+*   **Investment (Cost/Budget):**
+    *   **Starter:** $10 for 10,000 credits (1M tokens) — just $2.50 with 75% off coupon!
+    *   **Pro:** $20 for 20,000 credits (2M tokens).
+    *   **Business:** $40 for 40,000 credits (4M tokens).
 
 ---
 
 ### 2. VS Code & GitHub Copilot
 **The Engineering Command Center**
 
-The foundational tool that moves and transforms data. Use this when dealing with scale. If you have 10 million rows of messy text, open VS Code. Use GitHub Copilot to rapidly write Python/Pandas scripts that "sweep" through data, removing noise (Stage 1) and enforcing structure (Stage 3).
+This is the foundational tool for scaling your pipeline. It handles massive datasets where manual tools fail completely.
 
-*   **Stages:** Stage 1 (cleaning), Stage 2 (language alignment), Stage 3 (structuring data).
-*   **When & How:** Use this for large-scale data processing. Write regex and cleaning scripts, build translation pipelines, and convert raw files into structured JSON/Parquet.
-*   **Pros:** Infinite scalability (process terabytes of data), precise control for every edge case.
-*   **Cons:** High learning curve (requires Python proficiency), one bug can corrupt entire dataset.
-*   **Cost:** VS Code: Free. GitHub Copilot: Low-to-medium monthly subscription. Highly cost-effective for speed.
+*   **What Stage can it handle:** 
+    *   **Stage 1 (The Cleaning Of The Dataset):** Writing regex and cleaning scripts.
+    *   **Stage 2 (Language Alignment):** Scripting translation pipelines and encoding checks.
+    *   **Stage 3 (Structuring the Data):** The core stage. Building the logic that converts raw files into structured JSON/Parquet.
+*   **When & How to Use It:** Use this when you are dealing with **scale**. If you have 10 million rows of messy text, you do not open a labeling tool; you open VS Code. You use GitHub Copilot to rapidly write Python/Pandas scripts that "sweep" through the data, removing noise (Stage 1) and enforcing the mathematical structure (Stage 3).
+*   **The Advantage (Pros):**
+    *   **Infinite Scalability:** Code can process terabytes of data that no human interface could ever load.
+    *   **Precision:** You can write exact logic for every edge case.
+    *   **Automation:** Scripts run automatically, saving days of manual work.
+*   **The Friction (Cons):**
+    *   **High Barrier to Entry:** Requires proficiency in Python or similar languages.
+    *   **Logic Risk:** A single bug in your script can corrupt your entire dataset instantly.
+*   **Investment (Cost/Budget):**
+    *   **VS Code:** Free (Open Source).
+    *   **GitHub Copilot:** Low-to-medium monthly subscription (Individual or Business). Highly cost-effective for the speed it provides.
 
 ---
 
 ### 3. Label Studio
 **The Multimodal Orchestrator**
 
-The generalist for high-complexity projects with mixed data formats. Use this when ground truth requires custom interfaces — looking at video to tag timestamps, or medical scans with patient reports.
+Label Studio is the "Generalist." It is designed for high-complexity projects where the data isn't just text, but a combination of various formats.
 
-*   **Stages:** Stage 4 (intelligent ground-truthing) for multimodal projects.
-*   **When & How:** Use this when labeling images, video, audio, and descriptive text simultaneously. Build custom UIs to ensure final output matches strict structural requirements.
-*   **Pros:** Versatility across text/audio/image/video, excellent schema control for structured exports.
-*   **Cons:** Complex configuration takes time, can get sluggish on weak hardware.
-*   **Cost:** Community Edition: Free. Enterprise Edition: High (budget required for teams/security).
+*   **Which Stage can it handle:** 
+    *   **Stage 4 (Intelligent Ground-Truthing):** Specifically for **Multimodal** projects (e.g., labeling an image, Video, audio  with descriptive text simultaneously).
+*   **When & How to Use It:** Use this when your "Ground Truth" requires a **custom interface**. If you need a human to look at a video and tag the timestamp, or look at a medical scan and a patient report, Label Studio allows you to build a custom UI for that specific task. It is your tool for ensuring that the final output is exported in a perfectly structured JSON format that also matches the Stage 3 (Structuring the Dataset).
+*   **The Advantage (Pros):**
+    *   **Versatility:** One tool for text, audio, image, and video, more.
+    *   **Schema Control:** Excellent at ensuring the final export follows your strict structural requirements.
+    *   **Custom Interfaces:** Build exactly the interface your project needs.
+*   **The Friction (Cons):**
+    *   **Configuration Overhead:** Setting up complex, custom labeling interfaces can be time-consuming.
+    *   **Performance:** Can become sluggish, if not hosted on powerful hardware.
+*   **Investment (Cost/Budget):**
+    *   **Community Edition:** Free (Open Source).
+    *   **Enterprise Edition:** High (Significant budget required for large teams, security, and advanced management features).
 
 ---
 
 ### 4. Prodigy
 **The NLP Speed Demon**
 
-The specialist from spaCy creators, optimized for high-velocity text labeling. Use this for text-only projects like sentiment analysis, named entity recognition, and text classification.
+Prodigy is the "Specialist." It is built by the creators of spaCy (the leading NLP library) and is optimized for one thing: **high-velocity text labeling.**
 
-*   **Stages:** Stage 4 (intelligent dataset labeling) for text-only projects.
-*   **When & How:** Use this for NLP tasks. Don't just label — "train while you label." Active learning shows the most confusing data first, making the model smarter with your input.
-*   **Pros:** Blazing speed (reduces data needed by 80%), seamless NLP model integration.
-*   **Cons:** Not for image/video/audio, no free tier.
-*   **Cost:** Commercial License: Medium-to-High (one-time or subscription per user/project). Investment in time-saving.
+*   **Which Stage can it handle:** 
+    *   **Stage 4 (Intelligent Dataset Labeling):** Specifically for **Linguistic/NLP or Text only projects** projects.
+*   **When & How to Use It:** Use this when your goal is purely text-based (Sentiment, Named Entity Recognition, Text Classification). You don't just "label" in Prodigy; you "train while you label." You use its **Active Learning** feature: the tool shows you the data it is most "confused" about. You provide the answer, the model learns, and it immediately becomes smarter, showing you even better samples.
+*   **The Advantage (Pros):**
+    *   **Blazing Speed:** Active learning reduces the amount of data a human needs to see, by up to 80%.
+    *   **NLP Integration:** Seamlessly integrates with advanced linguistic models.
+    *   **Real-Time Training:** The model learns as you label, getting smarter with each sample.
+*   **The Friction (Cons):**
+    *   **Narrow Scope:** Not suitable for image, video, or audio labeling.
+    *   **No Free Tier:** It is a strictly professional, paid product.
+*   **Investment (Cost/Budget):**
+    *   **Commercial License:** Medium-to-High (Usually a one-time or subscription-based license per user/project). It is an investment in *time-saving*.
 
 ---
 
