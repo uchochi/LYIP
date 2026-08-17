@@ -78,6 +78,7 @@ export default function ForumTopicPage() {
     const reactionChannel = supabase
       .channel(`forum_reactions:${topicId}`)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'forum_post_reactions' }, async () => {
+        // Get reactions for all current posts to ensure accuracy
         const ids = posts.map((p) => p.id);
         if (ids.length > 0) {
           const r = await getReactions(ids);
@@ -175,7 +176,13 @@ export default function ForumTopicPage() {
   if (loading) return <div className="forum-dark"><div className="forum-wrapper" style={{ paddingTop: '40px' }}><Spinner /></div></div>;
   if (!topic) return <div className="forum-dark"><div className="forum-wrapper"><p style={{ color: 'var(--text-muted)' }}>Topic not found.</p></div></div>;
 
-  const totalEngagement = Object.values(reactions).flat().length + (posts.length - 1);
+  // Accurate engagement counting
+  // Replies: Count only posts with parent_id (actual replies, not topic posts)
+  // Reactions: Count all unique user reactions across all posts in this topic
+  // Views: Use actual database view_count from topic
+  const replyCount = posts.filter(post => post.parent_id !== null).length;
+  const reactionCount = Object.values(reactions).flat().length;
+  const totalEngagement = replyCount + reactionCount;
   const isHot = totalEngagement > 5;
 
   const tagChips = (
@@ -241,9 +248,9 @@ export default function ForumTopicPage() {
           title={topic.title}
           showCommunityStats={false}
           topicStats={{
-            views: Math.max(viewCount, totalEngagement * 3 + 5),
-            reactions: Object.values(reactions).flat().length,
-            replies: posts.length - 1
+            views: viewCount || 0,
+            reactions: reactionCount,
+            replies: replyCount
           }}
         />
 

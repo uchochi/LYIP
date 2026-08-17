@@ -11,10 +11,10 @@ export const config = {
   maxDelayMinutes: parseInt(process.env.HERMES_MAX_DELAY || '12'),
 
   personaWeights: {
-    moderator: 0.03,
-    assistant: 0.12,
-    commentator: 0.25,
-    visitor: 0.35,
+    moderator: 0, // Set to 0 for engagement-only mode (no topic creation)
+    assistant: 0.15,
+    commentator: 0.30,
+    visitor: 0.30,
     newMember: 0.25,
   } as Record<string, number>,
 
