@@ -171,6 +171,8 @@ export async function incrementTopicView(topicId: string): Promise<void> {
   const viewed = sessionStorage.getItem(`viewed_${topicId}`);
   if (viewed) return;
   sessionStorage.setItem(`viewed_${topicId}`, '1');
+  // This RPC function increments view_count for ANY authenticated user, including Hermes agents
+  // View counting is per-session based, so each Hermes agent browser session counts once
   await supabase.rpc('increment_topic_view_simple', { topic_id: topicId });
 }
 

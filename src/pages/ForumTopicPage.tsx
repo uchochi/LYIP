@@ -178,8 +178,12 @@ export default function ForumTopicPage() {
 
   // Accurate engagement counting
   // Replies: Count only posts with parent_id (actual replies, not topic posts)
+  //            This includes ALL user posts (regular users, Hermes agents, staff, etc.)
   // Reactions: Count all unique user reactions across all posts in this topic
+  //            This includes ALL user reactions (regular users, Hermes agents, staff, etc.)
   // Views: Use actual database view_count from topic
+  //          This includes ALL user views (regular users, Hermes agents, staff, etc.)
+  //          Each authenticated session counts once via sessionStorage deduplication
   const replyCount = posts.filter(post => post.parent_id !== null).length;
   const reactionCount = Object.values(reactions).flat().length;
   const totalEngagement = replyCount + reactionCount;
