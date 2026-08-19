@@ -156,23 +156,31 @@ export interface ReviewAction {
   adminNotes?: string | null;
 }
 
+/**
+ * Mirrors public.calculate_dataset_payment in Postgres:
+ * 1500+ entries = $50 · 5000+ = $75 · 10000+ = $100 (minimum $50).
+ */
+export function calculatePayment(entryCount: number | null | undefined): number {
+  if (entryCount == null) return 50;
+  if (entryCount >= 10000) return 100;
+  if (entryCount >= 5000) return 75;
+  return 50;
+}
+
+/**
+ * Staff review. Goes through the review_curator_submission RPC so that
+ * approving a submission atomically credits the curator's wallet and writes
+ * the ledger row (see supabase/migrations/*wallet_functions.sql).
+ */
 export async function reviewSubmission(id: string, action: ReviewAction): Promise<CuratorSubmission> {
-  const { data: u } = await supabase.auth.getUser();
-  const patch: Record<string, unknown> = {
-    status: action.status,
-    reviewed_by: u.user?.id ?? null,
-    reviewed_at: new Date().toISOString(),
-  };
-  if (action.proposedPrice !== undefined) patch.proposed_price = action.proposedPrice;
-  if (action.adminNotes !== undefined) patch.admin_notes = action.adminNotes;
-  const { data, error } = await supabase
-    .from(TABLE)
-    .update(patch)
-    .eq('id', id)
-    .select('*')
-    .single();
-  if (error) throw error;
-  return data;
+  const { data, error } = await supabase.rpc('review_curator_submission', {
+    p_submission_id: id,
+    p_status: action.status,
+    p_proposed_price: action.proposedPrice ?? null,
+    p_admin_notes: action.adminNotes ?? null,
+  });
+  if (error) throw new Error(error.message);
+  return data as CuratorSubmission;
 }
 
 // ---------------------------------------------------------------------------

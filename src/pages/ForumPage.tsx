@@ -23,6 +23,7 @@ export default function ForumPage() {
   const isAdmin = user?.role === 'admin';
   const isStaff = ['admin', 'senior_instructor', 'instructor'].includes(user?.role || '');
   const welcome = searchParams.get('welcome') === '1';
+  const referredBy = searchParams.get('referred');
   const query = searchParams.get('q') || '';
   const [showVerifyBanner, setShowVerifyBanner] = useState(false);
   const [contributorsOpen, setContributorsOpen] = useState(false);
@@ -115,6 +116,18 @@ export default function ForumPage() {
   return (
     <div className="forum-dark">
       <div className="forum-wrapper">
+        {referredBy && (
+          <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start', background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.25)', borderRadius: '8px', padding: '10px 12px' }}>
+            <span style={{ fontSize: '14px', flexShrink: 0 }}>🎁</span>
+            <div style={{ fontSize: '12px', color: '#4ade80', flex: 1 }}>
+              <b>Referral connected!</b>
+              <div style={{ marginTop: '2px' }}>
+                You joined through {referredBy}'s invite. When you submit your first dataset, they earn a reward — and you start earning from every approved dataset too. See your wallet on the dashboard.
+              </div>
+            </div>
+          </div>
+        )}
+
         {(welcome || showVerifyBanner) && (
           <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start', background: 'rgba(180,120,20,0.1)', border: '1px solid rgba(180,120,20,0.3)', borderRadius: '8px', padding: '10px 12px' }}>
             <AlertTriangle size={16} style={{ color: '#d29922', flexShrink: 0, marginTop: '2px' }} />

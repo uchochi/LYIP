@@ -122,3 +122,50 @@ export interface CuratorSubmission {
   updated_at: string
   user?: { name: string | null; email: string | null; username: string | null }
 }
+
+// --- Wallet & Referrals ------------------------------------------------------
+export type WalletTransactionType =
+  | 'dataset_earning'
+  | 'referral_earning'
+  | 'milestone_bonus'
+  | 'withdrawal_request'
+  | 'withdrawal_payout'
+  | 'withdrawal_reversal'
+
+export interface WalletTransaction {
+  id: string
+  user_id: string
+  transaction_type: WalletTransactionType
+  amount: number
+  balance_after: number
+  description: string | null
+  related_submission_id: string | null
+  related_referral_id: string | null
+  status: 'pending' | 'completed' | 'rejected'
+  created_at: string
+}
+
+export interface ReferralInfo {
+  referral_code: string | null
+  referral_link: string
+  total_referred: number
+  completed_referrals: number
+  referral_earnings: number
+  milestone_bonus: number
+  milestone_paid: boolean
+  progress_to_milestone: number // completed referrals / 10, capped at 1
+}
+
+export interface WalletOverview {
+  balance: number
+  lifetimeEarnings: number
+  referralEarnings: number
+  milestoneBonus: number
+  thisMonthEarnings: number
+  transactions: WalletTransaction[]
+}
+
+export const WITHDRAWAL_MIN = 1200
+export const REFERRAL_REWARD = 5
+export const REFERRAL_MILESTONE_TARGET = 10
+export const REFERRAL_MILESTONE_BONUS = 100
