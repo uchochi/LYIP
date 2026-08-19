@@ -381,7 +381,7 @@ function ReviewModal({
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               rows={3}
-              placeholder="e.g. Great quality. Approved at $80. — or — Please expand to 1500+ rows and resubmit."
+              placeholder="e.g. Great quality. Approved at $80. — or — Please expand to 1,500+ entries and resubmit."
               className="w-full resize-y rounded-lg border border-border bg-surface px-4 py-3 text-text-main outline-none focus:border-primary/60 focus:ring-2 focus:ring-primary/20"
             />
           </div>

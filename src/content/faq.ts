@@ -23,11 +23,11 @@ export const DATASET_FAQS: FaqItem[] = [
   },
   {
     q: 'How large should each dataset be?',
-    a: 'A standard dataset is around 1,500+ words (or the equivalent number of rows). There is no strict maximum — larger, high-quality datasets are valued more. Very small submissions may be priced lower or returned with a note to expand.',
+    a: 'A standard dataset is around 500+ entries (1 row in a CSV = 1 entry; 1 object in JSON = 1 entry; 1 question–answer pair = 1 entry; 1 timestamped transcription segment = 1 entry). There is no strict maximum — larger, high-quality datasets are valued more. Very small submissions may be priced lower or returned with a note to expand.',
   },
   {
     q: 'How much will I get paid, and how is the price decided?',
-    a: 'Indicative pricing is roughly $50–$100 per dataset (1,500+ words). The exact amount is proposed by our review team based on category, size, quality, cleanliness, and usefulness. Once a dataset is approved, the proposed price appears in your dashboard, and your total earned updates automatically. Payout timing follows your curator role agreement.',
+    a: 'Pricing is tiered by entry count: 500+ entries = $50 (e.g. a spreadsheet of 500 proverbs), 1,500+ = $75 (e.g. 1,500 question–answer pairs), and 3,000+ = $100 (e.g. 3,000 timestamped speech segments) per approved dataset. Once a dataset is approved, the payment is credited straight to your dashboard wallet. Referral rewards ($5 per referral, plus a $100 bonus at 10 referrals) land in the same wallet. Withdrawals unlock at $1,200 and are paid internationally via MoneyGram or Western Union within 3–5 business days.',
   },
   {
     q: 'How long does the review take?',

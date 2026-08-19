@@ -13,6 +13,7 @@ const NAV_GROUPS: DocsNavGroup[] = [
     title: 'Tutorial',
     items: [
       { label: 'Introduction', to: '/start' },
+      { label: 'How You Get Paid', anchor: 'pricing' },
       { label: '1. The Cleaning', anchor: 'step-1' },
       { label: '2. Language Alignment', anchor: 'step-2' },
       { label: '3. Structuring', anchor: 'step-3' },
@@ -164,6 +165,61 @@ export default function GatewayPage() {
           The 4-step process professionals use to build world-class datasets for AI.
         </div>
       </Reveal>
+
+      {/* How datasets are measured & paid */}
+      <section id="pricing">
+        <Reveal y={10} duration={0.5}>
+          <h2>How Datasets Are Measured &amp; Paid</h2>
+          <p>
+            Dataset size — and therefore your pay — is measured in <strong>entries</strong>. One entry
+            is one unit of data in your file:
+          </p>
+          <table className="docs-table">
+            <thead>
+              <tr>
+                <th>Dataset type</th>
+                <th>What counts as 1 entry</th>
+                <th>Example</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>CSV / spreadsheet</td>
+                <td>1 row (header not counted)</td>
+                <td>500 proverbs → 500 entries</td>
+              </tr>
+              <tr>
+                <td>JSON / JSONL</td>
+                <td>1 object</td>
+                <td>1,500 objects → 1,500 entries</td>
+              </tr>
+              <tr>
+                <td>Q&amp;A set</td>
+                <td>1 question + answer pair</td>
+                <td>1,500 pairs → 1,500 entries</td>
+              </tr>
+              <tr>
+                <td>Audio transcription</td>
+                <td>1 timestamped segment</td>
+                <td>3,000 segments → 3,000 entries</td>
+              </tr>
+              <tr>
+                <td>Parallel text</td>
+                <td>1 language pair line</td>
+                <td>3,000 pairs → 3,000 entries</td>
+              </tr>
+            </tbody>
+          </table>
+          <div className="docs-callout">
+            <span className="docs-callout-title">Payment tiers (per approved dataset)</span>
+            <strong>500+ entries = $50</strong> (e.g. a spreadsheet of 500 proverbs) ·{' '}
+            <strong>1,500+ = $75</strong> (e.g. 1,500 question–answer pairs) ·{' '}
+            <strong>3,000+ = $100</strong> (e.g. 3,000 timestamped speech segments).
+            Every approved dataset is credited straight to your dashboard wallet — and submissions in
+            review for more than 8 days are approved automatically.
+          </div>
+        </Reveal>
+      </section>
 
       {PIPELINE_STEPS.map((step) => (
         <StepSection key={step.id} step={step} />

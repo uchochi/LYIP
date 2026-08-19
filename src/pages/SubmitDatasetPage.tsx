@@ -262,6 +262,22 @@ export default function SubmitDatasetPage() {
               className="w-full rounded-lg border border-border bg-surface px-4 py-3 text-text-main outline-none transition-colors placeholder:text-zinc-600 focus:border-primary/60 focus:ring-2 focus:ring-primary/20"
             />
           </div>
+          <div className="mt-3 max-w-2xl rounded-xl border border-primary/25 bg-primary/5 p-4 text-sm">
+            <p className="font-semibold text-text-main">What counts as one “entry”?</p>
+            <ul className="mt-2 space-y-1 text-text-muted">
+              <li>• CSV / spreadsheet → <span className="text-text-main">1 row = 1 entry</span> (header not counted)</li>
+              <li>• JSON / JSONL → <span className="text-text-main">1 object = 1 entry</span></li>
+              <li>• Q&amp;A set → <span className="text-text-main">1 question + answer pair = 1 entry</span></li>
+              <li>• Audio transcription → <span className="text-text-main">1 timestamped segment = 1 entry</span></li>
+              <li>• Parallel text → <span className="text-text-main">1 language pair = 1 entry</span></li>
+            </ul>
+            <p className="mt-3 text-text-muted">
+              <span className="font-semibold text-text-main">Payment tiers per approved dataset:</span>{' '}
+              500+ entries = <span className="font-semibold text-emerald-400">$50</span> (e.g. a spreadsheet of 500 proverbs) ·{' '}
+              1,500+ = <span className="font-semibold text-emerald-400">$75</span> (e.g. 1,500 question–answer pairs) ·{' '}
+              3,000+ = <span className="font-semibold text-emerald-400">$100</span> (e.g. 3,000 timestamped speech segments).
+            </p>
+          </div>
         </Reveal>
 
         {/* Method tabs */}

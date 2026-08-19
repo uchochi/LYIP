@@ -158,12 +158,12 @@ export interface ReviewAction {
 
 /**
  * Mirrors public.calculate_dataset_payment in Postgres:
- * 1500+ entries = $50 · 5000+ = $75 · 10000+ = $100 (minimum $50).
+ * 500+ entries = $50 · 1,500+ = $75 · 3,000+ = $100 (minimum $50).
  */
 export function calculatePayment(entryCount: number | null | undefined): number {
   if (entryCount == null) return 50;
-  if (entryCount >= 10000) return 100;
-  if (entryCount >= 5000) return 75;
+  if (entryCount >= 3000) return 100;
+  if (entryCount >= 1500) return 75;
   return 50;
 }
 
