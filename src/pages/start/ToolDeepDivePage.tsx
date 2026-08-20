@@ -84,6 +84,18 @@ export default function ToolDeepDivePage() {
           <span className="docs-callout-title">Best for</span>
           {data.bestFor}
         </div>
+        {data.website && (
+          <p style={{ marginTop: '1rem' }}>
+            <a
+              href={data.website}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white no-underline transition-colors hover:bg-primary-dark"
+            >
+              Get {data.name.split('—')[0].trim()} here ↗
+            </a>
+          </p>
+        )}
       </Reveal>
 
       {/* Video walkthrough */}

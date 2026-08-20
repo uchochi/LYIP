@@ -18,7 +18,7 @@ const columns = [
     title: 'Resources',
     links: [
       { to: '/jobs', label: 'Open Positions' },
-      { to: '/forum', label: 'Community Forum' },
+      { to: '/forum', label: 'Forum — Jobs & Projects' },
       { to: '/dashboard', label: 'My Dashboard' },
     ],
   },

@@ -56,7 +56,7 @@ export default function LearnPage() {
             <Link to="/faq">Dataset Curation FAQ</Link> — formats, pricing, reviews, and quality.
           </li>
           <li>
-            <Link to="/forum">Community Forum</Link> — ask questions and share insights.
+            <Link to="/forum">Community Forum</Link> — find dataset jobs, pick up paid projects, ask questions and share insights.
           </li>
         </ul>
       </Reveal>

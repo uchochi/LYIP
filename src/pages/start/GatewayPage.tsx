@@ -296,7 +296,16 @@ export default function GatewayPage() {
                 </ul>
 
                 <p style={{ marginTop: '1rem', marginBottom: 0 }}>
-                  <Link to={`/start/${tool.slug}`}>Learn the full guide on how to use it →</Link>
+                  {tool.website ? (
+                    <>
+                      <a href={tool.website} target="_blank" rel="noreferrer" style={{ marginRight: '1.25rem' }}>
+                        Get {tool.name.split('—')[0].trim()} here ↗
+                      </a>
+                      <Link to={`/start/${tool.slug}`}>Learn the full guide on how to use it →</Link>
+                    </>
+                  ) : (
+                    <Link to={`/start/${tool.slug}`}>Learn the full guide on how to use it →</Link>
+                  )}
                 </p>
               </div>
             </Reveal>

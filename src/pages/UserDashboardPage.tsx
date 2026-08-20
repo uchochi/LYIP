@@ -218,7 +218,7 @@ export default function UserDashboardPage() {
       <div className="mb-6 grid gap-3 sm:grid-cols-3">
         <QuickAction to="/start" icon={<BookOpen size={20} />} title="Tutorial" desc="Learn dataset curation" />
         <QuickAction to="/submit" icon={<UploadCloud size={20} />} title="Submit Dataset" desc="Earn $50–$100 per dataset" accent />
-        <QuickAction to="/forum" icon={<MessagesSquare size={20} />} title="Forum" desc="Community & support" />
+        <QuickAction to="/forum" icon={<MessagesSquare size={20} />} title="Forum" desc="Find jobs, pick projects & connect" />
       </div>
 
       {/* ── Referral program ───────────────────────────────────────── */}

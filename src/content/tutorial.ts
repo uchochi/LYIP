@@ -202,6 +202,8 @@ export interface ToolDeepDive {
   accent: string;
   /** Optional YouTube walkthrough URL, embedded on the deep-dive page. */
   video?: string;
+  /** Official website / download page, shown as a button on the deep-dive + toolkit. */
+  website?: string;
   /** Gateway-level breakdown (AA.md toolkit section). */
   toolkit: ToolkitBreakdown;
   /** Which stages / use-case it fits best (pill on the card). */
@@ -226,6 +228,7 @@ export const TOOL_DEEP_DIVES: ToolDeepDive[] = [
     role: 'The Complete Dataset Building Platform',
     tagline: 'Build, format, translate, and export LLM datasets on any device.',
     accent: '#ef4444',
+    website: 'https://nodes.ooguy.com/',
     toolkit: {
       subtitle: 'The All-in-One Solution',
       intro: 'This is the absolute choice for anyone building LLM datasets. Get 70-80% off your first dataset — pay less for content worth hundreds of dollars! Works on mobile, keeps your data private, and handles images, audio, video, and text all in one place.',
@@ -406,6 +409,7 @@ export const TOOL_DEEP_DIVES: ToolDeepDive[] = [
     role: "The AI-Powered Developer's Toolkit",
     tagline: 'Your workbench for cleaning and structuring data at scale.',
     accent: '#3b82f6',
+    website: 'https://code.visualstudio.com/download',
     video: 'https://youtu.be/2sc-abZhUxU',
     toolkit: {
       subtitle: 'The Engineering Command Center',
@@ -511,6 +515,7 @@ export const TOOL_DEEP_DIVES: ToolDeepDive[] = [
     role: 'The Versatile Multi-Modal Annotator',
     tagline: 'A jack-of-all-trades for labelling text, images, audio, and video.',
     accent: '#a855f7',
+    website: 'https://labelstud.io/',
     video: 'https://youtu.be/A0cob_f5BmM',
     toolkit: {
       subtitle: 'The Multimodal Orchestrator',
@@ -608,6 +613,7 @@ export const TOOL_DEEP_DIVES: ToolDeepDive[] = [
     role: "The Professional's Choice for NLP",
     tagline: 'A precision instrument built for high-velocity text labelling.',
     accent: '#34d399',
+    website: 'https://prodi.gy/',
     video: 'https://youtu.be/h1LNbAH0V0U',
     toolkit: {
       subtitle: 'The NLP Speed Demon',
