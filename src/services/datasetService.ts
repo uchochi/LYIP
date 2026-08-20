@@ -1,5 +1,6 @@
 import { supabase } from '../lib/supabase';
 import type { CuratorSubmission, SubmissionStatus } from '../types';
+import { validateDatasetStructure, readFileHead } from './datasetStructureValidator';
 
 const TABLE = 'curator_submissions';
 const BUCKET = 'curator-datasets';
@@ -46,10 +47,24 @@ export interface CreateSubmissionInput {
   file?: File | null;
 }
 
-export async function createSubmission(input: CreateSubmissionInput): Promise<CuratorSubmission> {
+export interface CreateSubmissionResult extends CuratorSubmission {
+  /** True when THIS submission was the user's first, landed within 24h of signup,
+   *  and triggered the Agiel bonus (badge + $100) server-side. */
+  agielEarned?: boolean;
+}
+
+export async function createSubmission(input: CreateSubmissionInput): Promise<CreateSubmissionResult> {
   const { data: authData, error: authError } = await supabase.auth.getUser();
   if (authError || !authData.user) throw new Error('You must be signed in to submit a dataset.');
   const userId = authData.user.id;
+
+  // Is this the user's first submission? (drives the Agiel bonus check)
+  const { data: profileBefore } = await supabase
+    .from('users')
+    .select('first_dataset_at')
+    .eq('id', userId)
+    .maybeSingle();
+  const isFirstSubmission = profileBefore ? profileBefore.first_dataset_at == null : false;
 
   if (!input.title.trim()) throw new Error('Please give your dataset a title.');
   if (!input.category) throw new Error('Please choose a category.');
@@ -64,6 +79,7 @@ export async function createSubmission(input: CreateSubmissionInput): Promise<Cu
   let fileName: string | null = null;
   let fileSize: number | null = null;
   let mimeType: string | null = null;
+  let structureValid: boolean | null = null;
 
   if (input.file) {
     const fileErr = validateFile(input.file);
@@ -83,6 +99,16 @@ export async function createSubmission(input: CreateSubmissionInput): Promise<Cu
     fileName = input.file.name;
     fileSize = input.file.size;
     mimeType = input.file.type || null;
+
+    // Signature check against UNIQUE_DATASET_STRUCTURE.md (null = not machine-checkable)
+    try {
+      const head = await readFileHead(input.file);
+      structureValid = validateDatasetStructure(head, extOf(input.file.name));
+    } catch {
+      structureValid = null;
+    }
+  } else if (input.content?.trim()) {
+    structureValid = validateDatasetStructure(input.content, input.format || null);
   }
 
   const row: Record<string, unknown> = {
@@ -100,6 +126,7 @@ export async function createSubmission(input: CreateSubmissionInput): Promise<Cu
     format: input.format || (input.file ? extOf(input.file.name) : null),
     entry_count: input.entryCount ?? null,
     status: 'pending',
+    structure_valid: structureValid,
   };
 
   const { data, error } = await supabase.from(TABLE).insert(row).select('*').single();
@@ -113,7 +140,19 @@ export async function createSubmission(input: CreateSubmissionInput): Promise<Cu
     .invoke('dataset-submission-notify', { body: { submissionId: data.id } })
     .catch(() => {});
 
-  return data;
+  // Detect the Agiel bonus (awarded by the on-insert trigger, server-side).
+  let agielEarned = false;
+  if (isFirstSubmission) {
+    const { data: badge } = await supabase
+      .from('user_badges')
+      .select('id')
+      .eq('user_id', userId)
+      .eq('badge_type', 'agiel')
+      .maybeSingle();
+    agielEarned = !!badge;
+  }
+
+  return { ...data, agielEarned };
 }
 
 export async function getMySubmissions(userId: string): Promise<CuratorSubmission[]> {

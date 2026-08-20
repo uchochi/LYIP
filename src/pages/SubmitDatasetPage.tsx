@@ -10,6 +10,9 @@ import {
   Link2,
   Loader2,
   ShieldCheck,
+  Clock,
+  ShieldAlert,
+  Landmark,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import {
@@ -23,6 +26,7 @@ import { DATASET_CATEGORIES, OTHER_SLUG } from '../content/datasets';
 import { DATASET_FAQS } from '../content/faq';
 import FAQAccordion from '../components/FAQAccordion';
 import Reveal from '../components/start/Reveal';
+import PayoutDetailsForm from '../components/dashboard/PayoutDetailsForm';
 
 type Method = 'upload' | 'link';
 
@@ -43,7 +47,8 @@ export default function SubmitDatasetPage() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [done, setDone] = useState<null | { title: string }>(null);
+  const [done, setDone] = useState<null | { title: string; agielEarned?: boolean }>(null);
+  const [showPayoutSetup, setShowPayoutSetup] = useState(false);
 
   // --- Not signed in -------------------------------------------------------
   if (!isAuthenticated) {
@@ -76,8 +81,55 @@ export default function SubmitDatasetPage() {
 
   // --- Success state -------------------------------------------------------
   if (done) {
+    const reset = () => {
+      setDone(null);
+      setShowPayoutSetup(false);
+      setTitle('');
+      setDescription('');
+      setCategory('');
+      setCustomCategory('');
+      setEntryCount('');
+      setFile(null);
+      setDatasetUrl('');
+      setRights(false);
+    };
+
+    if (showPayoutSetup) {
+      return (
+        <div className="mx-auto max-w-lg px-6 py-16">
+          <div className="mb-6 text-center">
+            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary mx-auto">
+              <Landmark size={26} />
+            </div>
+            <h1 className="text-2xl font-extrabold text-text-main">Withdrawal setup</h1>
+            <p className="mt-2 text-sm text-text-muted">
+              Save your payout details once — every future withdrawal uses them automatically.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-border bg-surface p-6">
+            <PayoutDetailsForm />
+          </div>
+          <div className="mt-4 flex justify-center gap-3">
+            <button
+              type="button"
+              onClick={() => setShowPayoutSetup(false)}
+              className="rounded-lg border border-border bg-surface px-5 py-2.5 text-sm font-semibold text-text-main transition-colors hover:bg-surface-lighter"
+            >
+              I'll do this later
+            </button>
+            <Link
+              to="/dashboard"
+              className="rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white no-underline transition-colors hover:bg-primary-dark"
+            >
+              Go to dashboard
+            </Link>
+          </div>
+        </div>
+      );
+    }
+
     return (
-      <div className="mx-auto flex max-w-lg flex-col items-center px-6 py-24 text-center">
+      <div className="mx-auto flex max-w-lg flex-col items-center px-6 py-20 text-center">
         <motion.div
           initial={{ scale: 0.7, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -88,30 +140,67 @@ export default function SubmitDatasetPage() {
         </motion.div>
         <h1 className="text-3xl font-extrabold text-text-main">Dataset submitted!</h1>
         <p className="mt-3 text-text-muted">
-          <span className="font-semibold text-text-main">“{done.title}”</span> is now in our review queue. We'll
-          get back to you with feedback and a proposed price within a few business days. Track its status in your
-          dashboard.
+          <span className="font-semibold text-text-main">“{done.title}”</span> is now in our review queue. Track its
+          status in your dashboard.
         </p>
-        <div className="mt-7 flex flex-wrap justify-center gap-3">
+
+        {done.agielEarned && (
+          <motion.div
+            initial={{ y: 10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.25 }}
+            className="mt-5 w-full rounded-2xl border border-amber-500/30 bg-gradient-to-r from-amber-500/15 to-amber-500/5 p-5"
+          >
+            <p className="text-2xl">⚡</p>
+            <p className="mt-1 text-lg font-bold text-amber-400">Agiel Member — $100 bonus earned!</p>
+            <p className="mt-1 text-sm text-text-muted">
+              You submitted your first dataset within 24 hours of joining. The bonus is already in your wallet and the
+              Agiel Member badge is on your profile.
+            </p>
+          </motion.div>
+        )}
+
+        {/* Approval timeframe notice */}
+        <div className="mt-6 w-full rounded-2xl border border-border bg-surface p-5 text-left">
+          <p className="text-sm font-semibold text-text-main">What happens next</p>
+          <ul className="mt-2.5 space-y-2 text-sm text-text-muted">
+            <li className="flex gap-2">
+              <Clock size={15} className="mt-0.5 shrink-0 text-primary" />
+              <span>
+                Our team reviews submissions and responds with feedback and a proposed price. If a submission isn't
+                reviewed within <span className="font-semibold text-text-main">8 days</span>, it's approved
+                automatically.
+              </span>
+            </li>
+            <li className="flex gap-2">
+              <ShieldAlert size={15} className="mt-0.5 shrink-0 text-amber-400" />
+              <span>
+                Datasets must follow the <Link to="/start" className="font-medium text-primary">unique dataset structure</Link>.
+                If the structure doesn't align, the submission is{' '}
+                <span className="font-semibold text-text-main">rejected within 15 hours</span> — you'll see a notice on
+                your dashboard.
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <div className="mt-6 flex flex-wrap justify-center gap-3">
+          <button
+            type="button"
+            onClick={() => setShowPayoutSetup(true)}
+            className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary-dark"
+          >
+            <Landmark size={15} /> Set up withdrawal
+          </button>
           <Link
             to="/dashboard"
-            className="rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary-dark"
+            className="rounded-lg border border-border bg-surface px-5 py-2.5 text-sm font-semibold text-text-main no-underline transition-colors hover:bg-surface-lighter"
           >
             Go to dashboard
           </Link>
           <button
             type="button"
-            onClick={() => {
-              setDone(null);
-              setTitle('');
-              setDescription('');
-              setCategory('');
-              setCustomCategory('');
-              setEntryCount('');
-              setFile(null);
-              setDatasetUrl('');
-              setRights(false);
-            }}
+            onClick={reset}
             className="rounded-lg border border-border bg-surface px-5 py-2.5 text-sm font-semibold text-text-main transition-colors hover:bg-surface-lighter"
           >
             Submit another

@@ -15,6 +15,9 @@ export interface UserRow {
   referred_by: string | null;
   referral_count: number;
   referral_milestone_paid: boolean;
+  first_dataset_at: string | null;
+  payout_method: 'moneygram' | 'western_union' | null;
+  payout_details: { name?: string; phone?: string; address?: string } | null;
   created_at: string;
   updated_at: string;
 }

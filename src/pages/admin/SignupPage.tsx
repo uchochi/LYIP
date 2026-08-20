@@ -1,10 +1,11 @@
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { Gift } from 'lucide-react';
+import { Gift, Zap } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { applyReferralCode } from '../../services/referralService';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
+import { AGIEL_BONUS, AGIEL_WINDOW_HOURS } from '../../types';
 
 export default function SignupPage() {
   const [email, setEmail] = useState('');
@@ -86,6 +87,17 @@ export default function SignupPage() {
           </p>
         </div>
       ) : null}
+
+      <div className="mt-6 flex items-start gap-2.5 rounded-xl border border-amber-500/30 bg-amber-500/10 p-3.5 text-sm text-text-muted">
+        <Zap size={17} className="mt-0.5 shrink-0 text-amber-400" />
+        <p>
+          <span className="font-semibold text-amber-400">New member bonus:</span> submit your first dataset within{' '}
+          {AGIEL_WINDOW_HOURS} hours of creating your account and earn an extra{' '}
+          <span className="font-semibold text-text-main">${AGIEL_BONUS}</span> plus the{' '}
+          <span className="font-semibold text-amber-400">Agiel Member badge</span>. Your 24-hour countdown starts the
+          moment you sign up.
+        </p>
+      </div>
 
       <form onSubmit={handleSubmit} className="mt-8 space-y-4">
         <Input label="Name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" />

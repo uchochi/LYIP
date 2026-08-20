@@ -114,6 +114,8 @@ export interface CuratorSubmission {
   format: string | null
   entry_count: number | null
   status: SubmissionStatus
+  structure_valid: boolean | null
+  rejection_reason: string | null
   proposed_price: number | null
   admin_notes: string | null
   reviewed_by: string | null
@@ -169,3 +171,7 @@ export const WITHDRAWAL_MIN = 1200
 export const REFERRAL_REWARD = 5
 export const REFERRAL_MILESTONE_TARGET = 10
 export const REFERRAL_MILESTONE_BONUS = 100
+export const AGIEL_BONUS = 100
+export const AGIEL_WINDOW_HOURS = 24
+export const STRUCTURE_REJECT_HOURS = 15
+export const REVIEW_AUTO_APPROVE_DAYS = 8

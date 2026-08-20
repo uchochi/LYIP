@@ -24,17 +24,25 @@ import {
   X,
   Landmark,
   Info,
+  Zap,
+  AlertTriangle,
+  Loader2,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { getUserProfile, getMyTopics, getMyPosts } from '../services/userService';
 import { getMySubmissions, getSignedUrl, calculatePayment } from '../services/datasetService';
 import { getWalletOverview, TX_LABELS } from '../services/walletService';
+import { getUserBadges, BADGE_CATALOG, type UserBadge } from '../services/badgeService';
+import { createWithdrawalRequest } from '../services/payoutService';
 import { categoryLabel, categoryEmoji } from '../content/datasets';
+import PayoutDetailsForm from '../components/dashboard/PayoutDetailsForm';
 import {
   WITHDRAWAL_MIN,
   REFERRAL_MILESTONE_TARGET,
   REFERRAL_MILESTONE_BONUS,
   REFERRAL_REWARD,
+  AGIEL_BONUS,
+  AGIEL_WINDOW_HOURS,
 } from '../types';
 import type { WalletOverview, WalletTransactionType } from '../types';
 import type { UserRow } from '../types/supabase';
@@ -63,6 +71,7 @@ export default function UserDashboardPage() {
   const [posts, setPosts] = useState<any[]>([]);
   const [submissions, setSubmissions] = useState<CuratorSubmission[]>([]);
   const [wallet, setWallet] = useState<WalletOverview | null>(null);
+  const [badges, setBadges] = useState<UserBadge[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [showTxModal, setShowTxModal] = useState(false);
@@ -74,12 +83,13 @@ export default function UserDashboardPage() {
     (async () => {
       setLoading(true);
       try {
-        const [p, t, ps, ds, w] = await Promise.all([
+        const [p, t, ps, ds, w, b] = await Promise.all([
           getUserProfile(user.id),
           getMyTopics(user.id),
           getMyPosts(user.id),
           getMySubmissions(user.id),
           getWalletOverview(user.id),
+          getUserBadges(user.id).catch(() => [] as UserBadge[]),
         ]);
         if (!active) return;
         setProfile(p);
@@ -87,6 +97,7 @@ export default function UserDashboardPage() {
         setPosts(ps);
         setSubmissions(ds);
         setWallet(w);
+        setBadges(b);
       } catch (e: any) {
         setError(e.message || 'Failed to load dashboard');
       } finally {
@@ -117,9 +128,39 @@ export default function UserDashboardPage() {
   const isMuted = profile?.is_muted;
   const isPaused = profile?.is_paused;
   const balance = wallet?.balance ?? 0;
+  const structureRejected = submissions.filter(
+    (s) => s.status === 'rejected' && s.rejection_reason === 'structure',
+  );
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-10">
+      {/* ── 24h first-dataset countdown (new members only) ─────────── */}
+      <AgielCountdownBanner profile={profile} badges={badges} />
+
+      {/* ── Structure rejection notices ─────────────────────────────── */}
+      {structureRejected.length > 0 && (
+        <div className="mb-6 rounded-2xl border border-red-500/30 bg-red-500/10 p-5">
+          <div className="flex items-start gap-3">
+            <AlertTriangle size={20} className="mt-0.5 shrink-0 text-red-400" />
+            <div className="min-w-0 flex-1">
+              <p className="font-semibold text-red-400">
+                {structureRejected.length === 1
+                  ? '1 dataset was rejected — the structure doesn’t align'
+                  : `${structureRejected.length} datasets were rejected — the structure doesn’t align`}
+              </p>
+              <p className="mt-1 text-sm text-text-muted">
+                {structureRejected.map((s) => `“${s.title}”`).join(', ')} didn’t follow the required unique dataset
+                structure. Re-format your export and submit again —{' '}
+                <Link to="/forum" className="font-medium text-primary">
+                  ask in the forum
+                </Link>{' '}
+                if you need help.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* ── Profile header ─────────────────────────────────────────── */}
       <div className="rounded-2xl border border-border bg-surface p-6 shadow-sm mb-6">
         <div className="flex items-start gap-5">
@@ -145,6 +186,22 @@ export default function UserDashboardPage() {
               <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/10 px-3 py-1 text-xs font-medium text-amber-400">
                 <Award size={14} /> Knowledge Score: {profile?.knowledge_score ?? 0}
               </span>
+              {badges.map((b) => {
+                const meta = BADGE_CATALOG[b.badge_type];
+                if (!meta) return null;
+                return (
+                  <span
+                    key={b.id}
+                    title={`${meta.label} — ${meta.description}`}
+                    className={`group relative inline-flex cursor-help items-center gap-1 rounded-full border px-3 py-1 text-xs font-semibold ${meta.cls}`}
+                  >
+                    <span>{meta.emoji}</span> {meta.label}
+                    <span className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 w-52 -translate-x-1/2 rounded-lg border border-border bg-bg p-2.5 text-left text-xs font-normal leading-snug text-text-muted opacity-0 shadow-xl transition-opacity group-hover:opacity-100">
+                      {meta.description}
+                    </span>
+                  </span>
+                );
+              })}
             </div>
           </div>
           <Link to="/forum/new" className="no-underline hidden sm:block">
@@ -304,8 +361,72 @@ export default function UserDashboardPage() {
         <TransactionsModal wallet={wallet} onClose={() => setShowTxModal(false)} />
       )}
       {showWithdrawModal && (
-        <WithdrawModal balance={balance} onClose={() => setShowWithdrawModal(false)} />
+        <WithdrawModal balance={balance} profile={profile} onClose={() => setShowWithdrawModal(false)} />
       )}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Agiel 24h countdown banner (new members who haven't submitted yet)
+// ---------------------------------------------------------------------------
+
+function AgielCountdownBanner({ profile, badges }: { profile: UserRow | null; badges: UserBadge[] }) {
+  const [now, setNow] = useState(Date.now());
+
+  useEffect(() => {
+    const t = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(t);
+  }, []);
+
+  if (!profile) return null;
+  // Only for new members who haven't submitted their first dataset yet
+  // and haven't already earned the badge.
+  if (profile.first_dataset_at != null) return null;
+  if (badges.some((b) => b.badge_type === 'agiel')) return null;
+
+  const deadline = new Date(profile.created_at).getTime() + AGIEL_WINDOW_HOURS * 3600 * 1000;
+  const remaining = deadline - now;
+  if (remaining <= 0) return null;
+
+  const h = Math.floor(remaining / 3600000);
+  const m = Math.floor((remaining % 3600000) / 60000);
+  const s = Math.floor((remaining % 60000) / 1000);
+  const pad = (n: number) => String(n).padStart(2, '0');
+  const urgent = remaining < 4 * 3600 * 1000;
+
+  return (
+    <div
+      className={`mb-6 overflow-hidden rounded-2xl border p-6 ${
+        urgent
+          ? 'border-red-500/40 bg-gradient-to-r from-red-500/15 via-red-500/5 to-transparent'
+          : 'border-amber-500/40 bg-gradient-to-r from-amber-500/15 via-amber-500/5 to-transparent'
+      }`}
+    >
+      <div className="flex flex-wrap items-center justify-between gap-5">
+        <div className="min-w-0">
+          <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-amber-400">
+            <Zap size={14} /> New member bonus — ends soon
+          </p>
+          <p className="mt-2 text-lg font-bold leading-snug text-text-main sm:text-xl">
+            Submit your first dataset within{' '}
+            <span className={urgent ? 'text-red-400' : 'text-amber-400'}>
+              {pad(h)}:{pad(m)}:{pad(s)}
+            </span>{' '}
+            and earn an extra <span className="text-emerald-400">${AGIEL_BONUS}</span>
+          </p>
+          <p className="mt-1.5 text-sm text-text-muted">
+            Plus the exclusive <span className="font-semibold text-amber-400">⚡ Agiel Member badge</span> on your
+            profile. One dataset is all it takes — this offer is only for your first{' '}
+            {AGIEL_WINDOW_HOURS} hours.
+          </p>
+        </div>
+        <Link to="/submit" className="no-underline shrink-0">
+          <Button>
+            <UploadCloud size={15} className="mr-1.5" /> Submit & claim $100
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 }
@@ -538,6 +659,12 @@ function DatasetMonitor({ submissions }: { submissions: CuratorSubmission[] }) {
                     {s.admin_notes && s.status !== 'pending' && (
                       <p className="mt-1 line-clamp-2 text-xs italic text-text-muted">“{s.admin_notes}”</p>
                     )}
+                    {s.status === 'rejected' && s.rejection_reason === 'structure' && (
+                      <p className="mt-1 inline-flex items-center gap-1.5 text-xs font-medium text-red-400">
+                        <AlertTriangle size={12} /> The structure doesn’t align — re-format using the unique dataset
+                        structure, then submit again.
+                      </p>
+                    )}
                     {inReview && daysInReview >= 5 && (
                       <p className="mt-1 text-xs text-blue-400">
                         Auto-approves after 8 days in review{daysInReview >= 5 ? ` (${daysInReview}/8)` : ''}
@@ -675,16 +802,52 @@ function TransactionsModal({ wallet, onClose }: { wallet: WalletOverview; onClos
 }
 
 // ---------------------------------------------------------------------------
-// Withdraw modal (informational — payouts tracked, requests open soon)
+// Withdraw modal (real payout request — MoneyGram / Western Union)
 // ---------------------------------------------------------------------------
 
-function WithdrawModal({ balance, onClose }: { balance: number; onClose: () => void }) {
+function WithdrawModal({ balance, profile, onClose }: { balance: number; profile: UserRow | null; onClose: () => void }) {
   const eligible = balance >= WITHDRAWAL_MIN;
-  const toGo = WITHDRAWAL_MIN - balance;
+  const savedDetails = profile?.payout_details;
+  const savedMethod = profile?.payout_method ?? null;
+  const hasSavedDetails =
+    !!(savedDetails?.name && savedDetails?.phone && savedDetails?.address) && !!savedMethod;
+
+  const [amount, setAmount] = useState(balance >= WITHDRAWAL_MIN ? String(balance) : '');
+  const [error, setError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [requestId, setRequestId] = useState<string | null>(null);
+  const [detailsRefresh, setDetailsRefresh] = useState(0);
+
+  const submit = async (e?: React.FormEvent) => {
+    e?.preventDefault();
+    setError('');
+    const n = Number(amount);
+    if (!n || n <= 0) return setError('Enter an amount to withdraw.');
+    if (n > balance) return setError(`You can withdraw at most ${money(balance)}.`);
+    if (n < WITHDRAWAL_MIN) return setError(`Minimum withdrawal is ${money(WITHDRAWAL_MIN)}.`);
+    // Re-read saved details (may have just been saved in this modal)
+    const fresh = await import('../services/payoutService').then((m) => m.getPayoutProfile());
+    if (!fresh?.payout_method || !fresh.payout_details?.name) {
+      return setError('Fill in your payout details below first.');
+    }
+
+    setSubmitting(true);
+    try {
+      const id = await createWithdrawalRequest(n);
+      setRequestId(id);
+    } catch (err: any) {
+      setError(err?.message || 'Could not create your withdrawal request. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 p-0 sm:items-center sm:p-4" onClick={onClose}>
-      <div onClick={(e) => e.stopPropagation()} className="w-full max-w-md rounded-t-2xl border border-border bg-surface sm:rounded-2xl">
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-t-2xl border border-border bg-surface sm:rounded-2xl"
+      >
         <div className="flex items-center justify-between border-b border-border px-5 py-4">
           <h3 className="font-bold text-text-main">Withdraw Earnings</h3>
           <button onClick={onClose} className="rounded-md p-1 text-text-muted hover:bg-surface-lighter hover:text-text-main">
@@ -693,39 +856,97 @@ function WithdrawModal({ balance, onClose }: { balance: number; onClose: () => v
         </div>
 
         <div className="space-y-4 p-5">
-          <div className="rounded-xl border border-border bg-bg p-4 text-center">
-            <p className="text-xs uppercase tracking-wider text-text-muted">Available balance</p>
-            <p className="mt-1 text-3xl font-extrabold text-text-main">{money(balance)}</p>
-            {eligible ? (
-              <p className="mt-2 inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-400">
-                <Check size={12} /> Eligible for withdrawal
+          {requestId ? (
+            <div className="rounded-xl border border-emerald-500/25 bg-emerald-500/10 p-5 text-center">
+              <Check size={28} className="mx-auto text-emerald-400" />
+              <p className="mt-2 font-semibold text-emerald-400">Withdrawal request submitted</p>
+              <p className="mt-1.5 text-sm text-text-muted">
+                {money(Number(amount))} is on its way to your {savedMethod === 'moneygram' ? 'MoneyGram' : 'Western Union'}{' '}
+                pickup point. Processing takes 3–5 business days — the status updates in your transactions.
               </p>
-            ) : (
-              <p className="mt-2 text-xs text-text-muted">
-                {money(toGo)} more to reach the {money(WITHDRAWAL_MIN)} minimum
-              </p>
-            )}
-          </div>
-
-          <div className="space-y-2 rounded-xl border border-primary/20 bg-primary/5 p-4 text-sm text-text-muted">
-            <p className="font-semibold text-text-main">Payout details</p>
-            <p>• International payouts are sent via <span className="font-medium text-text-main">MoneyGram</span> or <span className="font-medium text-text-main">Western Union</span>.</p>
-            <p>• Minimum withdrawal: <span className="font-medium text-text-main">{money(WITHDRAWAL_MIN)}</span>.</p>
-            <p>• Processing time: 3–5 business days after your request.</p>
-          </div>
-
-          {eligible ? (
-            <a
-              href="mailto:support@loseyourip.com?subject=Withdrawal%20Request"
-              className="block rounded-lg bg-primary px-4 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-primary-dark no-underline"
-            >
-              Request payout via support
-            </a>
+              <button
+                onClick={onClose}
+                className="mt-4 w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary-dark"
+              >
+                Done
+              </button>
+            </div>
           ) : (
-            <p className="text-center text-xs text-text-muted">
-              Keep earning — your balance is safely tracked in your wallet and updates automatically
-              every time a dataset is approved or a referral reward is credited.
-            </p>
+            <>
+              <div className="rounded-xl border border-border bg-bg p-4 text-center">
+                <p className="text-xs uppercase tracking-wider text-text-muted">Available balance</p>
+                <p className="mt-1 text-3xl font-extrabold text-text-main">{money(balance)}</p>
+                {eligible ? (
+                  <p className="mt-2 inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-400">
+                    <Check size={12} /> Eligible for withdrawal
+                  </p>
+                ) : (
+                  <p className="mt-2 text-xs text-text-muted">
+                    {money(WITHDRAWAL_MIN - balance)} more to reach the {money(WITHDRAWAL_MIN)} minimum
+                  </p>
+                )}
+              </div>
+
+              {eligible && (
+                <form onSubmit={submit} className="space-y-4">
+                  <div>
+                    <label className="mb-1.5 block text-sm font-semibold text-text-main">Amount (USD)</label>
+                    <input
+                      type="number"
+                      min={WITHDRAWAL_MIN}
+                      max={balance}
+                      step="0.01"
+                      value={amount}
+                      onChange={(e) => setAmount(e.target.value)}
+                      className="w-full rounded-lg border border-border bg-surface px-4 py-2.5 text-sm text-text-main outline-none focus:border-primary/60 focus:ring-2 focus:ring-primary/20"
+                    />
+                    <p className="mt-1 text-xs text-text-muted">
+                      Minimum {money(WITHDRAWAL_MIN)} · up to {money(balance)} available
+                    </p>
+                  </div>
+
+                  {error && <p className="text-sm text-red-400">{error}</p>}
+
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary-dark disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    {submitting ? (
+                      <>
+                        <Loader2 size={15} className="animate-spin" /> Submitting…
+                      </>
+                    ) : (
+                      'Request payout'
+                    )}
+                  </button>
+                </form>
+              )}
+
+              {/* Payout details — always visible/editable while requesting */}
+              {eligible && (
+                <details className="rounded-xl border border-border bg-bg p-4" open={!hasSavedDetails} key={detailsRefresh}>
+                  <summary className="cursor-pointer text-sm font-semibold text-text-main">
+                    {hasSavedDetails ? 'Payout details (saved — tap to edit)' : 'Payout details — required before withdrawing'}
+                  </summary>
+                  <div className="mt-4">
+                    <PayoutDetailsForm
+                      compact
+                      initialMethod={savedMethod}
+                      initialDetails={savedDetails}
+                      submitLabel="Update payout details"
+                      onSaved={() => setDetailsRefresh((k) => k + 1)}
+                    />
+                  </div>
+                </details>
+              )}
+
+              <div className="space-y-1.5 rounded-xl border border-primary/20 bg-primary/5 p-4 text-xs text-text-muted">
+                <p>• Payouts are sent via MoneyGram or Western Union to the recipient details above.</p>
+                <p>• Processing time: 3–5 business days after your request.</p>
+                <p>• The requested amount leaves your wallet immediately and appears in your transactions.</p>
+              </div>
+            </>
           )}
         </div>
       </div>
