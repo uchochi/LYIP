@@ -4,63 +4,100 @@
 
 ---
 
-## What You’ll Do
+## What You'll Do
 
-AI models learn from clean, structured data. As a curator, you turn messy real-world text into datasets AI can actually use — *no coding required to submit*, but tools help at scale.
+AI models learn from clean, structured data. As a curator, you turn messy real-world text into datasets AI can actually use — *no coding required to submit*, but tools help at scale. The 4-step pipeline turns "coffee-stained pages" into clean, machine-ready information.
 
 ---
 
 ## The 4-Step Pipeline
 
 ### Step 1: The Cleaning 🧹
-Remove noise: HTML, emojis, bad spelling, weird characters.
-*Example*: `"OMG!!! i loooove this... 😍😍😍 http://store.com/item123"` → `"I love this product."`
-*Why*: AI can’t read coffee-stained books. Same with messy data.
+Raw data is like a book covered in coffee stains, scribbles, and old ads — AI can't read it. You'll scrub away noise: HTML code, extra emojis, bad spelling, weird characters, duplicates, and garbage that confuses models.
+
+*What you do*: Remove or fix anything that isn't useful for training.
+
+*Example*: `"OMG!!! i loooove this product... it's sooooo good!!! 😍😍😍 check it out at http://store.com/item123"` → `"I love this product. It is very good."`
+
+*Why*: Clean data means AI learns the right patterns, not the noise.
+
+---
 
 ### Step 2: Language Alignment 🌐
-If you’re translating, every pair must match perfectly.
+If you're building a multilingual AI, you can't just throw random English and Spanish sentences at it. They have to match perfectly — every row in English must have its exact partner in another language. Special characters (ñ, é, ß, 漢) must stay intact.
+
+*What you do*: Verify translation pairs one-to-one, check encoding, and fix misalignments.
+
 *Example*: `"Good morning!"` ↔ `"¡Buenos días!"` ✓ | `"Good morning!"` ↔ `"Hola."` ✗
-*Why*: Bad pairs break translation models.
+
+*Why*: Bad pairs break translation models. Even one wrong pairing confuses the entire system.
+
+---
 
 ### Step 3: Structuring the Data 📦
-Put data in neat boxes: JSON or CSV.
+Computers don't like rambling paragraphs. They prefer "labelled jars" — neat, organized boxes where each piece of data has its own place. This means converting raw text into JSON, CSV, or JSONL with consistent fields and IDs.
+
+*What you do*: Organize data into a format machines can read. Each row gets the same columns (user_id, message, timestamp, etc.).
+
 *Example*: `{"user_id": 1, "message": "Hello!", "timestamp": "2023-10-01T10:00:00Z"}`
-*Why*: Computers love structured "labelled jars," not rambling paragraphs.
+
+*Why*: Structured data is faster to load, easier to process, and less error-prone. AI models expect JSON/CSV, not messy text files.
+
+---
 
 ### Step 4: Dataset Labelling 🏷️
-Tell AI what it’s looking at.
+This is how AI actually learns. You look at a piece of data and give it a tag that becomes the "ground truth" — the correct answer the model should match. Labels teach AI what things *are* (Positive/Negative, Category, Entity).
+
+*What you do*: Add category tags, sentiment labels, or named entities to your data.
+
 *Example*: `"I am so angry!"` → `[Negative]` | `"This is the best day!"` → `[Positive]`
-*Why*: This is how AI learns — labels become ground truth.
+
+*Why*: Without labels, AI doesn't know what patterns to learn. Labels become the training signal.
 
 ---
 
 ## The Tools (Optional but Powerful)
 
-### 1. VS Code + GitHub Copilot 💻
+### 1. ooguy — LLM Dataset Formatter 🚀
+*Best for*: All stages (complete solution). Perfect for beginners and mobile users.
+*How*: Telegram Mini App with drag-and-drop nodes. Upload text/images/audio/video → AI cleans, translates, formats, and labels → export JSON/JSONL/CSV.
+*Cost*: $10 for 10K credits (75% off for new users). Works on any device.
+*Why*: No coding, keeps data private, handles all content types in one place. Get 70-80% off your first dataset.
+
+---
+
+### 2. VS Code + GitHub Copilot 💻
 *Best for*: Cleaning, alignment, structuring (Stages 1–3). Scale: millions of rows.
-*How*: Write comments like `"# remove all HTML tags and emojis"` → Copilot writes Python.
+*How*: Write comments like `"# remove all HTML tags and emojis"` → Copilot writes Python code instantly.
 *Cost*: VS Code free · Copilot ~$10/mo.
+*Why*: Infinite scalability. If you have 10M messy rows, you need code, not clicking. Copilot turns English prompts into working scripts.
 
-### 2. Label Studio 🎨
+---
+
+### 3. Label Studio 🎨
 *Best for*: Multimodal labelling (text, images, audio, video). Custom interfaces.
-*How*: Upload data, configure labeling UI (checkboxes, bounding boxes), export JSON/CSV.
+*How*: Upload data, configure labeling UI (checkboxes, bounding boxes, time segments), export JSON/CSV.
 *Cost*: Free (open-source) · Enterprise for teams.
+*Why*: One tool for everything. Label images with text, tag audio timestamps, annotate video frames — all in one customizable workspace.
 
-### 3. Prodigy ⚡
+---
+
+### 4. Prodigy ⚡
 *Best for*: Text-only NLP (sentiment, NER, translation). Active learning.
-*How*: Label 50 samples → model trains → AI suggests next 1,000 → you confirm/correct.
+*How*: Label 50 samples → model trains → AI suggests next 1,000 → you confirm/correct. The loop continues.
 *Cost*: Paid licence · 30-day trial.
+*Why*: Blazing speed. Active learning reduces the amount you need to label by up to 80%. Best for high-velocity text projects.
 
 ---
 
 ## How to Submit
 
 1. **Clean your data** (remove noise, duplicates, bad encoding).
-2. **Structure it** (JSON/CSV with consistent fields).
+2. **Structure it** (JSON/CSV with consistent fields — same columns for every row).
 3. **Pick a category** (Jokes, Health, Tech, Education, Business, Entertainment, Science, History, Lifestyle, Sports — or "Other").
 4. **Upload** at https://loseyourip.com/submit.
 
-*Submit anything partially curated — cleaned CSV is better than messy one, even if not yet labeled.*
+*Partially curated datasets are welcome — a cleaned CSV is better than a messy one, even if not yet labeled or structured.*
 
 ---
 
@@ -85,7 +122,7 @@ A: Dataset curation is the process of collecting, cleaning, formatting, and (som
 
 **Q: Do I need to know how to code?**
 
-A: No coding is required to submit a dataset. The submission page lets you upload a file and pick a category. If you later want to process data at scale (cleaning thousands of rows, converting formats), the tutorial shows tools like VS Code + GitHub Copilot — but those are optional. You can start with a simple, well-organized file.
+A: No coding is required to submit a dataset. The submission page lets you upload a file and pick a category. If you later want to process data at scale (cleaning thousands of rows, converting formats), the tutorial shows tools like VS Code + GitHub Copilot and ooguy — but those are optional. You can start with a simple, well-organized file.
 
 ---
 
@@ -169,7 +206,7 @@ A: Your account and submissions are protected by Row-Level Security — only you
 
 **Q: What if my dataset has images, audio, or video (multimodal)?**
 
-A: Yes — multimodal datasets are valuable. For multimodal projects (labeling images with text descriptions, tagging audio/video timestamps), the tutorial recommends Label Studio because it supports all data types in one platform. For text-only datasets (sentiment analysis, NER, translation), Prodigy is more specialized and faster. Choose the tool that fits your data type — both are covered in the tutorial deep dives.
+A: Yes — multimodal datasets are valuable. For multimodal projects (labeling images with text descriptions, tagging audio/video timestamps), the tutorial recommends Label Studio or ooguy because they support all data types in one platform. For text-only datasets (sentiment analysis, NER, translation), Prodigy is more specialized and faster. Choose the tool that fits your data type.
 
 ---
 
@@ -211,7 +248,7 @@ A: Yes — when your dataset is rejected or marked for changes, you can reupload
 
 **Q: Where do I go if I still have questions?**
 
-A: Check the tutorial for step-by-step guidance on data cleaning, alignment, structuring, and labelling. If the tutorial and FAQ don't cover your question, email us at support@loseyourip.com — our team responds within 1–2 business days. You can also join the community forum to ask other curators and share tips.
+A: Check the tutorial for step-by-step guidance on data cleaning, alignment, structuring, and labelling. If the tutorial and FAQ don't cover your question, visit https://loseyourip.com/contact to send us a message — our team responds within 1–2 business days. You can also join the community forum to ask other curators and share tips.
 
 ---
 
