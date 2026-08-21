@@ -26,12 +26,20 @@ export default function FaqPage() {
       <Reveal>
         <div className="mt-12 rounded-2xl border border-border bg-surface p-6 text-center">
           <p className="text-text-muted">Still have questions?</p>
-          <Link
-            to="/submit"
-            className="mt-3 inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary-dark"
-          >
-            Start submitting →
-          </Link>
+          <div className="mt-4 flex flex-wrap justify-center gap-3">
+            <Link
+              to="/contact"
+              className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary-dark"
+            >
+              Contact Us
+            </Link>
+            <Link
+              to="/submit"
+              className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface-lighter px-5 py-2.5 text-sm font-semibold text-text-main transition-colors hover:bg-surface-light"
+            >
+              Start submitting →
+            </Link>
+          </div>
         </div>
       </Reveal>
     </div>

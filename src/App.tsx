@@ -16,12 +16,14 @@ import CommunityPage from './pages/CommunityPage';
 import TermsPage from './pages/TermsPage';
 import PrivacyPage from './pages/PrivacyPage';
 import CookiesPage from './pages/CookiesPage';
+import ContactPage from './pages/ContactPage';
 import NotFoundPage from './pages/NotFoundPage';
 import LoginPage from './pages/admin/LoginPage';
 import SignupPage from './pages/admin/SignupPage';
 import DashboardPage from './pages/admin/DashboardPage';
 import CreateJobPage from './pages/admin/CreateJobPage';
 import EditJobPage from './pages/admin/EditJobPage';
+import ContactInboxPage from './pages/admin/ContactInboxPage';
 import UserDashboardPage from './pages/UserDashboardPage';
 import QuizPage from './pages/QuizPage';
 import LearnPage from './pages/LearnPage';
@@ -52,6 +54,7 @@ export default function App() {
             <Route path="/terms" element={<TermsPage />} />
             <Route path="/privacy" element={<PrivacyPage />} />
             <Route path="/cookies" element={<CookiesPage />} />
+            <Route path="/contact" element={<ContactPage />} />
             <Route path="/start" element={<GatewayPage />} />
             <Route path="/start/:tool" element={<ToolDeepDivePage />} />
             <Route path="/faq" element={<FaqPage />} />
@@ -94,6 +97,10 @@ export default function App() {
             <Route
               path="/admin/reviews"
               element={<ProtectedAdminRoute><ReviewsPage /></ProtectedAdminRoute>}
+            />
+            <Route
+              path="/admin/contact"
+              element={<ProtectedAdminRoute><ContactInboxPage /></ProtectedAdminRoute>}
             />
           </Route>
         </Routes>

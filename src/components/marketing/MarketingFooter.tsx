@@ -20,6 +20,15 @@ const columns = [
       { to: '/jobs', label: 'Open Positions' },
       { to: '/forum', label: 'Forum — Jobs & Projects' },
       { to: '/dashboard', label: 'My Dashboard' },
+      { to: '/faq', label: 'FAQ' },
+    ],
+  },
+  {
+    title: 'Support',
+    links: [
+      { to: '/contact', label: 'Contact Us' },
+      { to: '/start', label: 'Tutorial' },
+      { to: '/learn', label: 'Learning Hub' },
     ],
   },
   {
