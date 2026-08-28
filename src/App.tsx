@@ -6,9 +6,10 @@ import BareLayout from './layouts/BareLayout';
 import HomePage from './pages/HomePage';
 import JobsPage from './pages/JobsPage';
 import JobDetailPage from './pages/JobDetailPage';
-import ForumPage from './pages/ForumPage';
-import ForumTopicPage from './pages/ForumTopicPage';
-import NewTopicPage from './pages/NewTopicPage';
+// FORUM DISABLED (2026-08-28) — restore by uncommenting. See .tmp/sessions/2026-08-28-disable-forum/context.md
+// import ForumPage from './pages/ForumPage';
+// import ForumTopicPage from './pages/ForumTopicPage';
+// import NewTopicPage from './pages/NewTopicPage';
 import AboutPage from './pages/AboutPage';
 import PlatformPage from './pages/PlatformPage';
 import ResearchPage from './pages/ResearchPage';
@@ -67,9 +68,11 @@ export default function App() {
 
           {/* Forum zone — dark community navbar + footer (own chrome) */}
           <Route element={<ForumLayout />}>
+            {/* FORUM DISABLED (2026-08-28) — restore by uncommenting:
             <Route path="/forum" element={<ForumPage />} />
             <Route path="/forum/new" element={<NewTopicPage />} />
             <Route path="/forum/:topicId" element={<ForumTopicPage />} />
+            */}
             <Route
               path="/dashboard"
               element={<ProtectedUserRoute><UserDashboardPage /></ProtectedUserRoute>}

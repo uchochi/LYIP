@@ -94,6 +94,7 @@ export default function QuizResult({ answers, onRetake }: QuizResultProps) {
             I want to learn how to format dataset →
           </button>
         </Link>
+        {/* FORUM DISABLED (2026-08-28) — restore by uncommenting:
         <Link to="/forum" style={{ textDecoration: 'none' }}>
           <button
             type="button"
@@ -106,6 +107,7 @@ export default function QuizResult({ answers, onRetake }: QuizResultProps) {
             I already know how to format dataset, Start getting jobs →
           </button>
         </Link>
+        */}
         <button
           type="button"
           onClick={onRetake}

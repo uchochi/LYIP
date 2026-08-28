@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ArrowLeft, Plus, LogOut } from 'lucide-react';
+// FORUM DISABLED (2026-08-28) — original import (Plus was only used by the forum nav links below; re-add it when restoring):
+// import { Menu, X, ArrowLeft, Plus, LogOut } from 'lucide-react';
+import { Menu, X, ArrowLeft, LogOut, type LucideIcon } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { supabase } from '../../lib/supabase';
 import MiniAvatar from './MiniAvatar';
@@ -31,10 +33,12 @@ export default function ForumNavbar() {
     return () => { active = false; };
   }, [user]);
 
-  const links = [
-    { to: '/forum', label: 'Feed', icon: null },
-    { to: '/forum/new', label: 'New Topic', icon: Plus },
-  ];
+  // FORUM DISABLED (2026-08-28) — restore by uncommenting (and re-adding Plus to the lucide import):
+  // const links = [
+  //   { to: '/forum', label: 'Feed', icon: null },
+  //   { to: '/forum/new', label: 'New Topic', icon: Plus },
+  // ];
+  const links: { to: string; label: string; icon: LucideIcon | null }[] = [];
 
   const isActive = (to: string) => pathname === to;
   const handle = user?.username || user?.name || 'Member';
@@ -54,7 +58,8 @@ export default function ForumNavbar() {
           >
             <ArrowLeft size={13} /> Back to site
           </Link>
-          <Link to="/forum" className="flex items-center gap-2 no-underline">
+          {/* FORUM DISABLED (2026-08-28) — original: to="/forum"; forum routes are commented out in App.tsx */}
+          <Link to="/dashboard" className="flex items-center gap-2 no-underline">
             <img src="/Loseyourip-logo.png" alt="Loseyourip" className="h-8 w-auto" />
             <span className="rounded bg-surface-lighter px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-text-muted">
               Global

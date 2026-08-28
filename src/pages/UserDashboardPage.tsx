@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 import {
   User as UserIcon,
   GraduationCap,
-  MessageSquare,
-  FileText,
+  // FORUM DISABLED (2026-08-28) — forum-only icons, restore when forum returns:
+  // MessageSquare,
+  // FileText,
   Award,
   ShieldAlert,
   ShieldOff,
@@ -20,7 +21,7 @@ import {
   Trophy,
   BookOpen,
   UploadCloud,
-  MessagesSquare,
+  // MessagesSquare,
   X,
   Landmark,
   Info,
@@ -29,7 +30,9 @@ import {
   Loader2,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { getUserProfile, getMyTopics, getMyPosts } from '../services/userService';
+// FORUM DISABLED (2026-08-28) — original: getMyTopics & getMyPosts feed the forum activity section below; restore when forum returns:
+// import { getUserProfile, getMyTopics, getMyPosts } from '../services/userService';
+import { getUserProfile } from '../services/userService';
 import { getMySubmissions, getSignedUrl, calculatePayment } from '../services/datasetService';
 import { getWalletOverview, TX_LABELS } from '../services/walletService';
 import { getUserBadges, BADGE_CATALOG, type UserBadge } from '../services/badgeService';
@@ -67,8 +70,9 @@ const money = (n: number) =>
 export default function UserDashboardPage() {
   const { user } = useAuth();
   const [profile, setProfile] = useState<UserRow | null>(null);
-  const [topics, setTopics] = useState<any[]>([]);
-  const [posts, setPosts] = useState<any[]>([]);
+  // FORUM DISABLED (2026-08-28) — restore with the forum activity section below:
+  // const [topics, setTopics] = useState<any[]>([]);
+  // const [posts, setPosts] = useState<any[]>([]);
   const [submissions, setSubmissions] = useState<CuratorSubmission[]>([]);
   const [wallet, setWallet] = useState<WalletOverview | null>(null);
   const [badges, setBadges] = useState<UserBadge[]>([]);
@@ -83,18 +87,25 @@ export default function UserDashboardPage() {
     (async () => {
       setLoading(true);
       try {
-        const [p, t, ps, ds, w, b] = await Promise.all([
+        // FORUM DISABLED (2026-08-28) — original fetch (restores forum topics/posts):
+        // const [p, t, ps, ds, w, b] = await Promise.all([
+        //   getUserProfile(user.id),
+        //   getMyTopics(user.id),
+        //   getMyPosts(user.id),
+        //   getMySubmissions(user.id),
+        //   getWalletOverview(user.id),
+        //   getUserBadges(user.id).catch(() => [] as UserBadge[]),
+        // ]);
+        const [p, ds, w, b] = await Promise.all([
           getUserProfile(user.id),
-          getMyTopics(user.id),
-          getMyPosts(user.id),
           getMySubmissions(user.id),
           getWalletOverview(user.id),
           getUserBadges(user.id).catch(() => [] as UserBadge[]),
         ]);
         if (!active) return;
         setProfile(p);
-        setTopics(t);
-        setPosts(ps);
+        // setTopics(t);
+        // setPosts(ps);
         setSubmissions(ds);
         setWallet(w);
         setBadges(b);
@@ -117,9 +128,11 @@ export default function UserDashboardPage() {
     return (
       <div className="mx-auto max-w-5xl px-6 py-20 text-center">
         <p className="text-red-500 mb-4">{error}</p>
+        {/* FORUM DISABLED (2026-08-28) — restore by uncommenting:
         <Link to="/forum">
           <Button variant="secondary">Back to Forum</Button>
         </Link>
+        */}
       </div>
     );
   }
@@ -150,11 +163,11 @@ export default function UserDashboardPage() {
               </p>
               <p className="mt-1 text-sm text-text-muted">
                 {structureRejected.map((s) => `“${s.title}”`).join(', ')} didn’t follow the required unique dataset
-                structure. Re-format your export and submit again —{' '}
-                <Link to="/forum" className="font-medium text-primary">
-                  ask in the forum
-                </Link>{' '}
+                structure. Re-format your export and submit again.
+                {/* FORUM DISABLED (2026-08-28) — restore by uncommenting:
+                {' '}<Link to="/forum" className="font-medium text-primary">ask in the forum</Link>{' '}
                 if you need help.
+                */}
               </p>
             </div>
           </div>
@@ -204,9 +217,11 @@ export default function UserDashboardPage() {
               })}
             </div>
           </div>
+          {/* FORUM DISABLED (2026-08-28) — restore by uncommenting (and MessagesSquare in the lucide import):
           <Link to="/forum/new" className="no-underline hidden sm:block">
             <Button size="sm">New Topic</Button>
           </Link>
+          */}
         </div>
 
         {(isMuted || isPaused) && (
@@ -275,7 +290,9 @@ export default function UserDashboardPage() {
       <div className="mb-6 grid gap-3 sm:grid-cols-3">
         <QuickAction to="/start" icon={<BookOpen size={20} />} title="Tutorial" desc="Learn dataset curation" />
         <QuickAction to="/submit" icon={<UploadCloud size={20} />} title="Submit Dataset" desc="Earn $50–$100 per dataset" accent />
+        {/* FORUM DISABLED (2026-08-28) — restore by uncommenting:
         <QuickAction to="/forum" icon={<MessagesSquare size={20} />} title="Forum" desc="Find jobs, pick projects & connect" />
+        */}
       </div>
 
       {/* ── Referral program ───────────────────────────────────────── */}
@@ -285,6 +302,7 @@ export default function UserDashboardPage() {
       <DatasetMonitor submissions={submissions} />
 
       {/* ── Forum activity ─────────────────────────────────────────── */}
+      {/* FORUM DISABLED (2026-08-28) — restore this section (and the topics/posts fetch + icons) by uncommenting:
       <div className="mb-6 grid grid-cols-2 gap-4">
         <div className="rounded-xl border border-border bg-surface p-4 shadow-sm">
           <div className="flex items-center gap-3">
@@ -307,7 +325,6 @@ export default function UserDashboardPage() {
       </div>
 
       <div className="grid gap-8 md:grid-cols-2">
-        {/* My Topics */}
         <div>
           <h2 className="mb-3 text-lg font-semibold text-text-main">My Topics</h2>
           {topics.length === 0 ? (
@@ -331,7 +348,6 @@ export default function UserDashboardPage() {
           )}
         </div>
 
-        {/* My Replies */}
         <div>
           <h2 className="mb-3 text-lg font-semibold text-text-main">My Replies</h2>
           {posts.length === 0 ? (
@@ -355,6 +371,7 @@ export default function UserDashboardPage() {
           )}
         </div>
       </div>
+      */}
 
       {/* ── Modals ─────────────────────────────────────────────────── */}
       {showTxModal && wallet && (

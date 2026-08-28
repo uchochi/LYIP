@@ -69,8 +69,9 @@ export default function SignupPage() {
     setSigningUp(false);
 
     // mailer_autoconfirm is enabled so the user gets a session immediately.
-    // We route them to the forum with a reminder to verify their email later.
-    navigate(referrerName ? `/forum?welcome=1&referred=${encodeURIComponent(referrerName)}` : '/forum?welcome=1');
+    // FORUM DISABLED (2026-08-28) — original routing (restore when forum returns):
+    // navigate(referrerName ? `/forum?welcome=1&referred=${encodeURIComponent(referrerName)}` : '/forum?welcome=1');
+    navigate(referrerName ? `/dashboard?referred=${encodeURIComponent(referrerName)}` : '/dashboard');
   };
 
   return (

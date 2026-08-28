@@ -18,7 +18,8 @@ const columns = [
     title: 'Resources',
     links: [
       { to: '/jobs', label: 'Open Positions' },
-      { to: '/forum', label: 'Forum — Jobs & Projects' },
+      // FORUM DISABLED (2026-08-28) — restore by uncommenting:
+      // { to: '/forum', label: 'Forum — Jobs & Projects' },
       { to: '/dashboard', label: 'My Dashboard' },
       { to: '/faq', label: 'FAQ' },
     ],

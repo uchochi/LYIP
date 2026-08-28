@@ -55,9 +55,11 @@ export default function LearnPage() {
           <li>
             <Link to="/faq">Dataset Curation FAQ</Link> — formats, pricing, reviews, and quality.
           </li>
+          {/* FORUM DISABLED (2026-08-28) — restore by uncommenting:
           <li>
             <Link to="/forum">Community Forum</Link> — find dataset jobs, pick up paid projects, ask questions and share insights.
           </li>
+          */}
         </ul>
       </Reveal>
     </DocsShell>
