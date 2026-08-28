@@ -28,6 +28,7 @@ import {
   Zap,
   AlertTriangle,
   Loader2,
+  ArrowRight,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 // FORUM DISABLED (2026-08-28) — original: getMyTopics & getMyPosts feed the forum activity section below; restore when forum returns:
@@ -256,7 +257,7 @@ export default function UserDashboardPage() {
                 Lifetime <span className="font-semibold text-text-main">{money(wallet?.lifetimeEarnings ?? 0)}</span>
               </span>
               <span className="text-text-muted">
-                Referrals <span className="font-semibold text-primary">{money((wallet?.referralEarnings ?? 0) + (wallet?.milestoneBonus ?? 0))}</span>
+                Referrals <span className="font-semibold text-primary">{money((wallet?.referralEarnings ?? 0) + (wallet?.referralMilestoneBonus ?? 0))}</span>
               </span>
             </div>
           </div>
@@ -495,8 +496,13 @@ function ReferralCard({ profile, wallet }: { profile: UserRow | null; wallet: Wa
   const code = profile?.referral_code ?? '';
   const link = code ? `${window.location.origin}/signup?ref=${code}` : '';
   const completed = profile?.referral_count ?? 0;
-  const milestonePaid = profile?.referral_milestone_paid ?? false;
-  const referralMoney = (wallet?.referralEarnings ?? 0) + (wallet?.milestoneBonus ?? 0);
+  // Repeating milestones: $50 for every 10 completed referrals — no cap.
+  const milestonesReached = Math.floor(completed / REFERRAL_MILESTONE_TARGET);
+  const progressInCurrentTen = completed % REFERRAL_MILESTONE_TARGET;
+  // Amount actually paid, from the ledger (referral milestones only — excludes
+  // the Agiel bonus). Falls back to the computed value while the wallet loads.
+  const milestoneEarned = wallet?.referralMilestoneBonus ?? milestonesReached * REFERRAL_MILESTONE_BONUS;
+  const referralMoney = (wallet?.referralEarnings ?? 0) + (wallet?.referralMilestoneBonus ?? 0);
 
   const copy = async (what: 'code' | 'link') => {
     try {
@@ -514,15 +520,23 @@ function ReferralCard({ profile, wallet }: { profile: UserRow | null; wallet: Wa
         <h2 className="flex items-center gap-2 text-lg font-semibold text-text-main">
           <Users size={18} className="text-primary" /> Referral Program
         </h2>
-        {milestonePaid ? (
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-400">
-            <Trophy size={13} /> {money(REFERRAL_MILESTONE_BONUS)} milestone bonus earned
-          </span>
-        ) : (
-          <span className="text-xs text-text-muted">
-            {completed}/{REFERRAL_MILESTONE_TARGET} completed → one-time {money(REFERRAL_MILESTONE_BONUS)} bonus
-          </span>
-        )}
+        <div className="flex items-center gap-3">
+          {milestonesReached > 0 ? (
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-400">
+              <Trophy size={13} /> {milestonesReached} milestone{milestonesReached === 1 ? '' : 's'} reached — {money(milestoneEarned)} earned
+            </span>
+          ) : (
+            <span className="text-xs text-text-muted">
+              {progressInCurrentTen}/{REFERRAL_MILESTONE_TARGET} toward your first {money(REFERRAL_MILESTONE_BONUS)} bonus
+            </span>
+          )}
+          <Link
+            to="/referrals"
+            className="text-xs font-semibold text-primary no-underline transition-colors hover:text-primary-dark"
+          >
+            Learn more →
+          </Link>
+        </div>
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2">
@@ -571,23 +585,46 @@ function ReferralCard({ profile, wallet }: { profile: UserRow | null; wallet: Wa
             </span>
             <span className="font-bold text-emerald-400">{money(referralMoney)} earned</span>
           </div>
-          {/* Milestone segments: 10 blocks */}
+          {/* Milestone segments: progress within the CURRENT ten */}
           <div className="mb-3 flex gap-1.5">
             {Array.from({ length: REFERRAL_MILESTONE_TARGET }).map((_, i) => (
               <span
                 key={i}
                 className={`h-2.5 flex-1 rounded-full ${
-                  i < completed ? 'bg-primary' : 'bg-border'
+                  i < progressInCurrentTen ? 'bg-primary' : 'bg-border'
                 }`}
               />
             ))}
           </div>
+          {/* Tens-reached stat: how many 10-referral milestones earned */}
+          <div className="mb-3 flex items-center justify-between rounded-lg border border-border bg-surface px-3 py-2 text-xs">
+            <span className="text-text-muted">
+              Tens reached <span className="text-text-main">(every {REFERRAL_MILESTONE_TARGET} = {money(REFERRAL_MILESTONE_BONUS)})</span>
+            </span>
+            <span className="font-bold text-primary">
+              {milestonesReached} ten{milestonesReached === 1 ? '' : 's'} · {money(milestoneEarned)}
+            </span>
+          </div>
           <p className="flex items-start gap-1.5 text-xs leading-relaxed text-text-muted">
             <Info size={13} className="mt-0.5 shrink-0 text-primary" />
-            Earn {money(REFERRAL_REWARD)} each time someone you invite submits their first dataset.
-            At {REFERRAL_MILESTONE_TARGET} referrals you unlock a one-time {money(REFERRAL_MILESTONE_BONUS)} bonus — credited straight to your wallet.
+            Earn {money(REFERRAL_REWARD)} each time someone you invite submits their first dataset —
+            plus a {money(REFERRAL_MILESTONE_BONUS)} bonus for every {REFERRAL_MILESTONE_TARGET} completed
+            referrals ({REFERRAL_MILESTONE_TARGET}, {REFERRAL_MILESTONE_TARGET * 2}, {REFERRAL_MILESTONE_TARGET * 3} …), with no limit.
           </p>
         </div>
+      </div>
+
+      {/* Learn more — full program details */}
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-primary/20 bg-primary/5 px-4 py-3">
+        <p className="text-sm text-text-muted">
+          Full rules, reward examples and payout details on the Referral Program page.
+        </p>
+        <Link
+          to="/referrals"
+          className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white no-underline transition-colors hover:bg-primary-dark"
+        >
+          Learn more <ArrowRight size={15} />
+        </Link>
       </div>
     </div>
   );

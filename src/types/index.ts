@@ -154,23 +154,26 @@ export interface ReferralInfo {
   completed_referrals: number
   referral_earnings: number
   milestone_bonus: number
-  milestone_paid: boolean
-  progress_to_milestone: number // completed referrals / 10, capped at 1
+  milestones_earned: number // how many tens of completed referrals (10, 20, 30 …) — each pays REFERRAL_MILESTONE_BONUS
+  progress_to_milestone: number // progress within the CURRENT ten: (completed % 10) / 10
 }
 
 export interface WalletOverview {
   balance: number
   lifetimeEarnings: number
   referralEarnings: number
-  milestoneBonus: number
+  milestoneBonus: number // all milestone_bonus rows (referral milestones + Agiel bonus)
+  referralMilestoneBonus: number // milestone_bonus rows tied to a referral — referral program only
+  agielBonus: number // the one-time new-user Agiel bonus (milestone_bonus with no referral)
   thisMonthEarnings: number
   transactions: WalletTransaction[]
 }
 
 export const WITHDRAWAL_MIN = 1200
 export const REFERRAL_REWARD = 5
+// Referral milestone: $50 for EVERY 10 completed referrals (10, 20, 30 …), unlimited.
 export const REFERRAL_MILESTONE_TARGET = 10
-export const REFERRAL_MILESTONE_BONUS = 100
+export const REFERRAL_MILESTONE_BONUS = 50
 export const AGIEL_BONUS = 100
 export const AGIEL_WINDOW_HOURS = 24
 export const STRUCTURE_REJECT_HOURS = 15

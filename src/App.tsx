@@ -32,6 +32,7 @@ import GatewayPage from './pages/start/GatewayPage';
 import ToolDeepDivePage from './pages/start/ToolDeepDivePage';
 import SubmitDatasetPage from './pages/SubmitDatasetPage';
 import FaqPage from './pages/FaqPage';
+import ReferralPage from './pages/ReferralPage';
 import ReviewsPage from './pages/admin/ReviewsPage';
 import ProtectedAdminRoute from './components/admin/ProtectedAdminRoute';
 import ProtectedUserRoute from './components/ProtectedUserRoute';
@@ -59,6 +60,7 @@ export default function App() {
             <Route path="/start" element={<GatewayPage />} />
             <Route path="/start/:tool" element={<ToolDeepDivePage />} />
             <Route path="/faq" element={<FaqPage />} />
+            <Route path="/referrals" element={<ReferralPage />} />
             <Route
               path="/submit"
               element={<ProtectedUserRoute><SubmitDatasetPage /></ProtectedUserRoute>}

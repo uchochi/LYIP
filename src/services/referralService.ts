@@ -4,14 +4,16 @@ import type { ReferralInfo } from '../types';
 
 /**
  * Referral service — $5 per referral when the invitee submits their first
- * dataset, plus a one-time $100 bonus at 10 completed referrals. All crediting
- * happens server-side (see wallet_functions migration); this module reads.
+ * dataset, plus a repeating $50 milestone bonus for every 10 completed
+ * referrals (10, 20, 30 …) with no cap. All crediting happens server-side
+ * (see wallet_functions + repeating_referral_milestones migrations); this
+ * module reads.
  */
 
 export async function getReferralInfo(userId: string): Promise<ReferralInfo> {
   const { data: profile, error } = await supabase
     .from('users')
-    .select('referral_code, referral_count, referral_milestone_paid')
+    .select('referral_code, referral_count')
     .eq('id', userId)
     .maybeSingle();
   if (error) throw error;
@@ -30,8 +32,8 @@ export async function getReferralInfo(userId: string): Promise<ReferralInfo> {
     // Earnings come from the ledger for accuracy.
     referral_earnings: 0,
     milestone_bonus: 0,
-    milestone_paid: profile?.referral_milestone_paid ?? false,
-    progress_to_milestone: Math.min(completed / REFERRAL_MILESTONE_TARGET, 1),
+    milestones_earned: Math.floor(completed / REFERRAL_MILESTONE_TARGET),
+    progress_to_milestone: (completed % REFERRAL_MILESTONE_TARGET) / REFERRAL_MILESTONE_TARGET,
   };
 }
 

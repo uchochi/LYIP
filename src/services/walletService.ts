@@ -49,11 +49,24 @@ export async function getWalletOverview(userId: string): Promise<WalletOverview>
     .eq('id', userId)
     .maybeSingle();
 
+  // Split milestone bonuses by program: referral milestones carry a
+  // related_referral_id, the Agiel new-user bonus does not.
+  const sumMilestones = (referralBacked: boolean) =>
+    transactions
+      .filter(
+        (t) =>
+          t.transaction_type === 'milestone_bonus' &&
+          (referralBacked ? t.related_referral_id != null : t.related_referral_id == null),
+      )
+      .reduce((s, t) => s + Number(t.amount), 0);
+
   return {
     balance: profile ? Number(profile.wallet_balance) : lifetime,
     lifetimeEarnings: lifetime,
     referralEarnings: sum('referral_earning'),
     milestoneBonus: sum('milestone_bonus'),
+    referralMilestoneBonus: sumMilestones(true),
+    agielBonus: sumMilestones(false),
     thisMonthEarnings,
     transactions,
   };

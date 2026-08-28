@@ -31,7 +31,7 @@ export const DATASET_FAQS: FaqItem[] = [
   },
   {
     q: 'How much will I get paid, and how is the price decided?',
-    a: 'Pricing is tiered by entry count: 500+ entries = $50 (e.g. a spreadsheet of 500 proverbs), 1,500+ = $75 (e.g. 1,500 question–answer pairs), and 3,000+ = $100 (e.g. 3,000 timestamped speech segments) per approved dataset. Once a dataset is approved, the payment is credited straight to your dashboard wallet. Referral rewards ($5 per referral, plus a $100 bonus at 10 referrals) land in the same wallet. Withdrawals unlock at $1,200 and are paid internationally via MoneyGram or Western Union within 3–5 business days.',
+    a: 'Pricing is tiered by entry count: 500+ entries = $50 (e.g. a spreadsheet of 500 proverbs), 1,500+ = $75 (e.g. 1,500 question–answer pairs), and 3,000+ = $100 (e.g. 3,000 timestamped speech segments) per approved dataset. Once a dataset is approved, the payment is credited straight to your dashboard wallet. Referral rewards ($5 per referral, plus a $50 bonus for every 10 completed referrals — unlimited) land in the same wallet. Withdrawals unlock at $1,200 and are paid internationally via MoneyGram or Western Union within 3–5 business days.',
   },
   {
     q: 'How long does the review take?',
@@ -87,7 +87,7 @@ export const DATASET_FAQS: FaqItem[] = [
   },
   {
     q: 'Does the referral program pay, and how does it work?',
-    a: 'Yes — you earn $5 for every referral who submits their first approved dataset. At 10 completed referrals, you unlock a one-time $100 bonus credited to your wallet. Share your unique referral link from the dashboard to get started.',
+    a: 'Yes — you earn $5 for every referral who submits their first dataset, plus a $50 milestone bonus for every 10 completed referrals (10, 20, 30 — with no limit), credited automatically to your wallet. Share your unique referral link from the dashboard to get started, or see the Referral Program page for the full breakdown.',
   },
   {
     q: 'What is the Agiel Member bonus?',
