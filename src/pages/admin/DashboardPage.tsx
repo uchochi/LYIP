@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Plus, Briefcase, CheckCircle, Clock, FileEdit, Inbox, MessageSquare } from 'lucide-react';
+import { Plus, Briefcase, CheckCircle, Clock, FileEdit, Inbox, MessageSquare, Landmark } from 'lucide-react';
 import { useJobs } from '../../hooks/useJobs';
 import JobTable from '../../components/admin/JobTable';
 import Button from '../../components/ui/Button';
@@ -40,6 +40,12 @@ export default function DashboardPage() {
             <Button variant="secondary">
               <Inbox size={16} />
               Dataset Reviews
+            </Button>
+          </Link>
+          <Link to="/admin/withdrawals" className="no-underline">
+            <Button variant="secondary">
+              <Landmark size={16} />
+              Withdrawals
             </Button>
           </Link>
           <Link to="/admin/jobs/new" className="no-underline">

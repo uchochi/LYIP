@@ -46,12 +46,14 @@ export default function SignupPage() {
     if (data.user) {
       // The public.users row must exist BEFORE applying a referral code
       // (referral_records has an FK to it), so upsert first.
+      // NOTE: role is intentionally NOT sent — the DB defaults it to
+      // 'apprentice' and a guard trigger normalizes protected columns
+      // (wallet_balance, role, …) so clients can never self-assign them.
       const { error: insertError } = await supabase.from('users').upsert(
         {
           id: data.user.id,
           email: data.user.email,
           name: name,
-          role: 'apprentice',
         },
         { onConflict: 'id', ignoreDuplicates: true },
       );

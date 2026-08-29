@@ -65,3 +65,45 @@ export async function getPayoutProfile(): Promise<PayoutProfile | null> {
     .maybeSingle();
   return (data as PayoutProfile) || null;
 }
+
+// ── Staff: withdrawal settlement ─────────────────────────────────────
+
+export interface AdminWithdrawalRequest {
+  id: string;
+  user_id: string;
+  amount: number;
+  status: 'pending' | 'processing' | 'completed' | 'rejected';
+  payout_method: PayoutMethod;
+  payout_details: Partial<PayoutDetails>;
+  admin_notes: string | null;
+  submitted_at: string;
+  processed_at: string | null;
+  users?: { name: string | null; email: string | null; username: string | null } | null;
+}
+
+/** Staff-only: list all withdrawal requests, newest first. */
+export async function listWithdrawalRequests(): Promise<AdminWithdrawalRequest[]> {
+  const { data, error } = await supabase
+    .from('withdrawal_requests')
+    .select('*, users(name, email, username)')
+    .order('submitted_at', { ascending: false });
+  if (error) throw new Error(error.message);
+  return (data || []) as unknown as AdminWithdrawalRequest[];
+}
+
+/**
+ * Staff-only: settle a withdrawal. 'completed' marks it paid; 'rejected'
+ * returns the amount to the member's wallet (server-side, atomic).
+ */
+export async function settleWithdrawal(
+  requestId: string,
+  action: 'completed' | 'rejected',
+  notes?: string,
+): Promise<void> {
+  const { error } = await supabase.rpc('settle_withdrawal', {
+    p_request_id: requestId,
+    p_action: action,
+    p_notes: notes ?? null,
+  });
+  if (error) throw new Error(error.message);
+}

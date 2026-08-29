@@ -65,8 +65,11 @@ function roleLabel(role?: string): string {
   return map[role || ''] || (role ? role.charAt(0).toUpperCase() + role.slice(1) : 'Member');
 }
 
-const money = (n: number) =>
-  `$${Number(n || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+const money = (n: number) => {
+  const v = Number(n || 0);
+  const s = v.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  return v < 0 ? `-$${s.slice(1)}` : `$${s}`;
+};
 
 export default function UserDashboardPage() {
   const { user } = useAuth();
@@ -776,16 +779,26 @@ function MiniStat({ label, value, tone }: { label: string; value: string | numbe
 // Transactions modal
 // ---------------------------------------------------------------------------
 
-const TX_FILTERS: { key: WalletTransactionType | 'all'; label: string }[] = [
+type TxFilter = WalletTransactionType | 'all' | 'withdrawals';
+
+const TX_FILTERS: { key: TxFilter; label: string }[] = [
   { key: 'all', label: 'All' },
   { key: 'dataset_earning', label: 'Datasets' },
   { key: 'referral_earning', label: 'Referrals' },
   { key: 'milestone_bonus', label: 'Milestones' },
+  { key: 'withdrawals', label: 'Withdrawals' },
 ];
 
 function TransactionsModal({ wallet, onClose }: { wallet: WalletOverview; onClose: () => void }) {
-  const [filter, setFilter] = useState<WalletTransactionType | 'all'>('all');
-  const rows = filter === 'all' ? wallet.transactions : wallet.transactions.filter((t) => t.transaction_type === filter);
+  const [filter, setFilter] = useState<TxFilter>('all');
+  const rows =
+    filter === 'all'
+      ? wallet.transactions
+      : wallet.transactions.filter((t) =>
+          filter === 'withdrawals'
+            ? t.transaction_type.startsWith('withdrawal')
+            : t.transaction_type === filter,
+        );
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 p-0 sm:items-center sm:p-4" onClick={onClose}>

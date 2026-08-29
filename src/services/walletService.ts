@@ -22,52 +22,40 @@ export async function getTransactions(
   return (data || []) as WalletTransaction[];
 }
 
+/**
+ * Wallet overview aggregates are computed server-side by the
+ * get_wallet_overview RPC (full ledger, completed rows only) so totals can
+ * never be truncated by a client-side row limit.
+ */
+/** Raw shape returned by the get_wallet_overview RPC (numerics may arrive as strings). */
+interface WalletOverviewSums {
+  balance: number | string;
+  lifetime_earnings: number | string;
+  referral_earnings: number | string;
+  milestone_bonus: number | string;
+  referral_milestone_bonus: number | string;
+  agiel_bonus: number | string;
+  this_month_earnings: number | string;
+}
+
 export async function getWalletOverview(userId: string): Promise<WalletOverview> {
+  const { data, error } = await supabase.rpc('get_wallet_overview').single();
+  if (error) throw new Error(error.message);
+  const sums = data as unknown as WalletOverviewSums;
+
+  // Recent rows for the transactions modal (display only — the totals above
+  // are authoritative and cover the user's entire history).
   const transactions = await getTransactions(userId, { limit: 500 });
 
-  const sum = (type: WalletTransactionType) =>
-    transactions.filter((t) => t.transaction_type === type).reduce((s, t) => s + Number(t.amount), 0);
-
-  const lifetime =
-    sum('dataset_earning') + sum('referral_earning') + sum('milestone_bonus');
-
-  const monthStart = new Date();
-  monthStart.setDate(1);
-  monthStart.setHours(0, 0, 0, 0);
-  const thisMonthEarnings = transactions
-    .filter(
-      (t) =>
-        new Date(t.created_at) >= monthStart &&
-        ['dataset_earning', 'referral_earning', 'milestone_bonus'].includes(t.transaction_type),
-    )
-    .reduce((s, t) => s + Number(t.amount), 0);
-
-  // The authoritative balance lives on the users row; fall back to the ledger.
-  const { data: profile } = await supabase
-    .from('users')
-    .select('wallet_balance')
-    .eq('id', userId)
-    .maybeSingle();
-
-  // Split milestone bonuses by program: referral milestones carry a
-  // related_referral_id, the Agiel new-user bonus does not.
-  const sumMilestones = (referralBacked: boolean) =>
-    transactions
-      .filter(
-        (t) =>
-          t.transaction_type === 'milestone_bonus' &&
-          (referralBacked ? t.related_referral_id != null : t.related_referral_id == null),
-      )
-      .reduce((s, t) => s + Number(t.amount), 0);
-
+  const n = (v: unknown) => Number(v ?? 0);
   return {
-    balance: profile ? Number(profile.wallet_balance) : lifetime,
-    lifetimeEarnings: lifetime,
-    referralEarnings: sum('referral_earning'),
-    milestoneBonus: sum('milestone_bonus'),
-    referralMilestoneBonus: sumMilestones(true),
-    agielBonus: sumMilestones(false),
-    thisMonthEarnings,
+    balance: n(sums.balance),
+    lifetimeEarnings: n(sums.lifetime_earnings),
+    referralEarnings: n(sums.referral_earnings),
+    milestoneBonus: n(sums.milestone_bonus),
+    referralMilestoneBonus: n(sums.referral_milestone_bonus),
+    agielBonus: n(sums.agiel_bonus),
+    thisMonthEarnings: n(sums.this_month_earnings),
     transactions,
   };
 }

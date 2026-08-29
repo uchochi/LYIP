@@ -25,6 +25,7 @@ import DashboardPage from './pages/admin/DashboardPage';
 import CreateJobPage from './pages/admin/CreateJobPage';
 import EditJobPage from './pages/admin/EditJobPage';
 import ContactInboxPage from './pages/admin/ContactInboxPage';
+import AdminWithdrawalsPage from './pages/admin/AdminWithdrawalsPage';
 import UserDashboardPage from './pages/UserDashboardPage';
 import QuizPage from './pages/QuizPage';
 import LearnPage from './pages/LearnPage';
@@ -106,6 +107,10 @@ export default function App() {
             <Route
               path="/admin/contact"
               element={<ProtectedAdminRoute><ContactInboxPage /></ProtectedAdminRoute>}
+            />
+            <Route
+              path="/admin/withdrawals"
+              element={<ProtectedAdminRoute><AdminWithdrawalsPage /></ProtectedAdminRoute>}
             />
           </Route>
         </Routes>
